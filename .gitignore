@@ -5,6 +5,7 @@
 # If you have folders named "obj", "library" or "temp", they will always be ignored wherever they are in the project.
 # If you want to avoid this, remove the "**" and replace it with the real folder name.
 
+**/.DS_Store
 **/[Ll]ibrary/
 **/[Tt]emp/
 **/[Oo]bj/
