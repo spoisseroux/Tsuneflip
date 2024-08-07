@@ -9,6 +9,7 @@ public enum FlipCode
     Empty
 }
 
+[System.Serializable]
 public class TileData
 {
     [SerializeField]

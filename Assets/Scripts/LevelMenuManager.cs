@@ -96,10 +96,10 @@ public class LevelMenuManager : MonoBehaviour
         string worldPath = Path.Combine(levelsRootPath, worldName);
         Debug.Log("Loading levels from: " + worldPath);
 
-        TestLevelScriptableObject[] levels = Resources.LoadAll<TestLevelScriptableObject>(worldPath);
+        LevelData[] levels = Resources.LoadAll<LevelData>(worldPath);
         Debug.Log("Found " + levels.Length + " levels in world: " + worldName);
 
-        foreach (TestLevelScriptableObject level in levels)
+        foreach (LevelData level in levels)
         {
             Button levelButton = Instantiate(levelButtonPrefab, levelButtonContainer);
             TMP_Text buttonText = levelButton.GetComponentInChildren<TMP_Text>();
@@ -122,18 +122,18 @@ public class LevelMenuManager : MonoBehaviour
         }
     }
 
-    void LoadLevel(TestLevelScriptableObject level)
+    void LoadLevel(LevelData level)
     {
         // Load the level (e.g., load the scene or do something with the level data)
         Debug.Log("Loading level: " + level.levelName);
         // Example: SceneManager.LoadScene(level.sceneName);
     }
 
-    void ShowLevelPreview(TestLevelScriptableObject level)
+    void ShowLevelPreview(LevelData level)
     {
         levelPreviewPanel.SetActive(true);
         levelNameText.text = level.levelName;
-        levelDescriptionText.text = level.description; // Assuming your ScriptableObject has a description field
+        //levelDescriptionText.text = level.description; // Assuming your ScriptableObject has a description field
     }
 
     void HideLevelPreview()

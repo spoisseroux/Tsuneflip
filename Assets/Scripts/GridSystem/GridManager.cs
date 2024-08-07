@@ -21,11 +21,6 @@ public class GridManager : MonoBehaviour
     // maybe keep the goal grid in another class? like a level manager or game manager?
     // current grid is just the grid[,] object?
 
-    // sizing variables
-    //private int gridSize; // square grid, one value only
-    //[SerializeField]
-    //private float tileSize; // tiles are constant size
-
     #region Monobehaviour Functions
     private void Awake()
     {
@@ -38,15 +33,15 @@ public class GridManager : MonoBehaviour
     public void InitializeGrid(LevelData goal)
     {
         // create Grid & GoalGrid
-        grid = new GameObject[goal.gridSize, goal.gridSize];
+        grid = new GameObject[goal.rows, goal.columns];
         goalBoard = new Dictionary<Tuple<int, int>, FlipCode>();
-        for (int row = 0; row < goal.gridSize; row++)
+        for (int row = 0; row < goal.rows; row++)
         {
-            for (int col = 0; col < goal.gridSize; col++)
+            for (int col = 0; col < goal.columns; col++)
             {
                 // set GoalBoard data
                 Tuple<int, int> currentIndices = new Tuple<int, int>(row, col);
-                goalBoard[currentIndices] = goal.goalData[(row * goal.gridSize) + col];
+                goalBoard[currentIndices] = goal.goalDataArray.GetValue(row, col);
 
                 // instantiate Tile
                 grid[row, col] = Instantiate(tilePrefab,
@@ -62,12 +57,12 @@ public class GridManager : MonoBehaviour
     // resolve a given position in world space to a Tile in the Grid
     public Tile GetTileFromWorldSpace(Vector3 worldPos)
     {
-        int x = Mathf.FloorToInt(worldPos.x / goal.gridSize);
-        int z = Mathf.FloorToInt(worldPos.z / goal.gridSize);
+        int x = Mathf.FloorToInt(worldPos.x / goal.tileSize);
+        int z = Mathf.FloorToInt(worldPos.z / goal.tileSize);
 
-        x = Mathf.Clamp(x, 0, goal.gridSize);
-        z = Mathf.Clamp(z, 0, goal.gridSize);
+        x = Mathf.Clamp(x, 0, goal.rows - 1);
+        z = Mathf.Clamp(z, 0, goal.columns - 1);
 
-        return grid[x,z].GetComponent<Tile>();
+        return grid[x, z].GetComponent<Tile>();
     }
 }
