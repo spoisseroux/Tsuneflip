@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3f9a73c07d3345898ac5670e6f0be28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goal: {fileID: 11400000, guid: 1f7be9c6e5b544520bcb15b5c9260086, type: 2}
+  goal: {fileID: 11400000, guid: ccc2f87f21e55469980ac3e6fe043a34, type: 2}
   tilePrefab: {fileID: 4418295000102905660, guid: 6c8d5bd72092a4c019cd488f27625328,
     type: 3}
 --- !u!4 &393500094
@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 659074401}
   - component: {fileID: 659074400}
   - component: {fileID: 659074404}
+  - component: {fileID: 659074405}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -290,6 +291,32 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
+--- !u!143 &659074405
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659074399}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &828875212
 GameObject:
   m_ObjectHideFlags: 0
