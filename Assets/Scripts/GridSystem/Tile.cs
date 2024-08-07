@@ -4,8 +4,8 @@ using UnityEngine;
 
 public enum FlipCode
 {
-    Flipped,
     Unflipped,
+    Flipped,
     Empty
 }
 
@@ -15,8 +15,8 @@ public class TileData
     public FlipCode flipState;
 
     public Dictionary<FlipCode, int> enumMap = new Dictionary<FlipCode, int>{
-        {FlipCode.Flipped, 0},
-        {FlipCode.Unflipped, 1},
+        {FlipCode.Unflipped, 0},
+        {FlipCode.Flipped, 1},
         {FlipCode.Empty, 2}
     };
 }
@@ -73,7 +73,7 @@ public class Tile : MonoBehaviour
 
         // do self-contained logic like flipping enum and changing the shader/material
         FlipEnum();
-        render.material = materials[(int)tile.flipState]; // hmmm
+        //render.material = materials[(int)tile.flipState]; // hmmm
 
         // notify observers of flip event (sound system, etc)
         flip?.Invoke();

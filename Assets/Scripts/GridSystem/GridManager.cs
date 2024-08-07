@@ -26,11 +26,12 @@ public class GridManager : MonoBehaviour
     //[SerializeField]
     //private float tileSize; // tiles are constant size
 
-
+    #region Monobehaviour Functions
     private void Awake()
     {
         InitializeGrid(goal);
     }
+    #endregion
 
     // instantiate Grid
     // pass in positioning data
