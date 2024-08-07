@@ -2,13 +2,13 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Enum2DArray
+public class FlipCode2DArray
 {
     public int rows;
     public int columns;
     public FlipCode[] array;
 
-    public Enum2DArray(int rows, int columns)
+    public FlipCode2DArray(int rows, int columns)
     {
         this.rows = rows;
         this.columns = columns;
