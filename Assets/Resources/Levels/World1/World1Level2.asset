@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: World1Level2
   m_EditorClassIdentifier: 
   levelName: Level 2
-  gridSize: 0
-  tileSize: 0
-  goalData: 
+  tileSize: 1
+  rows: 1
+  columns: 1
+  goalDataArray:
+    rows: 1
+    columns: 1
+    array: 00000000
