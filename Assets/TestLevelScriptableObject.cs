@@ -4,5 +4,5 @@ using UnityEngine;
 public class TestLevelScriptableObject : ScriptableObject
 {
     public string levelName;
-    public string sceneName;
+    public string description;
 }

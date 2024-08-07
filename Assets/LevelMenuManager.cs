@@ -2,6 +2,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class LevelMenuManager : MonoBehaviour
 {
@@ -11,8 +12,16 @@ public class LevelMenuManager : MonoBehaviour
     public Button levelButtonPrefab;
     public string levelsRootPath = "Levels";
 
+    // UI elements for level preview
+    public GameObject levelPreviewPanel;
+    public TMP_Text levelNameText;
+    public TMP_Text levelDescriptionText;
+
+    private Button activeWorldButton;
+
     void Start()
     {
+        levelPreviewPanel.SetActive(false);
         LoadWorlds();
     }
 
@@ -20,7 +29,7 @@ public class LevelMenuManager : MonoBehaviour
     {
         string path = Path.Combine(Application.dataPath, "Resources", levelsRootPath);
         Debug.Log("Worlds Path: " + path);
-        
+
         if (!Directory.Exists(path))
         {
             Debug.LogError("Directory does not exist: " + path);
@@ -62,17 +71,27 @@ public class LevelMenuManager : MonoBehaviour
             }
 
             buttonText.text = worldName;
-            worldButton.onClick.AddListener(() => LoadLevels(worldName));
+            worldButton.onClick.AddListener(() => LoadLevels(worldName, worldButton));
         }
     }
 
-    void LoadLevels(string worldName)
+    void LoadLevels(string worldName, Button worldButton)
     {
         // Clear previous level buttons
         foreach (Transform child in levelButtonContainer)
         {
             Destroy(child.gameObject);
         }
+
+        // Reset the color of the previously active world button
+        if (activeWorldButton != null)
+        {
+            SetButtonColor(activeWorldButton, Color.white);
+        }
+
+        // Set the active world button and grey it out
+        activeWorldButton = worldButton;
+        SetButtonColor(activeWorldButton, Color.grey);
 
         string worldPath = Path.Combine(levelsRootPath, worldName);
         Debug.Log("Loading levels from: " + worldPath);
@@ -88,6 +107,17 @@ public class LevelMenuManager : MonoBehaviour
             {
                 buttonText.text = level.levelName;
             }
+
+            // Add event listeners for hover
+            EventTrigger trigger = levelButton.gameObject.AddComponent<EventTrigger>();
+            EventTrigger.Entry pointerEnter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+            pointerEnter.callback.AddListener((eventData) => ShowLevelPreview(level));
+            trigger.triggers.Add(pointerEnter);
+
+            EventTrigger.Entry pointerExit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+            pointerExit.callback.AddListener((eventData) => HideLevelPreview());
+            trigger.triggers.Add(pointerExit);
+
             levelButton.onClick.AddListener(() => LoadLevel(level));
         }
     }
@@ -98,6 +128,28 @@ public class LevelMenuManager : MonoBehaviour
         Debug.Log("Loading level: " + level.levelName);
         // Example: SceneManager.LoadScene(level.sceneName);
     }
-}
 
+    void ShowLevelPreview(TestLevelScriptableObject level)
+    {
+        levelPreviewPanel.SetActive(true);
+        levelNameText.text = level.levelName;
+        levelDescriptionText.text = level.description; // Assuming your ScriptableObject has a description field
+    }
+
+    void HideLevelPreview()
+    {
+        levelPreviewPanel.SetActive(false);
+    }
+
+    void SetButtonColor(Button button, Color color)
+    {
+        ColorBlock colors = button.colors;
+        colors.normalColor = color;
+        colors.highlightedColor = color;
+        colors.pressedColor = color;
+        colors.selectedColor = color;
+        colors.disabledColor = color;
+        button.colors = colors;
+    }
+}
 //TODO: CHANGE TestLevelScriptableObject TO NEW SCRIPTABLE OBJECT NAME, LIKE JUST Level AFTER TESTING
