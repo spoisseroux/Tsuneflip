@@ -15,7 +15,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private GameObject tilePrefab; // for instantiating new Tiles upon level load
 
     // boards
-    private Dictionary<Tuple<int, int>, FlipCode> goalBoard;
+    private FlipCode2DArray goalBoard;
     //private Dictionary<Tuple<int, int>, Tile> currentBoard = new Dictionary<Tuple<int, int>, Tile>();
     // do we need a Grid object to avoid weird monobehavior initializations??? how to deal with level initializations
     // maybe keep the goal grid in another class? like a level manager or game manager?
@@ -32,24 +32,25 @@ public class GridManager : MonoBehaviour
     // pass in positioning data
     public void InitializeGrid(LevelData goal)
     {
-        // create Grid & GoalGrid
+        // create Grid object & create + set GoalGrid object
         grid = new GameObject[goal.rows, goal.columns];
-        goalBoard = new Dictionary<Tuple<int, int>, FlipCode>();
+        goalBoard = goal.goalDataArray;
+
+        // set GoalGrid data
+        //goalBoard = goal.goalDataArray;
+
+        // fill Grid with Tile prefabs
         for (int row = 0; row < goal.rows; row++)
         {
             for (int col = 0; col < goal.columns; col++)
             {
-                // set GoalBoard data
-                Tuple<int, int> currentIndices = new Tuple<int, int>(row, col);
-                goalBoard[currentIndices] = goal.goalDataArray.GetValue(row, col);
-
                 // instantiate Tile
                 grid[row, col] = Instantiate(tilePrefab,
                     new Vector3(row * (goal.tileSize /*+ 0.05f*/), 0, col * (goal.tileSize /*+ 0.05f*/)),
                     Quaternion.identity);
 
                 // set Tile data
-                grid[row, col].GetComponent<Tile>().InitializeTile(goalBoard[currentIndices]);
+                grid[row, col].GetComponent<Tile>().InitializeTile(goalBoard.GetValue(row, col));
             }
         }
     }

@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(Enum2DArray))]
+[CustomPropertyDrawer(typeof(FlipCode2DArray))]
 public class Enum2DArrayEditor : PropertyDrawer
 {
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
