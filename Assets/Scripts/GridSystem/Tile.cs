@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,30 +23,40 @@ public class TileData
     };
 }
 
-// could we use Unity TileMap here?
-//[RequireComponent(typeof(MeshRenderer))]
 public class Tile : MonoBehaviour
 {
-    // positioning and location variables, should logic be split between physical GameObject info and backend Tile data?
-
-    // Tile data
+    private RotateTile rotateTileScript;
     [SerializeField]
     private TileData tile;
+    //[SerializeField] MeshRenderer render;
+    //[SerializeField] List<Material> materials; // size of 3, 0 -> flipped texture 1 -> unflipped texture 2 -> empty texture
 
-    // [SerializeField] BoxCollider tileBox; may not even need this if coordinate resolution system in GridManager is good enough
-
-    // rendering code
-    [SerializeField] MeshRenderer render;
-    [SerializeField] List<Material> materials; // size of 3, 0 -> flipped texture 1 -> unflipped texture 2 -> empty texture
-    // do we need another material for the transition shaders?
-
-    // flipping event handler
     private delegate void OnFlip();
     private event OnFlip flip;
 
     public void Awake()
     {
         tile = new TileData();
+        rotateTileScript = GetComponent<RotateTile>();
+        if (rotateTileScript == null)
+        {
+            Debug.LogError("RotateTile script not found!");
+        }
+    }
+
+
+    public void Update()
+    {
+        //TODO: Remove debug testing
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            FlipTile();   
+        }
+    }
+
+    // CALL THIS WHEN U WANNA FLIP TILE
+    public void FlipTile(){
+        StartCoroutine(FlipTriggered());
     }
 
     public void OnTriggerEnter(Collider other)
@@ -64,22 +75,37 @@ public class Tile : MonoBehaviour
         {
             tile.flipState = FlipCode.Unflipped;
         }
+        Debug.Log("Initialized Tile Flip State: " + tile.flipState);
     }
 
-    public void FlipTriggered()
+
+    private IEnumerator FlipTriggered()
     {
         // for safety's sake
         if (tile.flipState == FlipCode.Empty)
-            return;
+        {
+            yield break;
+        }
 
-        // do self-contained logic like flipping enum and changing the shader/material
-        FlipEnum();
-        //render.material = materials[(int)tile.flipState]; // hmmm
+        // rotate tile if not already rotating
+        if (!rotateTileScript.IsRotating)
+        {
+            Debug.Log("Starting Rotation...");
+            yield return StartCoroutine(rotateTileScript.Rotate());
 
-        // notify observers of flip event (sound system, etc)
-        flip?.Invoke();
+            // once rotation is complete, execute FlipEnum and invoke flip event
+            FlipEnum();
+            Debug.Log("Flip State after rotation: " + tile.flipState);
+            //render.material = materials[(int)tile.flipState];
+            flip?.Invoke();
+        }
+        else
+        {
+            Debug.Log("Tile is already rotating.");
+        }
     }
 
+    //TODO: Not entering enum???
     private void FlipEnum()
     {
         switch (tile.flipState)
@@ -95,6 +121,6 @@ public class Tile : MonoBehaviour
                 tile.flipState = FlipCode.Flipped;
                 break;
         }
-        return;
+        Debug.Log("New Flip State: " + tile.flipState);
     }
 }
