@@ -1,9 +1,9 @@
 using System.Collections;
-using System.IO;
+using System.Collections.Generic;
+using System.IO; 
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems;
 
 public class LevelMenuManager : MonoBehaviour
 {
@@ -15,9 +15,8 @@ public class LevelMenuManager : MonoBehaviour
     public Button worldDownButton;
     public Button levelUpButton;
     public Button levelDownButton;
-    public string levelsRootPath = "Levels";
+    public string levelAssetsRootPath = "LevelAssets";
 
-    // UI elements for level preview
     public TransitionHandler transitioner;
     public GameObject levelPreviewPanel;
     public TMP_Text levelNameText;
@@ -31,11 +30,17 @@ public class LevelMenuManager : MonoBehaviour
     private Button activeWorldButton;
     private bool isAnimating = false;
 
+    private List<WorldData> worlds;
+
     void Start()
     {
         levelPreviewPanel.SetActive(false);
         LoadWorlds();
+        SetupButtonListeners();
+    }
 
+    void SetupButtonListeners()
+    {
         worldUpButton.onClick.AddListener(() => ScrollWorlds(1));  // Inverted direction
         worldDownButton.onClick.AddListener(() => ScrollWorlds(-1));  // Inverted direction
         levelUpButton.onClick.AddListener(() => ScrollLevels(1));  // Inverted direction
@@ -44,27 +49,22 @@ public class LevelMenuManager : MonoBehaviour
 
     void LoadWorlds()
     {
-        string path = Path.Combine(Application.dataPath, "Resources", levelsRootPath);
-        Debug.Log("Worlds Path: " + path);
+        worlds = new List<WorldData>(Resources.LoadAll<WorldData>(levelAssetsRootPath));
 
-        if (!Directory.Exists(path))
+        if (worlds == null || worlds.Count == 0)
         {
-            Debug.LogError("Directory does not exist: " + path);
+            Debug.LogError("No worlds found in Resources/LevelAssets");
             return;
         }
 
-        string[] worldDirectories = Directory.GetDirectories(path);
-        Debug.Log("Found " + worldDirectories.Length + " world directories.");
-
-        foreach (string worldDir in worldDirectories)
+        foreach (WorldData worldData in worlds)
         {
-            string worldName = Path.GetFileName(worldDir);
-            Debug.Log("Found world: " + worldName);
+            Debug.Log("Found world: " + worldData.worldName);
 
             Button worldButton = Instantiate(worldButtonPrefab, worldButtonContainer);
             TMP_Text buttonText = worldButton.GetComponentInChildren<TMP_Text>();
-            buttonText.text = worldName;
-            worldButton.onClick.AddListener(() => LoadLevels(worldName, worldButton));
+            buttonText.text = worldData.worldName;
+            worldButton.onClick.AddListener(() => LoadLevels(worldData, worldButton));
         }
 
         UpdateWorldButtonPositions();
@@ -72,12 +72,12 @@ public class LevelMenuManager : MonoBehaviour
         // Automatically load levels of the first world
         if (worldButtonContainer.childCount > 0)
         {
-            string firstWorldName = worldButtonContainer.GetChild(0).GetComponentInChildren<TMP_Text>().text;
-            LoadLevels(firstWorldName, worldButtonContainer.GetChild(0).GetComponent<Button>());
+            WorldData firstWorldData = worlds[0];
+            LoadLevels(firstWorldData, worldButtonContainer.GetChild(0).GetComponent<Button>());
         }
     }
 
-    void LoadLevels(string worldName, Button worldButton = null)
+    void LoadLevels(WorldData worldData, Button worldButton = null)
     {
         foreach (Transform child in levelButtonContainer)
         {
@@ -94,11 +94,11 @@ public class LevelMenuManager : MonoBehaviour
             activeWorldButton = worldButton;
         }
 
-        string worldPath = Path.Combine(levelsRootPath, worldName);
+        string worldPath = Path.Combine(levelAssetsRootPath, worldData.worldFolderName);
         Debug.Log("Loading levels from: " + worldPath);
 
         LevelData[] levels = Resources.LoadAll<LevelData>(worldPath);
-        Debug.Log("Found " + levels.Length + " levels in world: " + worldName);
+        Debug.Log("Found " + levels.Length + " levels in world: " + worldData.worldName);
 
         foreach (LevelData level in levels)
         {
@@ -107,18 +107,11 @@ public class LevelMenuManager : MonoBehaviour
             buttonText.text = level.levelName;
 
             // Store LevelData in the button itself
-            levelButton.gameObject.AddComponent<LevelDataHolder>().levelData = level;
+            LevelDataHolder dataHolder = levelButton.gameObject.AddComponent<LevelDataHolder>();
+            dataHolder.levelData = level;
 
-            //EventTrigger trigger = levelButton.gameObject.AddComponent<EventTrigger>();
-            //EventTrigger.Entry pointerEnter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
-            //pointerEnter.callback.AddListener((eventData) => ShowLevelPreview(level));
-            //trigger.triggers.Add(pointerEnter);
-
-            //EventTrigger.Entry pointerExit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
-            //pointerExit.callback.AddListener((eventData) => HideLevelPreview());
-            //trigger.triggers.Add(pointerExit);
-
-            //levelButton.onClick.AddListener(() => LoadLevel(level));
+            // Optional: Add event listeners for preview and loading level
+            levelButton.onClick.AddListener(() => LoadLevel(level));
         }
 
         currentLevelIndex = 0;
@@ -182,8 +175,8 @@ public class LevelMenuManager : MonoBehaviour
             UpdateWorldButtonPositions();
 
             // Load levels for the new current world
-            string currentWorldName = worldButtonContainer.GetChild(currentWorldIndex).GetComponentInChildren<TMP_Text>().text;
-            LoadLevels(currentWorldName, worldButtonContainer.GetChild(currentWorldIndex).GetComponent<Button>());
+            WorldData currentWorldData = worlds[currentWorldIndex];
+            LoadLevels(currentWorldData, worldButtonContainer.GetChild(currentWorldIndex).GetComponent<Button>());
 
             // Show preview of the first level of the new world with a delay
             if (levelButtonContainer.childCount > 0)
@@ -262,7 +255,6 @@ public class LevelMenuManager : MonoBehaviour
             int distanceFromCenter = Mathf.Abs(i - currentWorldIndex);
             float opacity = Mathf.Lerp(1, baseOpacity, (float)distanceFromCenter / maxDistance);
             SetButtonOpacity(child.GetComponent<Button>(), opacity);
-
             Vector3 targetPosition = GetCarouselPosition(i - currentWorldIndex, worldButtonContainer.childCount, 40f); // Adjust spacing to 40f
             child.localPosition = targetPosition;
         }
@@ -283,8 +275,6 @@ public class LevelMenuManager : MonoBehaviour
             Vector3 targetPosition = GetCarouselPosition(i - currentLevelIndex, levelButtonContainer.childCount, 40f); // Adjust spacing to 40f
             child.localPosition = targetPosition;
         }
-
-        //Debug.Log("Updated level button positions.");
     }
 
     Vector3 GetCarouselPosition(int index, int count, float spacing)
@@ -297,7 +287,6 @@ public class LevelMenuManager : MonoBehaviour
         StartCoroutine(LoadLevelCoroutine(level));
     }
 
-    //TODO: PUT ALL LEVEL START THINGS HERE
     private IEnumerator LoadLevelCoroutine(LevelData level)
     {
         yield return transitioner.ExitTransition();
@@ -355,7 +344,6 @@ public class LevelMenuManager : MonoBehaviour
         canvasGroup.alpha = opacity;
     }
 
-    // Helper class to hold LevelData
     private class LevelDataHolder : MonoBehaviour
     {
         public LevelData levelData;
