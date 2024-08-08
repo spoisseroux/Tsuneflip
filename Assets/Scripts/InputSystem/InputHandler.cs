@@ -5,13 +5,10 @@ using UnityEngine.InputSystem;
 
 public struct EntityInput
 {
-    public bool moving;
-    public Vector3 moveDirection;
-    public Vector3 smoothMoveDirection;
-    public Quaternion facingDirection;
-
-    public Vector2 planeMovement; // { x --> player X, y --> player Z }, grid-aligned movement
-    public bool jumping; // y input, jumping
+    public Vector2 planeMove; // { x --> player X, y --> player Z }, grid-aligned movement
+    public float normalizedX, normalizedZ;
+    public bool jumpMove; // y input, jumping
+    // ability press here
 }
 
 public struct MenuInput
@@ -27,7 +24,7 @@ public abstract class InputHandler : MonoBehaviour
     
 }
 
-
+/*
 public class MenuInputHandler : InputHandler
 {
     protected MenuInput currentInput;
@@ -47,26 +44,14 @@ public class MenuInputHandler : InputHandler
 
     }
 }
+*/
 
 public abstract class EntityInputHandler : InputHandler
 {
-    protected EntityInput currentInput;
+    // input data
+    public EntityInput currentInput;
 
-    // public abstract void Move()
-    // public abstract void Jump()
-    // public abstract void ApplyGravity() maybe better in an Entity object
-}
-
-//[RequireComponent(typeof(PlayerMovement))]
-public class PlayerInputHandler : EntityInputHandler
-{
-    public void OnMoveInput(InputAction.CallbackContext context)
-    {
-        // set some info
-    }
-
-    public void OnJumpInput(InputAction.CallbackContext context)
-    {
-        // set some info
-    }
+    // input system functions
+    public abstract void OnMoveInput(InputAction.CallbackContext context);
+    public abstract void OnJumpInput(InputAction.CallbackContext context);
 }

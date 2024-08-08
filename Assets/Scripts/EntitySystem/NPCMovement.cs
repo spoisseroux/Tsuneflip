@@ -12,13 +12,18 @@ public class NPCMovement : EntityMovement
         Debug.Log("NPC will jump");
     }
 
-    public override void Move(Vector3 move)
+    public override void Move(Vector2 move)
     {
-        Debug.Log("NPC will move in this" + move + " direction");
+        Debug.Log("NPC will move in this " + move + " direction");
     }
 
     protected override void ApplyGravity()
     {
         // apply gravity
+    }
+
+    public override bool GroundedCheck()
+    {
+        throw new System.NotImplementedException();
     }
 }

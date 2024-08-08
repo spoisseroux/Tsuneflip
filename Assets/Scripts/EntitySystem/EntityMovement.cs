@@ -5,7 +5,7 @@ using UnityEngine;
 // All possible commands for a given Entity
 public interface IMove
 {
-    void Move(Vector3 move);
+    void Move(Vector2 move);
 }
 
 public interface IJump
@@ -17,14 +17,19 @@ public abstract class EntityMovement : MonoBehaviour, IMove, IJump
 {
     // abstract movement functions
     public abstract void Jump();
-    public abstract void Move(Vector3 move);
+    public abstract void Move(Vector2 move);
     protected abstract void ApplyGravity();
 
     // for ground collisions
-    public LayerMask groundLayer;
+    [SerializeField] public LayerMask groundLayer;
+    [SerializeField] public bool grounded;
+    public abstract bool GroundedCheck();
+
+    // rotation
+    [SerializeField] public Quaternion facingDir;
 
     // movement constants
-    protected EntityMovementConstants constants;
+    [SerializeField] protected EntityMovementConstants constants;
 
     // entity state machine
     // protected EntityStateMachine stateMachine;
