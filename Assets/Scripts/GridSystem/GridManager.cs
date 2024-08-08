@@ -14,19 +14,35 @@ public class GridManager : MonoBehaviour
     // Tile creator
     [SerializeField] private GameObject tilePrefab; // for instantiating new Tiles upon level load
 
-    // boards
+    // board for reference
     private FlipCode2DArray goalBoard;
     //private Dictionary<Tuple<int, int>, Tile> currentBoard = new Dictionary<Tuple<int, int>, Tile>();
     // do we need a Grid object to avoid weird monobehavior initializations??? how to deal with level initializations
     // maybe keep the goal grid in another class? like a level manager or game manager?
     // current grid is just the grid[,] object?
 
+    // PlayerMovement Object for reference
+    [SerializeField] PlayerMovement player;
+
     #region Monobehaviour Functions
     private void Awake()
     {
         InitializeGrid(goal);
+        player.JumpEvent += RequestTileFlip;
     }
     #endregion
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        for (int i = 0; i < goal.rows; i++)
+        {
+            for (int j = 0; j < goal.columns; j++)
+            {
+                Gizmos.DrawSphere(new Vector3(i, 1, j), 0.05f);
+            }
+        }
+    }
 
     // instantiate Grid
     // pass in positioning data
@@ -44,9 +60,9 @@ public class GridManager : MonoBehaviour
         {
             for (int col = 0; col < goal.columns; col++)
             {
-                // instantiate Tile
+                // instantiate Tile, add offset to make position mapping work properly
                 grid[row, col] = Instantiate(tilePrefab,
-                    new Vector3(row * (goal.tileSize /*+ 0.05f*/), 0, col * (goal.tileSize /*+ 0.05f*/)),
+                    new Vector3(row * goal.tileSize, 0, col * goal.tileSize) + new Vector3(goal.tileSize * 0.5f, 0f, goal.tileSize * 0.5f),
                     Quaternion.identity);
 
                 // set Tile data
@@ -55,15 +71,34 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    // resolve a given position in world space to a Tile in the Grid
-    public Tile GetTileFromWorldSpace(Vector3 worldPos)
+    // pushing a flip down to a given Tile in our grid
+    public void RequestTileFlip(Vector3 position)
     {
+        Tile tileToFlip = GetTileFromWorldSpace(position);
+        tileToFlip.FlipTile();
+    }
+
+
+    // TODO:
+    // 1) A method to check current grid against the goal grid
+    // 2) A method of determing WHEN to do checks
+    // 3) A way of communicating when a level has been finished
+    //      - possible error situation when player flips the last needed tile but dies right after jumping 
+    //      - in this case we need a way to interrupt the tile flip OR the board check and proceed to Death sequence
+    // 4) Either a barrier around empty tiles and side of level OR a fall zone & respawn zone
+
+
+    // resolve a given position in world space to a Tile in the Grid, helper function for determining where on Grid events should happen
+    private Tile GetTileFromWorldSpace(Vector3 worldPos)
+    {
+        Debug.Log(worldPos);
         int x = Mathf.FloorToInt(worldPos.x / goal.tileSize);
         int z = Mathf.FloorToInt(worldPos.z / goal.tileSize);
 
         x = Mathf.Clamp(x, 0, goal.rows - 1);
         z = Mathf.Clamp(z, 0, goal.columns - 1);
 
+        Debug.Log(x + " " + z);
         return grid[x, z].GetComponent<Tile>();
     }
 }

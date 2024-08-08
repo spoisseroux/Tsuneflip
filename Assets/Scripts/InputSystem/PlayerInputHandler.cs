@@ -16,14 +16,12 @@ public class PlayerInputHandler : EntityInputHandler
     public override void OnMoveInput(InputAction.CallbackContext context)
     {
         // read in planar movement information
-        Debug.Log("Move input");
         currentInput.planeMove = context.ReadValue<Vector2>().normalized;
     }
 
     public override void OnJumpInput(InputAction.CallbackContext context)
     {
-        // set some info
-        Debug.Log("jump input " + context.performed);
+        // set jump info
         currentInput.jumpMove = context.performed; 
     }
 }

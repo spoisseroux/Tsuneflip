@@ -60,8 +60,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile:
     flipState: 0
-  render: {fileID: 0}
-  materials: []
 --- !u!1 &4748471228177660113
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,7 +71,7 @@ GameObject:
   - component: {fileID: 682806762351859257}
   - component: {fileID: 1591832005577049957}
   - component: {fileID: 3869613311220870684}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TileCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +134,7 @@ GameObject:
   - component: {fileID: 2569572438842240867}
   - component: {fileID: 6965406079408626110}
   - component: {fileID: 2564686744020402791}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TileMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -44,16 +44,6 @@ public class Tile : MonoBehaviour
         }
     }
 
-
-    public void Update()
-    {
-        //TODO: Remove debug testing
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            FlipTile();   
-        }
-    }
-
     // CALL THIS WHEN U WANNA FLIP TILE
     public void FlipTile(){
         StartCoroutine(FlipTriggered());

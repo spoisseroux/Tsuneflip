@@ -19,6 +19,12 @@ public class PlayerMovement : EntityMovement
 
     [SerializeField] private BoxCollider footCollider; // for grounded check & enemy head collider check
 
+    private RaycastHit raycast; // for highlighting a tile
+
+    public delegate void OnJump(Vector3 playerWorldPosition);
+    public event OnJump JumpEvent;
+
+
     // raycast below for things
 
     #region Monobehaviour Functions
@@ -59,13 +65,14 @@ public class PlayerMovement : EntityMovement
         if (playerInput.currentInput.jumpMove && grounded)
         {
             movementUpVector = Vector3.up * constants.jumpSpeed;
+            JumpEvent?.Invoke(transform.position);
         }
     }
 
     // SOMETHING WRONG HERE... NEED TO FIGURE OUT WHETHER FINAL VECTOR IS IN WORLD OR LOCAL BEFORE CALLING CharacterController.Move()
     public override void Move(Vector2 move)
     {
-        // create movement basis vectors from camera's coordinate space
+        // create movement basis vectors in world space from camera's perspective
         Vector3 cameraRight = thirdPersonCamera.transform.right;
         Vector3 cameraForward = thirdPersonCamera.transform.forward;
         // eliminate y components & re-normalize
@@ -77,26 +84,6 @@ public class PlayerMovement : EntityMovement
         movementRightVector = move.x * constants.moveSpeed * cameraRight;
         movementForwardVector = move.y * constants.moveSpeed * cameraForward;
     }
-
-    /*
-    private Vector3 ConvertToCameraSpace(Vector3 vectorToRotate)
-    {
-        Vector3 cameraRight = thirdPersonCamera.transform.right;//Camera.main.transform.right;
-        Vector3 cameraForward = thirdPersonCamera.transform.forward;
-
-        cameraRight.y = 0;
-        cameraForward.y = 0;
-
-        cameraRight = cameraRight.normalized;
-        cameraForward = cameraForward.normalized;
-
-        // rotate to camera space
-        Vector3 cameraForwardX = vectorToRotate.x * cameraRight;
-        Vector3 cameraForwardZ = vectorToRotate.z * cameraForward;
-
-        return cameraForwardX + cameraForwardZ;
-    }
-    */
 
     protected override void ApplyGravity()
     {
