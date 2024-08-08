@@ -18,6 +18,7 @@ public class LevelMenuManager : MonoBehaviour
     public string levelsRootPath = "Levels";
 
     // UI elements for level preview
+    public TransitionHandler transitioner;
     public GameObject levelPreviewPanel;
     public TMP_Text levelNameText;
     public TMP_Text levelDescriptionText;
@@ -293,6 +294,13 @@ public class LevelMenuManager : MonoBehaviour
 
     public void LoadLevel(LevelData level)
     {
+        StartCoroutine(LoadLevelCoroutine(level));
+    }
+
+    //TODO: PUT ALL LEVEL START THINGS HERE
+    private IEnumerator LoadLevelCoroutine(LevelData level)
+    {
+        yield return transitioner.ExitTransition();
         Debug.Log("Loading level: " + level.levelName);
         // Example: SceneManager.LoadScene(level.sceneName);
     }
