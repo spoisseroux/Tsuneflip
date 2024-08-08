@@ -223,7 +223,7 @@ public class LevelMenuManager : MonoBehaviour
             endPositions[i] = GetCarouselPosition(i - targetIndex, itemCount, 40f);
         }
 
-        float animationDuration = 0.75f;
+        float animationDuration = 0.18f;
         float elapsedTime = 0;
 
         while (elapsedTime < animationDuration)
@@ -246,8 +246,8 @@ public class LevelMenuManager : MonoBehaviour
 
     void UpdateWorldButtonPositions()
     {
-        float baseOpacity = 0.2f; // Minimum opacity for buttons farthest from the center
-        float maxDistance = 5; // The maximum distance from the center button
+        float baseOpacity = 0.05f; // Minimum opacity for buttons farthest from the center
+        float maxDistance = 3; // The maximum distance from the center button
 
         for (int i = 0; i < worldButtonContainer.childCount; i++)
         {
@@ -262,8 +262,8 @@ public class LevelMenuManager : MonoBehaviour
 
     void UpdateLevelButtonPositions()
     {
-        float baseOpacity = 0.2f; // Minimum opacity for buttons farthest from the center
-        float maxDistance = 5; // The maximum distance from the center button
+        float baseOpacity = 0.05f; // Minimum opacity for buttons farthest from the center
+        float maxDistance = 3; // The maximum distance from the center button
 
         for (int i = 0; i < levelButtonContainer.childCount; i++)
         {
