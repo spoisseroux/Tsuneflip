@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2640dff0a93ba426a89abd5ea9747e8c, type: 3}
   m_Name: World3Level3
   m_EditorClassIdentifier: 
-  levelName: Level 3
-  gridSize: 0
-  tileSize: 0
-  goalData: 
+  levelName: Banana
+  tileSize: 1
+  rows: 4
+  columns: 4
+  goalDataArray:
+    rows: 4
+    columns: 4
+    array: 00000000000000000000000000000000000000000200000002000000000000000000000002000000020000000000000000000000000000000000000000000000

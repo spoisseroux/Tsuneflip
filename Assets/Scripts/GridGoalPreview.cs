@@ -9,7 +9,9 @@ public class GridGoalPreview : MonoBehaviour
 
     // level data
     [SerializeField]
-    private LevelData goal;
+    public LevelData goal;
+
+    public GridPreviewCamera previewCam;
 
     // Tile creator
     [SerializeField] private GameObject tilePrefab; // for instantiating new Tiles upon level load
@@ -26,6 +28,8 @@ public class GridGoalPreview : MonoBehaviour
 
     public void InitializeGridPreview(LevelData goal)
     {
+        DestroyGrid();
+        previewCam.SetCameraPosition();
         // Create Grid object & create + set GoalGrid object
         grid = new GameObject[goal.rows, goal.columns];
         goalBoard = goal.goalDataArray;
@@ -71,6 +75,24 @@ public class GridGoalPreview : MonoBehaviour
 
                 // Add the Tile to the grid
                 grid[row, col] = tile;
+            }
+        }
+    }
+
+        // Destroy the current grid of tiles
+    public void DestroyGrid()
+    {
+        if (grid != null)
+        {
+            for (int row = 0; row < grid.GetLength(0); row++)
+            {
+                for (int col = 0; col < grid.GetLength(1); col++)
+                {
+                    if (grid[row, col] != null)
+                    {
+                        Destroy(grid[row, col]);
+                    }
+                }
             }
         }
     }

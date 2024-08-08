@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2640dff0a93ba426a89abd5ea9747e8c, type: 3}
   m_Name: World1Level2
   m_EditorClassIdentifier: 
-  levelName: Level 2
+  levelName: Heart
   tileSize: 1
-  rows: 1
-  columns: 1
+  rows: 2
+  columns: 2
   goalDataArray:
-    rows: 1
-    columns: 1
-    array: 00000000
+    rows: 2
+    columns: 2
+    array: 01000000000000000000000001000000

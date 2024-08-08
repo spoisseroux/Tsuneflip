@@ -30,7 +30,7 @@ public class GridPreviewCamera : MonoBehaviour
         }
     }
 
-    void SetCameraPosition()
+    public void SetCameraPosition()
     {
         if (levelData == null)
         {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2640dff0a93ba426a89abd5ea9747e8c, type: 3}
   m_Name: World1Level1
   m_EditorClassIdentifier: 
-  levelName: Level 1
+  levelName: Arrow
   tileSize: 1
   rows: 5
   columns: 5
