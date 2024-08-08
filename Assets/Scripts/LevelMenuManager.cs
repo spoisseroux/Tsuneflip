@@ -21,6 +21,7 @@ public class LevelMenuManager : MonoBehaviour
     public GameObject levelPreviewPanel;
     public TMP_Text levelNameText;
     public TMP_Text levelDescriptionText;
+    public Button startButton;
 
     public GridGoalPreview gridPreview;
     public GridPreviewCamera gridPreviewCam;
@@ -107,16 +108,16 @@ public class LevelMenuManager : MonoBehaviour
             // Store LevelData in the button itself
             levelButton.gameObject.AddComponent<LevelDataHolder>().levelData = level;
 
-            EventTrigger trigger = levelButton.gameObject.AddComponent<EventTrigger>();
-            EventTrigger.Entry pointerEnter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
-            pointerEnter.callback.AddListener((eventData) => ShowLevelPreview(level));
-            trigger.triggers.Add(pointerEnter);
+            //EventTrigger trigger = levelButton.gameObject.AddComponent<EventTrigger>();
+            //EventTrigger.Entry pointerEnter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+            //pointerEnter.callback.AddListener((eventData) => ShowLevelPreview(level));
+            //trigger.triggers.Add(pointerEnter);
 
-            EventTrigger.Entry pointerExit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
-            pointerExit.callback.AddListener((eventData) => HideLevelPreview());
-            trigger.triggers.Add(pointerExit);
+            //EventTrigger.Entry pointerExit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+            //pointerExit.callback.AddListener((eventData) => HideLevelPreview());
+            //trigger.triggers.Add(pointerExit);
 
-            levelButton.onClick.AddListener(() => LoadLevel(level));
+            //levelButton.onClick.AddListener(() => LoadLevel(level));
         }
 
         currentLevelIndex = 0;
@@ -290,7 +291,7 @@ public class LevelMenuManager : MonoBehaviour
         return new Vector3(0, -index * spacing, 0);
     }
 
-    void LoadLevel(LevelData level)
+    public void LoadLevel(LevelData level)
     {
         Debug.Log("Loading level: " + level.levelName);
         // Example: SceneManager.LoadScene(level.sceneName);
@@ -302,11 +303,10 @@ public class LevelMenuManager : MonoBehaviour
         levelNameText.text = level.levelName;
         gridPreviewCam.levelData = level;
         gridPreview.goal = level;
+        startButton.onClick.RemoveAllListeners();
+        startButton.onClick.AddListener(() => LoadLevel(level));
 
         gridPreview.InitializeGridPreview(level);
-
-
-        // levelDescriptionText.text = level.description; // Assuming your ScriptableObject has a description field
     }
 
     void HideLevelPreview()
