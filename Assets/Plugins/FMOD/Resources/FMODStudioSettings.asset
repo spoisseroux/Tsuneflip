@@ -316,7 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   switchSettingsMigration: 1
   HasSourceProject: 0
-  HasPlatforms: 0
+  HasPlatforms: 1
   sourceProjectPath: 
   sourceBankPath: Assets/StreamingAssets
   sourceBankPathUnformatted: 
@@ -328,7 +328,7 @@ MonoBehaviour:
   EncryptionKey: 
   ImportType: 0
   TargetAssetPath: FMODBanks
-  TargetBankFolder: Desktop
+  TargetBankFolder: 
   EventLinkage: 0
   LoggingLevel: 2
   SpeakerModeSettings: []
@@ -466,7 +466,7 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     Overlay:
-      Value: 1
+      Value: 0
       HasValue: 1
     OverlayPosition:
       Value: 0
