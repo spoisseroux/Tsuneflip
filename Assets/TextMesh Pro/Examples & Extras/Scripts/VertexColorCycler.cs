@@ -9,6 +9,8 @@ namespace TMPro.Examples
     {
 
         private TMP_Text m_TextComponent;
+        public Color32 defaultColor = new Color32(0, 0, 255, 255);  // Blue
+        public Color32 waveColor = new Color32(173, 216, 230, 255); // Light Blue
 
         void Awake()
         {
@@ -27,58 +29,59 @@ namespace TMPro.Examples
         /// </summary>
         /// <returns></returns>
         IEnumerator AnimateVertexColors()
-        {
-            // Force the text object to update right away so we can have geometry to modify right from the start.
-            m_TextComponent.ForceMeshUpdate();
-
-            TMP_TextInfo textInfo = m_TextComponent.textInfo;
-            int currentCharacter = 0;
-
-            Color32[] newVertexColors;
-            Color32 c0 = m_TextComponent.color;
-
-            while (true)
             {
-                int characterCount = textInfo.characterCount;
+                m_TextComponent.ForceMeshUpdate();
 
-                // If No Characters then just yield and wait for some text to be added
-                if (characterCount == 0)
+                TMP_TextInfo textInfo = m_TextComponent.textInfo;
+                Color32[] newVertexColors;
+
+                while (true)
                 {
-                    yield return new WaitForSeconds(0.25f);
-                    continue;
+                    int characterCount = textInfo.characterCount;
+
+                    if (characterCount == 0)
+                    {
+                        yield return new WaitForSeconds(0.25f);
+                        continue;
+                    }
+
+                    float waveDuration = 0.3f;
+                    float interval = waveDuration / characterCount;
+
+                    for (int currentCharacter = 0; currentCharacter < characterCount; currentCharacter++)
+                    {
+                        int materialIndex = textInfo.characterInfo[currentCharacter].materialReferenceIndex;
+                        newVertexColors = textInfo.meshInfo[materialIndex].colors32;
+                        int vertexIndex = textInfo.characterInfo[currentCharacter].vertexIndex;
+
+                        if (textInfo.characterInfo[currentCharacter].isVisible)
+                        {
+                            // Set the wave color for the current character
+                            newVertexColors[vertexIndex + 0] = waveColor;
+                            newVertexColors[vertexIndex + 1] = waveColor;
+                            newVertexColors[vertexIndex + 2] = waveColor;
+                            newVertexColors[vertexIndex + 3] = waveColor;
+
+                            // Update the vertex colors
+                            m_TextComponent.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+                        }
+
+                        yield return new WaitForSeconds(interval);
+
+                        // Set the default color for the current character
+                        newVertexColors[vertexIndex + 0] = defaultColor;
+                        newVertexColors[vertexIndex + 1] = defaultColor;
+                        newVertexColors[vertexIndex + 2] = defaultColor;
+                        newVertexColors[vertexIndex + 3] = defaultColor;
+
+                        // Update the vertex colors again
+                        m_TextComponent.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+                    }
+
+                    // Wait for 4 seconds before starting the next wave
+                    yield return new WaitForSeconds(9f);
                 }
-
-                // Get the index of the material used by the current character.
-                int materialIndex = textInfo.characterInfo[currentCharacter].materialReferenceIndex;
-
-                // Get the vertex colors of the mesh used by this text element (character or sprite).
-                newVertexColors = textInfo.meshInfo[materialIndex].colors32;
-
-                // Get the index of the first vertex used by this text element.
-                int vertexIndex = textInfo.characterInfo[currentCharacter].vertexIndex;
-
-                // Only change the vertex color if the text element is visible.
-                if (textInfo.characterInfo[currentCharacter].isVisible)
-                {
-                    c0 = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
-
-                    newVertexColors[vertexIndex + 0] = c0;
-                    newVertexColors[vertexIndex + 1] = c0;
-                    newVertexColors[vertexIndex + 2] = c0;
-                    newVertexColors[vertexIndex + 3] = c0;
-
-                    // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
-                    m_TextComponent.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-
-                    // This last process could be done to only update the vertex data that has changed as opposed to all of the vertex data but it would require extra steps and knowing what type of renderer is used.
-                    // These extra steps would be a performance optimization but it is unlikely that such optimization will be necessary.
-                }
-
-                currentCharacter = (currentCharacter + 1) % characterCount;
-
-                yield return new WaitForSeconds(0.05f);
             }
-        }
 
     }
 }
