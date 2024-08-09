@@ -65,7 +65,7 @@ public class Tile : MonoBehaviour
         {
             tile.flipState = FlipCode.Unflipped;
         }
-        Debug.Log("Initialized Tile Flip State: " + tile.flipState);
+        //Debug.Log("Initialized Tile Flip State: " + tile.flipState);
     }
 
 
