@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO; 
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -32,6 +32,9 @@ public class LevelMenuManager : MonoBehaviour
 
     private List<WorldData> worlds;
 
+    // Reference to the UI Cubemap material
+    public Material uiCubemapMat;
+
     void Start()
     {
         levelPreviewPanel.SetActive(false);
@@ -41,10 +44,10 @@ public class LevelMenuManager : MonoBehaviour
 
     void SetupButtonListeners()
     {
-        worldUpButton.onClick.AddListener(() => ScrollWorlds(1));  // Inverted direction
-        worldDownButton.onClick.AddListener(() => ScrollWorlds(-1));  // Inverted direction
-        levelUpButton.onClick.AddListener(() => ScrollLevels(1));  // Inverted direction
-        levelDownButton.onClick.AddListener(() => ScrollLevels(-1));  // Inverted direction
+        worldUpButton.onClick.AddListener(() => ScrollWorlds(1));
+        worldDownButton.onClick.AddListener(() => ScrollWorlds(-1));
+        levelUpButton.onClick.AddListener(() => ScrollLevels(1));
+        levelDownButton.onClick.AddListener(() => ScrollLevels(-1));
     }
 
     void LoadWorlds()
@@ -77,6 +80,18 @@ public class LevelMenuManager : MonoBehaviour
         }
     }
 
+    void UpdateLevelPreviewAfterLoad()
+    {
+        if (levelButtonContainer.childCount > 0)
+        {
+            LevelDataHolder levelDataHolder = levelButtonContainer.GetChild(0).GetComponent<LevelDataHolder>();
+            if (levelDataHolder != null)
+            {
+                ShowLevelPreview(levelDataHolder.levelData);
+            }
+        }
+    }
+
     void LoadLevels(WorldData worldData, Button worldButton = null)
     {
         foreach (Transform child in levelButtonContainer)
@@ -99,6 +114,10 @@ public class LevelMenuManager : MonoBehaviour
 
         LevelData[] levels = Resources.LoadAll<LevelData>(worldPath);
         Debug.Log("Found " + levels.Length + " levels in world: " + worldData.worldName);
+
+        // Trigger the cubemap transition
+        StartCubemapTransition(worldData.worldCubemap);
+        //HERE
 
         foreach (LevelData level in levels)
         {
@@ -136,9 +155,34 @@ public class LevelMenuManager : MonoBehaviour
         }
     }
 
-    void UpdateLevelPreviewAfterLoad()
+    void StartCubemapTransition(Cubemap newCubemap)
     {
-        ShowLevelPreview(levelButtonContainer.GetChild(0).GetComponent<LevelDataHolder>().levelData);
+        // Set the CubemapNext property to the new cubemap
+        uiCubemapMat.SetTexture("_CubemapNext", newCubemap);
+
+        // Start the blend animation
+        StartCoroutine(AnimateCubemapTransition());
+    }
+
+    IEnumerator AnimateCubemapTransition()
+    {
+        float duration = 0.5f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            float blendFactor = Mathf.Lerp(0f, 1f, elapsedTime / duration);
+            uiCubemapMat.SetFloat("_BlendFactor", blendFactor);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the blend factor is set to 1
+        uiCubemapMat.SetFloat("_BlendFactor", 1f);
+
+        // After the transition, set CubemapCurr to the new cubemap and reset blend factor
+        uiCubemapMat.SetTexture("_CubemapCurr", uiCubemapMat.GetTexture("_CubemapNext"));
+        uiCubemapMat.SetFloat("_BlendFactor", 0f);
     }
 
     IEnumerator FadeInLevelButtons()
@@ -150,9 +194,9 @@ public class LevelMenuManager : MonoBehaviour
         }
         canvasGroup.alpha = 0;
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.1f);
 
-        float fadeDuration = 0.5f;
+        float fadeDuration = 0.2f;
         float elapsedTime = 0;
 
         while (elapsedTime < fadeDuration)
@@ -223,7 +267,7 @@ public class LevelMenuManager : MonoBehaviour
             endPositions[i] = GetCarouselPosition(i - targetIndex, itemCount, 40f);
         }
 
-        float animationDuration = 0.18f;
+        float animationDuration = 0.3f;
         float elapsedTime = 0;
 
         while (elapsedTime < animationDuration)
@@ -243,8 +287,7 @@ public class LevelMenuManager : MonoBehaviour
         onComplete?.Invoke();
         isAnimating = false;
     }
-
-    void UpdateWorldButtonPositions()
+        void UpdateWorldButtonPositions()
     {
         float baseOpacity = 0.05f; // Minimum opacity for buttons farthest from the center
         float maxDistance = 3; // The maximum distance from the center button

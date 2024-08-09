@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldName: World 3
   worldFolderName: World3
+  worldCubemap: {fileID: 8900000, guid: c9c60898fa8c845be9f52a98155d409b, type: 2}
