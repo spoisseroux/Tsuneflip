@@ -11,8 +11,11 @@ public class CharacterWidthScaler : MonoBehaviour
     void Start()
     {
         textMeshPro = GetComponent<TMP_Text>();
-        textMeshPro.ForceMeshUpdate();
-        ScaleCharacterWidths();
+        if (textMeshPro != null)
+        {
+            textMeshPro.ForceMeshUpdate();
+            ScaleCharacterWidths();
+        }
     }
 
     void OnValidate()
@@ -22,14 +25,21 @@ public class CharacterWidthScaler : MonoBehaviour
             textMeshPro = GetComponent<TMP_Text>();
         }
 
-        textMeshPro.ForceMeshUpdate();
-        ScaleCharacterWidths();
+        if (textMeshPro != null)
+        {
+            textMeshPro.ForceMeshUpdate();
+            ScaleCharacterWidths();
+        }
     }
 
     private void ScaleCharacterWidths()
     {
         // Get the text mesh's geometry
         TMP_TextInfo textInfo = textMeshPro.textInfo;
+
+        // Ensure there is valid character data
+        if (textInfo == null || textInfo.characterCount == 0)
+            return;
 
         // Loop through each character in the text
         for (int i = 0; i < textInfo.characterCount; i++)
