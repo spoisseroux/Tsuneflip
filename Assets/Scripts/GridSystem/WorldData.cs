@@ -6,4 +6,5 @@ public class WorldData : ScriptableObject
     public string worldName;
     public string worldFolderName;
     public Cubemap worldCubemap;
+    public Color worldCubemapColor;
 }

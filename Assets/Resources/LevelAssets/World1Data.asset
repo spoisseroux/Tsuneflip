@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15df164796d55447e85f2298fec45c6a, type: 3}
   m_Name: World1Data
   m_EditorClassIdentifier: 
-  worldName: World 1
+  worldName: Ice World
   worldFolderName: World1
   worldCubemap: {fileID: 8900000, guid: 5fd5d12f891864dc997cfbb61835a9ae, type: 2}
+  worldCubemapColor: {r: 0.55602527, g: 0.57477015, b: 0.990566, a: 0}

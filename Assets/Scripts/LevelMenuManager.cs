@@ -116,7 +116,7 @@ public class LevelMenuManager : MonoBehaviour
         Debug.Log("Found " + levels.Length + " levels in world: " + worldData.worldName);
 
         // Trigger the cubemap transition
-        StartCubemapTransition(worldData.worldCubemap);
+        StartCubemapTransition(worldData.worldCubemap, worldData.worldCubemapColor);
         //HERE
 
         foreach (LevelData level in levels)
@@ -155,10 +155,11 @@ public class LevelMenuManager : MonoBehaviour
         }
     }
 
-    void StartCubemapTransition(Cubemap newCubemap)
+    void StartCubemapTransition(Cubemap newCubemap, Color newColor)
     {
         // Set the CubemapNext property to the new cubemap
         uiCubemapMat.SetTexture("_CubemapNext", newCubemap);
+        uiCubemapMat.SetColor("_ColorNext", newColor);
 
         // Start the blend animation
         StartCoroutine(AnimateCubemapTransition());
@@ -166,7 +167,7 @@ public class LevelMenuManager : MonoBehaviour
 
     IEnumerator AnimateCubemapTransition()
     {
-        float duration = 0.5f;
+        float duration = 0.2f;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
@@ -182,6 +183,7 @@ public class LevelMenuManager : MonoBehaviour
 
         // After the transition, set CubemapCurr to the new cubemap and reset blend factor
         uiCubemapMat.SetTexture("_CubemapCurr", uiCubemapMat.GetTexture("_CubemapNext"));
+        uiCubemapMat.SetColor("_ColorCurr", uiCubemapMat.GetColor("_ColorNext"));
         uiCubemapMat.SetFloat("_BlendFactor", 0f);
     }
 

@@ -34,6 +34,11 @@ public class GridGoalPreview : MonoBehaviour
         grid = new GameObject[goal.rows, goal.columns];
         goalBoard = goal.goalDataArray;
 
+        // Set the material colors
+        Material tileMaterial = tilePrefab.GetComponentInChildren<Renderer>().sharedMaterial;
+        tileMaterial.SetColor("_Color1", goal.tileColorBottom);
+        tileMaterial.SetColor("_Color2", goal.tileColorTop);
+
         // Fill Grid with Tile prefabs
         for (int row = 0; row < goal.rows; row++)
         {
