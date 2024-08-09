@@ -316,7 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   switchSettingsMigration: 1
   HasSourceProject: 0
-  HasPlatforms: 1
+  HasPlatforms: 0
   sourceProjectPath: 
   sourceBankPath: Assets/StreamingAssets
   sourceBankPathUnformatted: 
