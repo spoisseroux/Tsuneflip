@@ -48,9 +48,25 @@ public class PlayerMovement : EntityMovement
         // state machines
         stateMachine = new PlayerStateMachine();
 
+        ////////// animator stuff
+        // split idle and running because why do two states depend on one animator variable? confusing.
+        // also vague, not running does not imply they are idle
+
+        // get rid of isgrounded because grounded isnt an animation, it's just a state
+        // jumping and falling and etc r the animations we want to show
+
+        // get rid of landing because there's no actual landing animation
+
+        // idle --> isIdle
+        // running --> isRunning
+        // jump --> isJumping
+        // falling --> isFalling
+        // landing --> isLanding (????)
+
         idle = new IdleState(this, stateMachine, "idle");
-        run = new RunState(this, stateMachine, "running");
+        run = new RunState(this, stateMachine, "isRunning");
         jump = new JumpState(this, stateMachine, "jump");
+
     }
 
     protected override void Start()
@@ -73,7 +89,7 @@ public class PlayerMovement : EntityMovement
         workingDirection = currentDirection; // update our working direction to hold last frame's info
 
         // apply gravity to workingdir
-        ApplyGravity();
+        ApplyGravity(); // can split this into falling and jumping states probably
         stateMachine.currentState.LogicUpdate();
         /*
         // apply jump to workingdir

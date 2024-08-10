@@ -6,31 +6,41 @@ using UnityEngine;
 // maybe a singleton? in case we actually load new scenes and instantiate everything
 public class LevelManager : MonoBehaviour
 {
-    // Player stuff
+    // Player objects
     [SerializeField] GameObject player;
     [SerializeField] PlayerDamage playerDamage;
     [SerializeField] PlayerMovement playerMovement;
+    [SerializeField] PlayerInputHandler playerInput;
 
-    // UI stuff
-    [SerializeField] GameObject UI;
+    // Gameplay UI objects
+    [SerializeField] GameObject gameplayUI;
     [SerializeField] TextMeshProUGUI levelNameText;
     [SerializeField] TextMeshProUGUI livesRemainingText;
     [SerializeField] TextMeshProUGUI timerText;
 
+    // Pause Menu UI objects
+    [SerializeField] GameObject pauseMenuUI;
+
     // Time object
     // have to create this
 
-    // Grid stuff
+    // Grid objects
     [SerializeField] GridManager grid;
     [SerializeField] LevelData level;
     [SerializeField] Vector3 respawnPosition;
     [SerializeField] Quaternion respawnRotation;
     [SerializeField] DeathZone deathZone;
 
-    // Enemy stuff
+    // Enemy objects
+
 
     private void Awake()
     {
+        /*
+         * Need to make a refactor when it's clear how many of these can be Serialized 
+         * and how many need to be instantiated/built at runtime, then found
+         */
+
         // find Player, get components
         player = GameObject.Find("Player");
         playerDamage = player.GetComponent<PlayerDamage>();
@@ -46,22 +56,42 @@ public class LevelManager : MonoBehaviour
         grid.InitializeLevelData(level);
         grid.InitializeGrid();
 
-        // find UI, get components
-        UI = GameObject.Find("UI");
-        levelNameText = GameObject.Find("LevelNameText").GetComponent<TextMeshProUGUI>();
-        levelNameText.text = "Level " + level.levelName;
-        livesRemainingText = GameObject.Find("LivesRemainingText").GetComponent<TextMeshProUGUI>();
-        timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
+        // find Gameplay UI, get components
+        gameplayUI = GameObject.Find("GameplayUI");
+        // levelNameText.text = "Level " + level.levelName;
+
+        // find PauseMenu UI and set false
+        pauseMenuUI = GameObject.Find("PauseMenuUI");
+        pauseMenuUI.SetActive(false);
 
         // subscribe to events
         grid.OnGridMatch += HandleLevelWin;
         playerDamage.OnLivesNumberChange += CheckGameOver;
+        playerInput.OnPauseInput += TogglePauseMenu;
     }
 
     private void OnDisable()
     {
         grid.OnGridMatch -= HandleLevelWin;
         playerDamage.OnLivesNumberChange -= CheckGameOver;
+        playerInput.OnPauseInput -= TogglePauseMenu;
+    }
+
+    private void TogglePauseMenu(bool pause)
+    {
+        Debug.Log("we r pausing !");
+        // toggle back and forth
+        pauseMenuUI.SetActive(!pauseMenuUI.activeSelf);
+        if (!pause)
+        {
+            Cursor.visible = false;
+            Time.timeScale = 1;
+        }
+        else
+        {
+            Cursor.visible = true;
+            Time.timeScale = 0;
+        }
     }
 
     private void CheckGameOver(IDealDamage source, int livesLeft)

@@ -12,16 +12,35 @@ public class PlayerInputHandler : EntityInputHandler
 
     //public delegate void OnMove(Vector2 xz);
     //public event OnMove Move;
+    bool paused = false;
+    public delegate void HandlePause(bool pauseValue);
+    public event HandlePause OnPauseInput;
 
     public override void OnMoveInput(InputAction.CallbackContext context)
     {
+        if (paused)
+        {
+            return;
+        }
         // read in planar movement information
         currentInput.planeMove = context.ReadValue<Vector2>().normalized;
     }
 
     public override void OnJumpInput(InputAction.CallbackContext context)
     {
+        if (paused)
+        {
+            return;
+        }
         // set jump info
         currentInput.jumpMove = context.performed; 
+    }
+
+    public void OnTogglePauseInput(InputAction.CallbackContext context)
+    {
+        // since this is on the player, can we maybe just trigger an event for this
+        paused = !paused;
+        OnPauseInput?.Invoke(paused);
+        Debug.Log("pause variable: " + paused);
     }
 }
