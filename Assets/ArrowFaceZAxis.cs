@@ -2,30 +2,30 @@ using UnityEngine;
 
 public class ArrowFaceZAxis : MonoBehaviour
 {
-    public float bobAmplitude = 0.1f;  // The height of the bobbing
-    public float bobFrequency = 1f;    // The speed of the bobbing
+    public Transform player;            // Reference to the player
+    public Vector3 localOffset;         // Position relative to the player
+    public float bobAmplitude = 0.1f;   // The height of the bobbing
+    public float bobFrequency = 1f;     // The speed of the bobbing
 
-    private Vector3 initialPosition;
+    private Vector3 initialLocalPosition;
 
     void Start()
     {
-        // Store the initial position of the arrow
-        initialPosition = transform.localPosition;
+        // Set the initial position relative to the player
+        initialLocalPosition = localOffset;
+        transform.position = player.position + localOffset;
     }
 
-    void Update()
+    void LateUpdate()
     {
-        // Ensure the arrow's forward direction always faces the Z-axis
-        transform.forward = Vector3.forward;
+        // Calculate the new position with bobbing
+        float bobbingY = Mathf.Sin(Time.time * bobFrequency) * bobAmplitude;
+        Vector3 bobbingPosition = new Vector3(localOffset.x, localOffset.y + bobbingY, localOffset.z);
 
-        // If you want the arrow to be flat (only rotating around Z), you can reset the x and y rotation.
-        Vector3 rotation = transform.eulerAngles;
-        rotation.x = 0;
-        rotation.y = 0;
-        transform.eulerAngles = rotation;
+        // Maintain the position relative to the player's position without considering rotation
+        transform.position = player.position + bobbingPosition;
 
-        // Bob the arrow up and down
-        float newY = initialPosition.y + Mathf.Sin(Time.time * bobFrequency) * bobAmplitude;
-        transform.localPosition = new Vector3(initialPosition.x, newY, initialPosition.z);
+        // Keep the object facing the global Z-axis
+        transform.rotation = Quaternion.LookRotation(Vector3.forward);
     }
 }
