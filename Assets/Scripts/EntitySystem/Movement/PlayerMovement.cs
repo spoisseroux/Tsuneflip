@@ -22,6 +22,20 @@ public class PlayerMovement : EntityMovement
 
     private RaycastHit raycast; // for highlighting a tile
 
+    #region State Machine Code
+    // player's instance
+    public PlayerStateMachine stateMachine { get; private set; }
+
+    // grounded
+    public IdleState idle { get; private set; }
+    public RunState run { get; private set; }
+
+    // airborne
+    public JumpState jump { get; private set; }
+    // FallState IMPLEMENT LATER
+    #endregion
+
+
     public delegate void OnJump(Vector3 playerWorldPosition);
     public event OnJump JumpEvent;
 
@@ -29,12 +43,27 @@ public class PlayerMovement : EntityMovement
     // raycast below for things
 
     #region Monobehaviour Functions
+    private void Awake()
+    {
+        // state machines
+        stateMachine = new PlayerStateMachine();
+
+        idle = new IdleState(this, stateMachine, "idle");
+        run = new RunState(this, stateMachine, "running");
+        jump = new JumpState(this, stateMachine, "jump");
+    }
+
     protected override void Start()
     {
+        // components
         playerInput = GetComponent<PlayerInputHandler>();
         character = GetComponent<CharacterController>();
+
+        // grounded
         grounded = GroundedCheck();
-        
+
+        // state machine
+        stateMachine.Initialize(idle);
     }
 
     protected override void Update()
@@ -45,10 +74,13 @@ public class PlayerMovement : EntityMovement
 
         // apply gravity to workingdir
         ApplyGravity();
+        stateMachine.currentState.LogicUpdate();
+        /*
         // apply jump to workingdir
-        Jump();
+        Jump(); // called from entering AirborneState
         // apply movement to workingdir
         Move(playerInput.currentInput.planeMove);
+        */
         // combine all into workingDirection
         SetWorkingDirectionVector();
         // set rotation based on currentDir
@@ -58,19 +90,28 @@ public class PlayerMovement : EntityMovement
         // move
         character.Move(currentDirection * Time.deltaTime); // EXPECTING WORLD SPACE VECTOR
     }
+
+    protected override void FixedUpdate()
+    {
+        stateMachine.currentState.PhysicsUpdate();
+    }
     #endregion
 
 
     public override void Jump()
     {
+        movementUpVector = Vector3.up * constants.jumpSpeed;
+        JumpEvent?.Invoke(transform.position);
+
+        /*
         if (playerInput.currentInput.jumpMove && grounded)
         {
             movementUpVector = Vector3.up * constants.jumpSpeed;
             JumpEvent?.Invoke(transform.position);
         }
+        */
     }
 
-    // SOMETHING WRONG HERE... NEED TO FIGURE OUT WHETHER FINAL VECTOR IS IN WORLD OR LOCAL BEFORE CALLING CharacterController.Move()
     public override void Move(Vector2 move)
     {
         // create movement basis vectors in world space from camera's perspective

@@ -31,7 +31,7 @@ public class GridManager : MonoBehaviour
     #region Monobehaviour Functions
     private void Awake()
     {
-        //InitializeGrid(goal);
+        InitializeGrid(); // for debug
         player.JumpEvent += RequestTileFlip;
     }
 
@@ -60,7 +60,10 @@ public class GridManager : MonoBehaviour
     // feed Grid its necessary LevelData
     public void InitializeLevelData(LevelData readThis)
     {
-        goal = readThis;
+        if (readThis != null)
+        {
+            goal = readThis;
+        }
     }
 
     // instantiate Grid
@@ -100,7 +103,7 @@ public class GridManager : MonoBehaviour
     // resolve a given position in world space to a Tile in the Grid, helper function for determining where on Grid events should happen
     private Tile GetTileFromWorldSpace(Vector3 worldPos)
     {
-        Debug.Log(worldPos);
+        // Debug.Log(worldPos);
         int x = Mathf.FloorToInt(worldPos.x / goal.tileSize);
         int z = Mathf.FloorToInt(worldPos.z / goal.tileSize);
 
