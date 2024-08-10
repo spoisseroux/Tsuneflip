@@ -17,7 +17,8 @@ public class PlayerMovement : EntityMovement
     public Vector3 movementForwardVector; // z plane movement
     public Vector3 movementUpVector; // how do we actually keep this in world space???
 
-    [SerializeField] private BoxCollider footCollider; // for grounded check & enemy head collider check
+    [SerializeField] private BoxCollider footCollider; // for enemy head collider, for DeathZone check
+    [SerializeField] private LayerMask deathLayer;
 
     private RaycastHit raycast; // for highlighting a tile
 
@@ -73,8 +74,8 @@ public class PlayerMovement : EntityMovement
     public override void Move(Vector2 move)
     {
         // create movement basis vectors in world space from camera's perspective
-        Vector3 cameraRight = thirdPersonCamera.transform.right;
-        Vector3 cameraForward = thirdPersonCamera.transform.forward;
+        Vector3 cameraRight = thirdPersonCamera.transform.right; // red-axis of camera (world-space)
+        Vector3 cameraForward = thirdPersonCamera.transform.forward; // blue-axis of camera (world-space)
         // eliminate y components & re-normalize
         cameraRight.y = 0;
         cameraForward.y = 0;
@@ -114,7 +115,6 @@ public class PlayerMovement : EntityMovement
         return Physics.CheckSphere(transform.position + (Vector3.down * 0.2f), character.radius * 0.9f, groundLayer);
     }
 
-
     public void HandleRotation()
     {
         // set a look direction
@@ -135,7 +135,6 @@ public class PlayerMovement : EntityMovement
         // set facing direction
         facingDir = transform.rotation;
     }
-
 
     private void SetWorkingDirectionVector()
     {

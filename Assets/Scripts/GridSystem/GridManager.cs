@@ -6,6 +6,7 @@ public class GridManager : MonoBehaviour
 {
     // the Grid being rendered
     private GameObject[,] grid;
+    // could make another object here just storing tiles? then we can avoid (row x col) number of GetComponent<Tile>() calls
 
     // level data
     [SerializeField]
@@ -24,14 +25,24 @@ public class GridManager : MonoBehaviour
     // PlayerMovement Object for reference
     [SerializeField] PlayerMovement player;
 
+    public delegate void HandleGridMatch();
+    public event HandleGridMatch OnGridMatch;
+
     #region Monobehaviour Functions
     private void Awake()
     {
-        InitializeGrid(goal);
+        //InitializeGrid(goal);
         player.JumpEvent += RequestTileFlip;
+    }
+
+    private void OnDisable()
+    {
+        player.JumpEvent -= RequestTileFlip;
     }
     #endregion
 
+    #region Gizmos
+    /*
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -43,10 +54,18 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+    */
+    #endregion
+
+    // feed Grid its necessary LevelData
+    public void InitializeLevelData(LevelData readThis)
+    {
+        goal = readThis;
+    }
 
     // instantiate Grid
     // pass in positioning data
-    public void InitializeGrid(LevelData goal)
+    public void InitializeGrid()
     {
         // create Grid object & create + set GoalGrid object
         grid = new GameObject[goal.rows, goal.columns];
@@ -66,7 +85,7 @@ public class GridManager : MonoBehaviour
                     Quaternion.identity);
 
                 // set Tile data
-                grid[row, col].GetComponent<Tile>().InitializeTile(goalBoard.GetValue(row, col));
+                grid[row, col].GetComponent<Tile>().InitializeGameTile(goalBoard.GetValue(row, col), this);
             }
         }
     }
@@ -78,16 +97,6 @@ public class GridManager : MonoBehaviour
         tileToFlip.FlipTile();
     }
 
-
-    // TODO:
-    // 1) A method to check current grid against the goal grid
-    // 2) A method of determing WHEN to do checks
-    // 3) A way of communicating when a level has been finished
-    //      - possible error situation when player flips the last needed tile but dies right after jumping 
-    //      - in this case we need a way to interrupt the tile flip OR the board check and proceed to Death sequence
-    // 4) Either a barrier around empty tiles and side of level OR a fall zone & respawn zone
-
-
     // resolve a given position in world space to a Tile in the Grid, helper function for determining where on Grid events should happen
     private Tile GetTileFromWorldSpace(Vector3 worldPos)
     {
@@ -98,7 +107,43 @@ public class GridManager : MonoBehaviour
         x = Mathf.Clamp(x, 0, goal.rows - 1);
         z = Mathf.Clamp(z, 0, goal.columns - 1);
 
-        Debug.Log(x + " " + z);
+        //Debug.Log(x + " " + z);
         return grid[x, z].GetComponent<Tile>();
+    }
+
+    // TODO:
+    // 1) A method to check current grid against the goal grid
+    // 2) A method of determing WHEN to do checks
+    // 3) A way of communicating when a level has been finished
+    //      - possible error situation when player flips the last needed tile but dies right after jumping 
+    //      - in this case we need a way to interrupt the tile flip OR the board check and proceed to Death sequence
+    // 4) Either a barrier around empty tiles and side of level OR a fall zone & respawn zone
+
+    // Check for whether each Tile's flipcode is the same between current Grid and goal Grid
+    private bool CheckForMatchingGrids()
+    {
+        for (int i = 0; i < goal.rows; i++)
+        {
+            for (int j = 0; j < goal.columns; j++)
+            {
+                if (grid[i, j].GetComponent<Tile>().GetFlipCode() != goalBoard.GetValue(i, j))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    // Check whether the current grid matches the goal grid, and then hand off this info to the current LevelManager
+    public void RequestLevelWinCheck()
+    {
+        bool win = CheckForMatchingGrids();
+        if (win)
+        {
+            //Debug.Log("Win!");
+            OnGridMatch?.Invoke();
+        }
     }
 }

@@ -32,6 +32,9 @@ public class LevelMenuManager : MonoBehaviour
 
     private List<WorldData> worlds;
 
+    // static LevelData to indicate which level we are loading, persists into Gameplay Scene!!!
+    public static LevelData loaded;
+
     // Reference to the UI Cubemap material
     public Material uiCubemapMat;
 
@@ -332,6 +335,7 @@ public class LevelMenuManager : MonoBehaviour
         StartCoroutine(LoadLevelCoroutine(level));
     }
 
+    //TODO: PUT LEVEL DATA PIPING HERE
     private IEnumerator LoadLevelCoroutine(LevelData level)
     {
         yield return transitioner.ExitTransition();
@@ -349,6 +353,9 @@ public class LevelMenuManager : MonoBehaviour
         startButton.onClick.AddListener(() => LoadLevel(level));
 
         gridPreview.InitializeGridPreview(level);
+
+        // set the static variable for persistence when selecting
+        loaded = level;
     }
 
     void HideLevelPreview()

@@ -25,14 +25,15 @@ public class TileData
 
 public class Tile : MonoBehaviour
 {
-    private RotateTile rotateTileScript;
-    [SerializeField]
-    private TileData tile;
-    //[SerializeField] MeshRenderer render;
-    //[SerializeField] List<Material> materials; // size of 3, 0 -> flipped texture 1 -> unflipped texture 2 -> empty texture
+    // reference to the GridManager
+    [SerializeField] private GridManager grid;
 
-    private delegate void OnFlip();
-    private event OnFlip flip;
+    // can we just serialize this?
+    private RotateTile rotateTileScript;
+    [SerializeField] private TileData tile;
+
+    private delegate void OnFlipCompleted();
+    private event OnFlipCompleted flip;
 
     public void Awake()
     {
@@ -44,19 +45,9 @@ public class Tile : MonoBehaviour
         }
     }
 
-    // CALL THIS WHEN U WANNA FLIP TILE
-    public void FlipTile(){
-        StartCoroutine(FlipTriggered());
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        // if player, play tile enter sound
-    }
-
     public void InitializeTile(FlipCode flip)
     {
-        // set flip state
+        // set flipcode
         if (flip == FlipCode.Empty)
         {
             tile.flipState = FlipCode.Empty;
@@ -66,6 +57,33 @@ public class Tile : MonoBehaviour
             tile.flipState = FlipCode.Unflipped;
         }
         Debug.Log("Initialized Tile Flip State: " + tile.flipState);
+    }
+
+    public void InitializeGameTile(FlipCode flip, GridManager gridArg)
+    {
+        // set Grid
+        grid = gridArg;
+
+        // set flipcode
+        if (flip == FlipCode.Empty)
+        {
+            tile.flipState = FlipCode.Empty;
+        }
+        else
+        {
+            tile.flipState = FlipCode.Unflipped;
+        }
+        Debug.Log("Initialized Tile Flip State: " + tile.flipState);
+    }
+
+    // CALL THIS WHEN U WANNA FLIP TILE
+    public void FlipTile()
+    {
+        // maybe it would be nice here to extend this method to determine WHICH type of unit flipped the Tile?
+        // that way we only check for certain conditions based on the Entity that decided to flip the Tile
+        //      1) Player::Jump -> check for game win
+        //      2) NPC::UnflipTile -> no checks
+        StartCoroutine(FlipTriggered());
     }
 
 
@@ -80,18 +98,18 @@ public class Tile : MonoBehaviour
         // rotate tile if not already rotating
         if (!rotateTileScript.IsRotating)
         {
-            Debug.Log("Starting Rotation...");
+            //Debug.Log("Starting Rotation...");
             yield return StartCoroutine(rotateTileScript.Rotate());
 
             // once rotation is complete, execute FlipEnum and invoke flip event
             FlipEnum();
-            Debug.Log("Flip State after rotation: " + tile.flipState);
-            //render.material = materials[(int)tile.flipState];
-            flip?.Invoke();
+            //Debug.Log("Flip State after rotation: " + tile.flipState);
+            flip?.Invoke(); // invoke any events in separate scripts that respond to any tile flipping
+            grid.RequestLevelWinCheck(); // grid and tiles already tightly together, maybe a redesign but for now this works
         }
         else
         {
-            Debug.Log("Tile is already rotating.");
+            //Debug.Log("Tile is already rotating.");
         }
     }
 
@@ -112,5 +130,11 @@ public class Tile : MonoBehaviour
                 break;
         }
         Debug.Log("New Flip State: " + tile.flipState);
+    }
+
+
+    public FlipCode GetFlipCode()
+    {
+        return tile.flipState;
     }
 }

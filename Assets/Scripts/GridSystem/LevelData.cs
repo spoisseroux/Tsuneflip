@@ -12,6 +12,7 @@ public class LevelData : ScriptableObject
     [SerializeField] public FlipCode2DArray goalDataArray;
     [SerializeField] public Color tileColorTop;
     [SerializeField] public Color tileColorBottom;
+    // probably need to add a respawn transform here
 
     private void OnValidate()
     {
