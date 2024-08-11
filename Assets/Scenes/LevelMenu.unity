@@ -1991,7 +1991,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -208, y: -46}
+  m_AnchoredPosition: {x: -207.99997, y: -46}
   m_SizeDelta: {x: -615.6409, y: -36.969}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &604232738741358210
@@ -2787,6 +2787,7 @@ MonoBehaviour:
   gridPreview: {fileID: 1151913562}
   gridPreviewCam: {fileID: 2140336580}
   uiCubemapMat: {fileID: 2100000, guid: 2f9a14e9c6dc34e9588ec669cd846834, type: 2}
+  sceneChanger: {fileID: 0}
 --- !u!114 &3309994523203128856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3636,6 +3637,7 @@ GameObject:
   - component: {fileID: 8682089965299940916}
   - component: {fileID: 1198089855}
   - component: {fileID: 1198089860}
+  - component: {fileID: 8682089965299940917}
   m_Layer: 5
   m_Name: LevelStart
   m_TagString: Untagged
@@ -3699,6 +3701,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8682089965299940917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8575328940475869762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e6a0e3c38c9a4a5a8d8a6934cb1d3ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitioner: {fileID: 1512126950}
+  sceneName: 
 --- !u!114 &8797853078937048996
 MonoBehaviour:
   m_ObjectHideFlags: 0

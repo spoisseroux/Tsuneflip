@@ -1,15 +1,39 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
 public class GameTimer : MonoBehaviour
 {
+    public LevelManager levelManager;
     public LevelData levelData;
     public TextMeshProUGUI timerText;
 
     private float startTime;
     private float elapsedTime;
     private bool isRunning = false;
+
+    public void Start()
+    {
+        Debug.Log("GameTimer Start method called.");
+        StartCoroutine(StartInit());
+    }
+
+    private IEnumerator StartInit()
+    {
+        Debug.Log("In startinit");
+        yield return new WaitForSeconds(0.1f); // Adjust delay as necessary
+        InitializeTimer();
+    }
+
+    private void InitializeTimer()
+    {
+        Debug.Log("in init timer");
+
+        levelData = levelManager.level;
+        Debug.Log(levelData);
+    }
+
 
     public void StartTimer()
     {

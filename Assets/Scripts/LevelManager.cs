@@ -26,10 +26,16 @@ public class LevelManager : MonoBehaviour
 
     // Grid objects
     [SerializeField] GridManager grid;
-    [SerializeField] LevelData level;
+    [SerializeField] public LevelData level;
     [SerializeField] Vector3 respawnPosition;
     [SerializeField] Vector3 respawnRotation; // quaternion? :/
     [SerializeField] DeathZone deathZone;
+
+    //UI
+    public TransitionHandler transitioner;
+    public GameTimer gameTimer;
+    public CountdownFinishText countdownText;
+
 
     // Enemy objects
 
@@ -40,6 +46,7 @@ public class LevelManager : MonoBehaviour
          * Need to make a refactor when it's clear how many of these can be Serialized 
          * and how many need to be instantiated/built at runtime, then found
          */
+        level = LevelMenuManager.loaded; // STATIC VARIABLE, READ FOR PERSISTENT MEMORY ACROSS SCENES
 
         // find Player, get components
         player = GameObject.Find("Player");
@@ -51,7 +58,7 @@ public class LevelManager : MonoBehaviour
         respawnRotation = new Vector3(0.5f, 0f, 0.5f);
 
         // find Grid, get components
-        level = LevelMenuManager.loaded; // STATIC VARIABLE, READ FOR PERSISTENT MEMORY ACROSS SCENES
+
         grid = GameObject.Find("Grid").GetComponent<GridManager>();
         grid.InitializeLevelData(level);
         grid.InitializeGrid();
@@ -68,6 +75,9 @@ public class LevelManager : MonoBehaviour
         grid.OnGridMatch += HandleLevelWin;
         playerDamage.OnLivesNumberChange += CheckGameOver;
         playerInput.OnPauseInput += TogglePauseMenu;
+
+        //START LEVEL
+        StartLevel();
     }
 
     private void OnDisable()
@@ -112,6 +122,7 @@ public class LevelManager : MonoBehaviour
 
     private void StartLevel()
     {
+        StartCoroutine(StartLevelCoroutine());
         // PUT PREVIEW IN AWAKE()
 
         // Stuff to do here
@@ -122,6 +133,26 @@ public class LevelManager : MonoBehaviour
         // start timer
 
         // start enemy spawner routine or something idk yet
+
+    }
+
+    private IEnumerator StartLevelCoroutine()
+    {
+        //Populate goal preview
+        //Load colors to tile material
+        //Load cubemap
+
+        //Wait .5 Seconds
+        yield return new WaitForSeconds(2f);
+
+        //Check if transitioner is not in transition
+
+        //Play Countdown Timer
+        yield return StartCoroutine(countdownText.CountdownCoroutine());
+        Debug.Log("Countdown finished");
+
+        //Start Timer once countdown finishes
+
     }
 
     private void RespawnPlayer()

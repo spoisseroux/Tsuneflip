@@ -28,7 +28,7 @@ public class MenuChangeButtonScript : MonoBehaviour
     }
 
     // Method to handle the button click
-    void OnButtonClick()
+    public void OnButtonClick()
     {
         StartCoroutine(LoadLevelCoroutine());
         // Add your button click handling code here

@@ -38,6 +38,8 @@ public class LevelMenuManager : MonoBehaviour
     // Reference to the UI Cubemap material
     public Material uiCubemapMat;
 
+    public MenuChangeButtonScript sceneChanger;
+
     void Start()
     {
         levelPreviewPanel.SetActive(false);
@@ -292,7 +294,7 @@ public class LevelMenuManager : MonoBehaviour
         onComplete?.Invoke();
         isAnimating = false;
     }
-        void UpdateWorldButtonPositions()
+    void UpdateWorldButtonPositions()
     {
         float baseOpacity = 0.05f; // Minimum opacity for buttons farthest from the center
         float maxDistance = 3; // The maximum distance from the center button
@@ -340,7 +342,7 @@ public class LevelMenuManager : MonoBehaviour
     {
         yield return transitioner.ExitTransition();
         Debug.Log("Loading level: " + level.levelName);
-        // Example: SceneManager.LoadScene(level.sceneName);
+        sceneChanger.OnButtonClick();
     }
 
     void ShowLevelPreview(LevelData level)
@@ -352,7 +354,9 @@ public class LevelMenuManager : MonoBehaviour
         startButton.onClick.RemoveAllListeners();
         startButton.onClick.AddListener(() => LoadLevel(level));
 
+
         gridPreview.InitializeGridPreview(level);
+        sceneChanger.sceneName = level.levelName;
 
         // set the static variable for persistence when selecting
         loaded = level;

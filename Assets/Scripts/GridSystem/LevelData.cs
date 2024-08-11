@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     [SerializeField] public string levelName;
-    private float bestTime;
+
     [SerializeField] public int tileSize;
     [SerializeField] public int rows, columns;
     [SerializeField] public FlipCode2DArray goalDataArray;
