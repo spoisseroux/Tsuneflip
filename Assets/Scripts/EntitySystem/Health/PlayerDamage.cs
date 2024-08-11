@@ -29,11 +29,6 @@ public class PlayerDamage : MonoBehaviour, ITakeDamage /* is the second interfac
     // interface implementations
     public void TakeDamage(IDealDamage damager)
     {
-        // don't hurt urself pls
-        if ((IDealDamage)this == damager)
-        {
-            return;
-        }
         // take away a life
         //Debug.Log("I " + this.name + " was hit by " + damager.ToString());
         lives--;

@@ -24,12 +24,12 @@ public class PlayerState
         DoChecks();
         startTime = Time.time;
         player.GetComponent<Animator>().SetBool(animationName, true); // change when we animate player
-        Debug.Log("entering state: " + playerStateMachine.currentState.ToString());
+        //Debug.Log("entering state: " + playerStateMachine.currentState.ToString());
     }
 
     public virtual void Exit()
     {
-        Debug.Log("exiting state " + playerStateMachine.currentState.ToString());
+        //Debug.Log("exiting state " + playerStateMachine.currentState.ToString());
         player.GetComponent<Animator>().SetBool(animationName, false); // change when we animate player
     }
 

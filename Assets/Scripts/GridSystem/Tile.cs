@@ -68,6 +68,9 @@ public class Tile : MonoBehaviour
         if (flip == FlipCode.Empty)
         {
             tile.flipState = FlipCode.Empty;
+            // Do not render the Tile, set Collider to false
+            Transform tileCollider = this.transform.Find("TileCollider");
+            tileCollider.gameObject.SetActive(false);
         }
         else
         {
