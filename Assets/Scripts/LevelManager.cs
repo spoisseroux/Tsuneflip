@@ -35,6 +35,7 @@ public class LevelManager : MonoBehaviour
     public TransitionHandler transitioner;
     public GameTimer gameTimer;
     public CountdownFinishText countdownText;
+    public Material skyboxMaterial;
 
 
     // Enemy objects
@@ -46,6 +47,7 @@ public class LevelManager : MonoBehaviour
          * Need to make a refactor when it's clear how many of these can be Serialized 
          * and how many need to be instantiated/built at runtime, then found
          */
+        LockCursor();
         level = LevelMenuManager.loaded; // STATIC VARIABLE, READ FOR PERSISTENT MEMORY ACROSS SCENES
 
         // find Player, get components
@@ -141,6 +143,11 @@ public class LevelManager : MonoBehaviour
         //Populate goal preview
         //Load colors to tile material
         //Load cubemap
+        skyboxMaterial.SetTexture("_Cubemap", level.cubemap);
+
+        // Set the _Color shader variable
+        skyboxMaterial.SetColor("_Color", level.cubemapColor);
+        
 
         //Wait .5 Seconds
         yield return new WaitForSeconds(2f);
@@ -186,5 +193,17 @@ public class LevelManager : MonoBehaviour
         // stop timer
         // play things
         // return to menu
+    }
+
+    public void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

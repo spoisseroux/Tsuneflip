@@ -27,13 +27,13 @@ public class DeathZone : MonoBehaviour, IDealDamage
     // Generate and toggle death zone below Grid
     void Awake()
     {
-        // level = LevelMenuManager.loaded; // static variable from level select
+        level = LevelMenuManager.loaded; // static variable from level select
         yPlane = -5.0f;
         scalingConstant = 100.0f;
         width = level.rows;
         height = level.columns;
         GenerateZone();
-        deathBox.isTrigger = true;
+        //deathBox.isTrigger = true;
 
         this.gameObject.transform.position = new Vector3(0f, yPlane, 0f);
     }
