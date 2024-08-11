@@ -12,13 +12,14 @@ public class PlayerInputHandler : EntityInputHandler
 
     //public delegate void OnMove(Vector2 xz);
     //public event OnMove Move;
-    bool paused = false;
+    bool paused = false; // if true, game is paused
+    bool noMove = false; // if true, player cannot move
     public delegate void HandlePause(bool pauseValue);
     public event HandlePause OnPauseInput;
 
     public override void OnMoveInput(InputAction.CallbackContext context)
     {
-        if (paused)
+        if (paused || noMove)
         {
             return;
         }
@@ -28,12 +29,12 @@ public class PlayerInputHandler : EntityInputHandler
 
     public override void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (paused)
+        if (paused || noMove)
         {
             return;
         }
         // set jump info
-        currentInput.jumpMove = context.performed; 
+        currentInput.jumpMove = context.performed;
     }
 
     public void OnTogglePauseInput(InputAction.CallbackContext context)
@@ -42,5 +43,9 @@ public class PlayerInputHandler : EntityInputHandler
         paused = !paused;
         OnPauseInput?.Invoke(paused);
         Debug.Log("pause variable: " + paused);
+    }
+    public void ToggleMovementInput(bool value)
+    {
+        noMove = value;
     }
 }

@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] PlayerInputHandler playerInput;
 
     // Gameplay UI objects
-    [SerializeField] GameObject gameplayUI;
+    //[SerializeField] GameObject gameplayUI;
     [SerializeField] TextMeshProUGUI levelNameText;
     [SerializeField] TextMeshProUGUI livesRemainingText;
     [SerializeField] TextMeshProUGUI timerText;
@@ -37,6 +37,8 @@ public class LevelManager : MonoBehaviour
     public GameTimer gameTimer;
     public CountdownFinishText countdownText;
     public Material skyboxMaterial;
+    public LevelGoalPreview gridPreviewManager;
+    [SerializeField] private PreviewCameraController previewCameraController;
 
 
     // Enemy objects
@@ -44,6 +46,7 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Level manager Awake");
         /*
          * Need to make a refactor when it's clear how many of these can be Serialized 
          * and how many need to be instantiated/built at runtime, then found
@@ -55,21 +58,21 @@ public class LevelManager : MonoBehaviour
         player = GameObject.Find("Player");
         playerDamage = player.GetComponent<PlayerDamage>();
         playerMovement = player.GetComponent<PlayerMovement>();
+        playerMovement.ToggleMovementInput(true); // turn off input, will be turned on again when timer hits go
 
         // read this from leveldata later i guess
         respawnPosition = new Vector3(0.5f, 1.5f, 0.5f);
         respawnRotation = new Vector3(0.5f, 0f, 0.5f);
 
         // find Grid, get components
-
         grid = GameObject.Find("Grid").GetComponent<GridManager>();
         grid.InitializeLevelData(level);
         grid.InitializeGrid();
 
         // find Gameplay UI, get components
-        gameplayUI = GameObject.Find("GameplayUI");
+        //gameplayUI = GameObject.Find("GameplayUI");
         // levelNameText.text = "Level " + level.levelName;
-        livesRemainingText.text = playerDamage.GetLives().ToString();
+        //livesRemainingText.text = playerDamage.GetLives().ToString();
 
         // find PauseMenu UI and set false
         pauseMenuUI = GameObject.Find("PauseMenuUI");
@@ -126,6 +129,7 @@ public class LevelManager : MonoBehaviour
 
     private void StartLevel()
     {
+        Debug.Log("in startlevel");
         StartCoroutine(StartLevelCoroutine());
         // PUT PREVIEW IN AWAKE()
 
@@ -145,11 +149,20 @@ public class LevelManager : MonoBehaviour
         //TODO:Populate goal preview
         //TODO: Load colors to tile material
         //Load cubemap
+        //TogglePauseMenu(false);
+        Debug.Log("in startlevelcoroutine");
+        gridPreviewManager.goal = level;
+        //gridPreviewCamera.levelData = level;
+
+        Debug.Log("calling init grid preview");
+        gridPreviewManager.InitializeLevelGridPreview(level, previewCameraController);
+
+        //playerMovement.ToggleMovementInput(true);
         skyboxMaterial.SetTexture("_Cubemap", level.cubemap);
         skyboxMaterial.SetColor("_Color", level.cubemapColor);
 
 
-        //Wait .5 Seconds
+        //Wait 2 Seconds
         yield return new WaitForSeconds(2f);
 
         //Check if transitioner is not in transition
@@ -160,6 +173,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Countdown finished");
 
         //Start Timer once countdown finishes
+        playerMovement.ToggleMovementInput(false);
         gameTimer.StartTimer();
 
     }
@@ -186,6 +200,7 @@ public class LevelManager : MonoBehaviour
     private void HandleLevelWin()
     {
         // stop timer
+        playerMovement.ToggleMovementInput(true);
         gameTimer.StopTimer();
         // play things
         // return to menu

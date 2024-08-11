@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDamage : MonoBehaviour, ITakeDamage /* is the second interface necessary? could just do two hitboxes */
+public class PlayerDamage : MonoBehaviour, ITakeDamage
 {
     // total lives
     [SerializeField] private int lives;
@@ -29,11 +29,6 @@ public class PlayerDamage : MonoBehaviour, ITakeDamage /* is the second interfac
     // interface implementations
     public void TakeDamage(IDealDamage damager)
     {
-        // don't hurt urself pls
-        if ((IDealDamage)this == damager)
-        {
-            return;
-        }
         // take away a life
         //Debug.Log("I " + this.name + " was hit by " + damager.ToString());
         lives--;

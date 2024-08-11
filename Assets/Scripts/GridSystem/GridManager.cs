@@ -31,7 +31,7 @@ public class GridManager : MonoBehaviour
     #region Monobehaviour Functions
     private void Awake()
     {
-        InitializeGrid(); // for debug
+        //InitializeGrid(); // for debug
         player.JumpEvent += RequestTileFlip;
     }
 

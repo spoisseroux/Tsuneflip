@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: PlayerConstants
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  ascentGravity: -30
-  descentGravity: -15
+  ascentGravity: -45
+  descentGravity: -30
   groundedGravity: -0.5
-  turnSpeed: 20
+  turnSpeed: 5
   turnSmoothTime: 0.0005
   jumpSpeed: 10
