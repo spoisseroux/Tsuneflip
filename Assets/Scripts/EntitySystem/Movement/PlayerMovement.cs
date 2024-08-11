@@ -17,8 +17,7 @@ public class PlayerMovement : EntityMovement
     public Vector3 movementForwardVector; // z plane movement
     public Vector3 movementUpVector; // how do we actually keep this in world space???
 
-    [SerializeField] private BoxCollider footCollider; // for enemy head collider, for DeathZone check
-    [SerializeField] private LayerMask deathLayer;
+    [SerializeField] private GameObject footCollider; // holds BoxCollider with an IDealDamage component, active upon jump, deactive on land?
 
     private RaycastHit raycast; // for highlighting a tile
 
@@ -113,6 +112,16 @@ public class PlayerMovement : EntityMovement
     }
     #endregion
 
+    #region Gizmos
+    /*
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawSphere(transform.position + (Vector3.down * character.radius * 0.7f), character.radius * 0.5f);
+    }
+    */
+    #endregion
+
     public override void Jump()
     {
         movementUpVector = Vector3.up * constants.jumpSpeed;
@@ -136,6 +145,7 @@ public class PlayerMovement : EntityMovement
 
     protected override void ApplyGravity()
     {
+        // probably can refactor this into the state machine for the player
         if (!grounded)
         {
             float newVel = workingDirection.y;
@@ -159,15 +169,14 @@ public class PlayerMovement : EntityMovement
 
     public void ApplySpawnPosition(Vector3 spawnPosition, Vector3 spawnRotation)
     {
-        character.Move(Vector3.zero);
+        character.Move(spawnPosition - transform.position);
         transform.rotation = Quaternion.LookRotation(spawnRotation, Vector3.up);
-        character.Move(spawnPosition);
     }
 
     public override bool GroundedCheck()
     {
         // returns true if grounded
-        return Physics.CheckSphere(transform.position + (Vector3.down * 0.2f), character.radius * 0.9f, groundLayer);
+        return Physics.CheckSphere(transform.position + (Vector3.down * character.radius * 0.7f), character.radius * 0.5f, groundLayer);
     }
 
     public void HandleRotation()
