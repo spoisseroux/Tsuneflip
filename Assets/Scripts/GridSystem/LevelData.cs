@@ -6,12 +6,14 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     [SerializeField] public string levelName;
-    private float bestTime;
+
     [SerializeField] public int tileSize;
     [SerializeField] public int rows, columns;
     [SerializeField] public FlipCode2DArray goalDataArray;
     [SerializeField] public Color tileColorTop;
     [SerializeField] public Color tileColorBottom;
+    public Cubemap cubemap;
+    public Color cubemapColor;
     [HideInInspector] public float bestTime = float.MaxValue;
     // probably need to add a respawn transform here
 

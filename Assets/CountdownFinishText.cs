@@ -16,7 +16,8 @@ public class CountdownFinishText : MonoBehaviour
         //Countdown();
     }
 
-    public void Finish() {
+    public void Finish()
+    {
         StartCoroutine(FinishCoroutine());
     }
 
@@ -25,7 +26,8 @@ public class CountdownFinishText : MonoBehaviour
         StartCoroutine(CountdownCoroutine());
     }
 
-    private IEnumerator FinishCoroutine(){
+    public IEnumerator FinishCoroutine()
+    {
         countdownText.enabled = true;
         yield return new WaitForSeconds(0.15f);
 
@@ -54,8 +56,9 @@ public class CountdownFinishText : MonoBehaviour
 
     }
 
-    private IEnumerator CountdownCoroutine()
+    public IEnumerator CountdownCoroutine()
     {
+        Debug.Log("in countdown");
         countdownText.enabled = true;
         string[] countdownValues = { "3", "2", "1", "Go!" };
 
@@ -87,7 +90,7 @@ public class CountdownFinishText : MonoBehaviour
             // Wait for another half a second
             yield return new WaitForSeconds(0.5f);
         }
-        
+
         //Go
         yield return new WaitForSeconds(0.5f);
 

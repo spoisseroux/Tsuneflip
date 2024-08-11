@@ -11,6 +11,9 @@ public class TransitionHandler : MonoBehaviour
     private RawImage transition1Image;
     private RawImage transition2Image;
 
+    // Boolean to check if an animation is in progress
+    public bool IsAnimating { get; private set; }
+
     private void Start()
     {
         transition1Image = transition1.GetComponent<RawImage>();
@@ -25,6 +28,8 @@ public class TransitionHandler : MonoBehaviour
 
     private IEnumerator ExitTransitionCoroutine()
     {
+        IsAnimating = true; // Animation starts
+
         transition1.SetActive(true);
         SetAlpha(transition1Image, 0f);
         SetAlpha(transition2Image, 1f);
@@ -34,6 +39,8 @@ public class TransitionHandler : MonoBehaviour
 
         transition2.SetActive(true);
         yield return FadeMaterial(transitionSphere, "_Fade", 0f, 1f, 1.2f);
+
+        IsAnimating = false; // Animation ends
     }
 
     public void EnterTransition()
@@ -43,6 +50,8 @@ public class TransitionHandler : MonoBehaviour
 
     private IEnumerator EnterTransitionCoroutine()
     {
+        IsAnimating = true; // Animation starts
+
         transition2.SetActive(true);
         SetAlpha(transition2Image, 1f);
         transition1.SetActive(true);
@@ -54,6 +63,8 @@ public class TransitionHandler : MonoBehaviour
         yield return FadeRawImage(transition1Image, 1f, 0f, 0.2f);
 
         transition1.SetActive(false);
+
+        IsAnimating = false; // Animation ends
     }
 
     private void SetAlpha(RawImage image, float alpha)

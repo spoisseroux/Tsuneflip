@@ -1991,7 +1991,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -208, y: -46}
+  m_AnchoredPosition: {x: -207.99997, y: -46}
   m_SizeDelta: {x: -615.6409, y: -36.969}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &604232738741358210
@@ -3636,6 +3636,7 @@ GameObject:
   - component: {fileID: 8682089965299940916}
   - component: {fileID: 1198089855}
   - component: {fileID: 1198089860}
+  - component: {fileID: 8682089965299940917}
   m_Layer: 5
   m_Name: LevelStart
   m_TagString: Untagged
@@ -3699,6 +3700,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8682089965299940917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8575328940475869762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e6a0e3c38c9a4a5a8d8a6934cb1d3ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitioner: {fileID: 1512126950}
+  sceneName: 
 --- !u!114 &8797853078937048996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3849,7 +3864,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 2140336578}
   - {fileID: 1534411197}
-  - {fileID: 1976217426987863223}
   - {fileID: 44812459}
   - {fileID: 1151913563}
   - {fileID: 1570761947}
@@ -3858,3 +3872,4 @@ SceneRoots:
   - {fileID: 1293688135}
   - {fileID: 736566776}
   - {fileID: 865241850}
+  - {fileID: 1976217426987863223}

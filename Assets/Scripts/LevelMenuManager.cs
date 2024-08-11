@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelMenuManager : MonoBehaviour
 {
@@ -38,8 +39,10 @@ public class LevelMenuManager : MonoBehaviour
     // Reference to the UI Cubemap material
     public Material uiCubemapMat;
 
+
     void Start()
     {
+        UnlockCursor();
         levelPreviewPanel.SetActive(false);
         LoadWorlds();
         SetupButtonListeners();
@@ -292,7 +295,7 @@ public class LevelMenuManager : MonoBehaviour
         onComplete?.Invoke();
         isAnimating = false;
     }
-        void UpdateWorldButtonPositions()
+    void UpdateWorldButtonPositions()
     {
         float baseOpacity = 0.05f; // Minimum opacity for buttons farthest from the center
         float maxDistance = 3; // The maximum distance from the center button
@@ -338,9 +341,11 @@ public class LevelMenuManager : MonoBehaviour
     //TODO: PUT LEVEL DATA PIPING HERE
     private IEnumerator LoadLevelCoroutine(LevelData level)
     {
+        //sceneChanger.sceneName = level.levelName;
         yield return transitioner.ExitTransition();
         Debug.Log("Loading level: " + level.levelName);
-        // Example: SceneManager.LoadScene(level.sceneName);
+        //TODO: Change scene name
+        SceneManager.LoadScene("SpencerGridTesting 1");
     }
 
     void ShowLevelPreview(LevelData level)
@@ -353,7 +358,7 @@ public class LevelMenuManager : MonoBehaviour
         startButton.onClick.AddListener(() => LoadLevel(level));
 
         gridPreview.InitializeGridPreview(level);
-
+        
         // set the static variable for persistence when selecting
         loaded = level;
     }
@@ -399,5 +404,17 @@ public class LevelMenuManager : MonoBehaviour
     private class LevelDataHolder : MonoBehaviour
     {
         public LevelData levelData;
+    }
+
+    public void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
