@@ -12,7 +12,6 @@ public class RoamingState : NPCState
     private float updateTime;
     private float timePassed;
     private float bufferedDistanceToPlayer;
-    private float distanceToTarget;
 
 
     public RoamingState(NPCMovement entityIn, NPCStateMachine npcSM, IRoaming strategy) : base(entityIn, npcSM)
@@ -26,13 +25,12 @@ public class RoamingState : NPCState
         base.DoChecks();
         // check if player near (alert?) FOR NOW WE SKIP THIS
         bufferedDistanceToPlayer = npc.distanceToPlayer;
-        // check if near destination (ability?)
     }
 
     public override void Enter()
     {
         base.Enter();
-        nextPos = roamStrategy.FindNextPosition(npc.transform.position);
+        nextPos = ResolveToTile(ResolveToGrid(roamStrategy.FindNextPosition(npc.transform)));
         timePassed = 0.0f;
     }
 
@@ -59,13 +57,16 @@ public class RoamingState : NPCState
             // etc
         }
         
-        else if (distanceToTarget <= 0.01f)
+        else if (npc.distanceToTarget <= 0.05f)
         {
             // stop
 
-            // flip tile (change to ability)
+            // flip tile (change to ability) WOULD GO HERE
+
             // pick new target spot
-            nextPos = roamStrategy.FindNextPosition(npc.transform.position);
+            nextPos = ResolveToTile(ResolveToGrid(roamStrategy.FindNextPosition(npc.transform)));
+            // for now, we just move to new target
+            npc.Move(new Vector2(nextPos.x, nextPos.y));
 
             // maybe in tileflip ability we send an event out to the grid and request that the tile at our world position flips?
         }
@@ -80,6 +81,23 @@ public class RoamingState : NPCState
     {
         base.PhysicsUpdate();
         npc.transform.LookAt(npc.currentTarget);
-        npc.transform.Translate(npc.moveVector * npc.GetConstants().moveSpeed * Time.deltaTime);
+        npc.transform.position = Vector3.MoveTowards(npc.transform.position, npc.currentTarget, npc.GetConstants().moveSpeed * Time.deltaTime);
+    }
+
+    private Vector2 ResolveToGrid(Vector2 potentialMove)
+    {
+        potentialMove.x = Mathf.Clamp(potentialMove.x, npc.minX, npc.maxX);
+        potentialMove.y = Mathf.Clamp(potentialMove.y, npc.minZ, npc.maxZ);
+        return potentialMove;
+    }
+
+    private Vector2 ResolveToTile(Vector2 gridLocation)
+    {
+        return new Vector2(NearestHalf(gridLocation.x), NearestHalf(gridLocation.y));
+    }
+
+    private float NearestHalf(float num)
+    {
+        return Mathf.Round(num * 2) / 2;
     }
 }

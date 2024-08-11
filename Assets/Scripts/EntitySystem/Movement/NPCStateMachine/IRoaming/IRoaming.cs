@@ -6,7 +6,7 @@ using UnityEngine;
 public interface IRoaming
 {
     //public abstract void UseRoamingStrategy();
-    public abstract Vector2 FindNextPosition(Vector3 currentNPCPos);
+    public abstract Vector2 FindNextPosition(Transform currentNPCPos);
 }
 
 // possible:
