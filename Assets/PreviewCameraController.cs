@@ -5,6 +5,9 @@ public class PreviewCameraController : MonoBehaviour
 {
     [SerializeField] private CinemachineFreeLook playerFreeLookCamera; // Reference to the player's Cinemachine FreeLook camera
     [SerializeField] private Transform previewCamera; // The preview camera transform
+    [SerializeField] private float minZoomDistance = 10f; // Minimum distance the camera can zoom in
+    [SerializeField] private float maxZoomDistance = 1000f; // Maximum distance the camera can zoom out
+    [SerializeField] private float zoomSpeed = 10f; // Speed at which the camera zooms in/out
 
     private Transform cameraPivot; // The pivot point for the camera
     private Vector3 gridMidpoint;
@@ -27,6 +30,7 @@ public class PreviewCameraController : MonoBehaviour
         // Calculate the distance based on the grid size
         float gridSize = Mathf.Max(rows, columns) * tileSize;
         cameraDistance = gridSize * 5f; // Adjust this factor to control how far the camera should be
+        cameraDistance = Mathf.Clamp(cameraDistance, minZoomDistance, maxZoomDistance);
 
         // Parent the camera to the pivot
         previewCamera.SetParent(cameraPivot);
@@ -48,6 +52,9 @@ public class PreviewCameraController : MonoBehaviour
     {
         // Update the camera's rotation to match the player's FreeLook camera rotation
         UpdateCameraRotation();
+
+        // Handle camera zoom
+        HandleZoom();
     }
 
     private void UpdateCameraRotation()
@@ -57,5 +64,18 @@ public class PreviewCameraController : MonoBehaviour
 
         // Match the rotation of the player's FreeLook camera but prevent it from going below the pivot
         cameraPivot.rotation = Quaternion.Euler(clampedVerticalRotation, playerFreeLookCamera.m_XAxis.Value, 0f);
+    }
+
+    private void HandleZoom()
+    {
+        // Get the scroll wheel input
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+
+        // Adjust the camera distance based on the scroll input
+        cameraDistance -= scrollInput * zoomSpeed;
+        cameraDistance = Mathf.Clamp(cameraDistance, minZoomDistance, maxZoomDistance);
+
+        // Update the camera's position
+        previewCamera.localPosition = new Vector3(0, 0, -cameraDistance);
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 390748902568069582}
   m_Layer: 0
   m_Name: Tile
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c930a454ea3d949a286ac5a0505d09df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 0}
   tile:
     flipState: 0
 --- !u!1 &4748471228177660113
@@ -73,7 +74,7 @@ GameObject:
   - component: {fileID: 3869613311220870684}
   m_Layer: 3
   m_Name: TileCollider
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,7 +137,7 @@ GameObject:
   - component: {fileID: 2564686744020402791}
   m_Layer: 3
   m_Name: TileMesh
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
