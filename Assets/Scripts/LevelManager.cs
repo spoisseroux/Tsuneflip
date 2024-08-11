@@ -69,6 +69,7 @@ public class LevelManager : MonoBehaviour
         // find Gameplay UI, get components
         gameplayUI = GameObject.Find("GameplayUI");
         // levelNameText.text = "Level " + level.levelName;
+        livesRemainingText.text = playerDamage.GetLives().ToString();
 
         // find PauseMenu UI and set false
         pauseMenuUI = GameObject.Find("PauseMenuUI");
@@ -110,7 +111,7 @@ public class LevelManager : MonoBehaviour
     private void CheckGameOver(IDealDamage source, int livesLeft)
     {
         Debug.Log("Checking game over");
-        //livesRemainingText.text = livesLeft.ToString(); push lives to UI
+        livesRemainingText.text = livesLeft.ToString(); // push lives to UI
         if (livesLeft <= 0)
         {
             //HandleLevelLoss();

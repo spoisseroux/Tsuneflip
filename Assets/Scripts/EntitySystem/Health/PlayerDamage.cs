@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDamage : MonoBehaviour, ITakeDamage, IDealDamage /* is the second interface necessary? could just do two hitboxes */
+public class PlayerDamage : MonoBehaviour, ITakeDamage /* is the second interface necessary? could just do two hitboxes */
 {
     // total lives
     [SerializeField] private int lives;
@@ -22,13 +22,11 @@ public class PlayerDamage : MonoBehaviour, ITakeDamage, IDealDamage /* is the se
 
     private void Awake()
     {
-        SetLives(3);
+        SetLives(1); // can be changed later for more lives
     }
 
 
     // interface implementations
-    public int hitDamage { get => hitDamage; set => hitDamage = value; }
-
     public void TakeDamage(IDealDamage damager)
     {
         // don't hurt urself pls
@@ -45,12 +43,17 @@ public class PlayerDamage : MonoBehaviour, ITakeDamage, IDealDamage /* is the se
     public void SetLives(int value)
     {
         lives = value;
-        OnLivesNumberChange?.Invoke(this, lives);
+        OnLivesNumberChange?.Invoke(null, lives);
     }
 
     public void GainALife()
     {
         // add a life
         lives++;
+    }
+
+    public int GetLives()
+    {
+        return lives;
     }
 }
