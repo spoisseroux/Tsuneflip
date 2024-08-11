@@ -1164,10 +1164,7 @@ MonoBehaviour:
   movementRightVector: {x: 0, y: 0, z: 0}
   movementForwardVector: {x: 0, y: 0, z: 0}
   movementUpVector: {x: 0, y: 0, z: 0}
-  footCollider: {fileID: 659074400}
-  deathLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  footCollider: {fileID: 0}
 --- !u!143 &659074405
 CharacterController:
   m_ObjectHideFlags: 0
