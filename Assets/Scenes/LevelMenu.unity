@@ -2782,7 +2782,7 @@ MonoBehaviour:
   transitioner: {fileID: 1512126950}
   levelPreviewPanel: {fileID: 6843635180716508428}
   levelNameText: {fileID: 1535675153228304344}
-  levelDescriptionText: {fileID: 8285234339716429150}
+  levelBestTimeText: {fileID: 8285234339716429150}
   startButton: {fileID: 8682089965299940916}
   gridPreview: {fileID: 1151913562}
   gridPreviewCam: {fileID: 2140336580}
