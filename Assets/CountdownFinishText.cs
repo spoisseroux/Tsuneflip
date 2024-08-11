@@ -58,6 +58,7 @@ public class CountdownFinishText : MonoBehaviour
 
     public IEnumerator CountdownCoroutine()
     {
+        Debug.Log("in countdown");
         countdownText.enabled = true;
         string[] countdownValues = { "3", "2", "1", "Go!" };
 

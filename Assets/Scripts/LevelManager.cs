@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // maybe a singleton? in case we actually load new scenes and instantiate everything
 public class LevelManager : MonoBehaviour
@@ -96,12 +97,12 @@ public class LevelManager : MonoBehaviour
         pauseMenuUI.SetActive(!pauseMenuUI.activeSelf);
         if (!pause)
         {
-            Cursor.visible = false;
+            LockCursor();
             Time.timeScale = 1;
         }
         else
         {
-            Cursor.visible = true;
+            UnlockCursor();
             Time.timeScale = 0;
         }
     }
@@ -140,14 +141,12 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator StartLevelCoroutine()
     {
-        //Populate goal preview
-        //Load colors to tile material
+        //TODO:Populate goal preview
+        //TODO: Load colors to tile material
         //Load cubemap
         skyboxMaterial.SetTexture("_Cubemap", level.cubemap);
-
-        // Set the _Color shader variable
         skyboxMaterial.SetColor("_Color", level.cubemapColor);
-        
+
 
         //Wait .5 Seconds
         yield return new WaitForSeconds(2f);
@@ -155,10 +154,12 @@ public class LevelManager : MonoBehaviour
         //Check if transitioner is not in transition
 
         //Play Countdown Timer
+        Debug.Log("before countdown");
         yield return StartCoroutine(countdownText.CountdownCoroutine());
         Debug.Log("Countdown finished");
 
         //Start Timer once countdown finishes
+        gameTimer.StartTimer();
 
     }
 
@@ -184,6 +185,7 @@ public class LevelManager : MonoBehaviour
     private void HandleLevelWin()
     {
         // stop timer
+        gameTimer.StopTimer();
         // play things
         // return to menu
     }
@@ -205,5 +207,33 @@ public class LevelManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    public void backToLevelSelect()
+    {
+        Time.timeScale = 1;
+        StartCoroutine(backToLevelSelectCoroutine());
+    }
+
+    public void retryLevel()
+    {
+        Time.timeScale = 1;
+        StartCoroutine(retryLevelCoroutine());
+    }
+
+    private IEnumerator backToLevelSelectCoroutine()
+    {
+        yield return transitioner.ExitTransition();
+        Debug.Log("Going back to level select");
+        //TODO: Change scene name
+        SceneManager.LoadScene("LevelMenu");
+    }
+
+    private IEnumerator retryLevelCoroutine()
+    {
+        yield return transitioner.ExitTransition();
+        Debug.Log("Retrying Level");
+        //TODO: Change scene name
+        SceneManager.LoadScene("SpencerGridTesting 1");
     }
 }
