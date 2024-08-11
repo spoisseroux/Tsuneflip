@@ -61,11 +61,10 @@ public class PlayerMovement : EntityMovement
         // running --> isRunning
         // jump --> isJumping
         // falling --> isFalling
-        // landing --> isLanding (????)
 
-        idle = new IdleState(this, stateMachine, "idle");
+        idle = new IdleState(this, stateMachine, "isIdle");
         run = new RunState(this, stateMachine, "isRunning");
-        jump = new JumpState(this, stateMachine, "jump");
+        jump = new JumpState(this, stateMachine, "isJumping");
 
     }
 
@@ -90,6 +89,7 @@ public class PlayerMovement : EntityMovement
 
         // apply gravity to workingdir
         ApplyGravity(); // can split this into falling and jumping states probably
+        // update state machine logic
         stateMachine.currentState.LogicUpdate();
         /*
         // apply jump to workingdir
@@ -113,19 +113,10 @@ public class PlayerMovement : EntityMovement
     }
     #endregion
 
-
     public override void Jump()
     {
         movementUpVector = Vector3.up * constants.jumpSpeed;
         JumpEvent?.Invoke(transform.position);
-
-        /*
-        if (playerInput.currentInput.jumpMove && grounded)
-        {
-            movementUpVector = Vector3.up * constants.jumpSpeed;
-            JumpEvent?.Invoke(transform.position);
-        }
-        */
     }
 
     public override void Move(Vector2 move)
@@ -164,6 +155,13 @@ public class PlayerMovement : EntityMovement
         {
             movementUpVector = Vector3.up * constants.groundedGravity;
         }
+    }
+
+    public void ApplySpawnPosition(Vector3 spawnPosition, Vector3 spawnRotation)
+    {
+        character.Move(Vector3.zero);
+        transform.rotation = Quaternion.LookRotation(spawnRotation, Vector3.up);
+        character.Move(spawnPosition);
     }
 
     public override bool GroundedCheck()

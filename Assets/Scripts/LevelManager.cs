@@ -28,7 +28,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GridManager grid;
     [SerializeField] LevelData level;
     [SerializeField] Vector3 respawnPosition;
-    [SerializeField] Quaternion respawnRotation;
+    [SerializeField] Vector3 respawnRotation; // quaternion? :/
     [SerializeField] DeathZone deathZone;
 
     // Enemy objects
@@ -47,8 +47,8 @@ public class LevelManager : MonoBehaviour
         playerMovement = player.GetComponent<PlayerMovement>();
 
         // read this from leveldata later i guess
-        respawnPosition = new Vector3(0.5f, 1f, 0.5f);
-        respawnRotation = Quaternion.identity;
+        respawnPosition = new Vector3(0.5f, 1.5f, 0.5f);
+        respawnRotation = new Vector3(0.5f, 0f, 0.5f);
 
         // find Grid, get components
         level = LevelMenuManager.loaded; // STATIC VARIABLE, READ FOR PERSISTENT MEMORY ACROSS SCENES
@@ -96,10 +96,12 @@ public class LevelManager : MonoBehaviour
 
     private void CheckGameOver(IDealDamage source, int livesLeft)
     {
-        livesRemainingText.text = livesLeft.ToString();
+        Debug.Log("Checking game over");
+        //livesRemainingText.text = livesLeft.ToString(); push lives to UI
         if (livesLeft <= 0)
         {
-            HandleLevelLoss();
+            //HandleLevelLoss();
+            RespawnPlayer();
         }
         else
         {
@@ -108,15 +110,35 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void StartLevel()
+    {
+        // PUT PREVIEW IN AWAKE()
+
+        // Stuff to do here
+        // run player spawn routine (shader, etc.)
+
+        // enable player input
+
+        // start timer
+
+        // start enemy spawner routine or something idk yet
+    }
+
     private void RespawnPlayer()
     {
+
         // disable playermovement for a coroutine?
 
         // play a shader to simulate fading into position
 
+        // change player state?
+
         // spawn in player
-        player.transform.position = respawnPosition;
-        player.transform.rotation = respawnRotation;
+        Debug.Log("position player");
+        // 1. move to origin
+        // 2. set desired rotation
+        // 3. move to desired spawn location
+        playerMovement.ApplySpawnPosition(respawnPosition, respawnRotation);
 
         // re-enable playermovement
     }

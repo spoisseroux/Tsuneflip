@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerDamage : MonoBehaviour, ITakeDamage, IDealDamage /* is the second interface necessary? could just do two hitboxes */
 {
     // total lives
-    private int lives;
+    [SerializeField] private int lives;
 
     // event for health change, communicates to the (for example) UI, Level Manager
     public delegate void LivesChangeHandler(IDealDamage source, int newHealth);
@@ -37,7 +37,7 @@ public class PlayerDamage : MonoBehaviour, ITakeDamage, IDealDamage /* is the se
             return;
         }
         // take away a life
-        Debug.Log("I " + this.name + " was hit by " + damager);
+        //Debug.Log("I " + this.name + " was hit by " + damager.ToString());
         lives--;
         OnLivesNumberChange?.Invoke(damager, lives); // game manager, UI, etc. reacts to info
     }
