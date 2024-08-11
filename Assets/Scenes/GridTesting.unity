@@ -1157,17 +1157,14 @@ MonoBehaviour:
   facingDir: {x: 0, y: 0, z: 0, w: 0}
   constants: {fileID: 11400000, guid: cf3917428b6d84c9594883b48786eedd, type: 2}
   playerInput: {fileID: 659074406}
-  character: {fileID: 0}
+  character: {fileID: 659074405}
   thirdPersonCamera: {fileID: 994780465}
   currentDirection: {x: 0, y: 0, z: 0}
   workingDirection: {x: 0, y: 0, z: 0}
   movementRightVector: {x: 0, y: 0, z: 0}
   movementForwardVector: {x: 0, y: 0, z: 0}
   movementUpVector: {x: 0, y: 0, z: 0}
-  footCollider: {fileID: 659074400}
-  deathLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  footCollider: {fileID: 0}
 --- !u!143 &659074405
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1297,6 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae0ecbfbaf164485d9c00e3dcb7f804f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lives: 0
 --- !u!1 &689309226
 GameObject:
   m_ObjectHideFlags: 0
@@ -3049,7 +3047,7 @@ MonoBehaviour:
   grid: {fileID: 393500093}
   level: {fileID: 0}
   respawnPosition: {x: 0, y: 0, z: 0}
-  respawnRotation: {x: 0, y: 0, z: 0, w: 0}
+  respawnRotation: {x: 0, y: 0, z: 0}
   deathZone: {fileID: 0}
 --- !u!4 &2026673316
 Transform:
