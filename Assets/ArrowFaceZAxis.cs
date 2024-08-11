@@ -25,7 +25,8 @@ public class ArrowFaceZAxis : MonoBehaviour
         // Maintain the position relative to the player's position without considering rotation
         transform.position = player.position + bobbingPosition;
 
-        // Keep the object facing the global Z-axis
-        transform.rotation = Quaternion.LookRotation(Vector3.forward);
+        // Keep the object facing the global Z-axis with a fixed 90-degree rotation on the x-axis
+        Quaternion rotation = Quaternion.Euler(90f, 0f, 0f) * Quaternion.LookRotation(Vector3.forward);
+        transform.rotation = rotation;
     }
 }
