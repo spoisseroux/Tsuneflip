@@ -8,10 +8,18 @@ public class PreviewCameraController : MonoBehaviour
     [SerializeField] private float minZoomDistance = 10f; // Minimum distance the camera can zoom in
     [SerializeField] private float maxZoomDistance = 1000f; // Maximum distance the camera can zoom out
     [SerializeField] private float zoomSpeed = 10f; // Speed at which the camera zooms in/out
+    private float targetCameraDistance; // The target distance for the camera
+    private float zoomVelocity = 0f; // Used for SmoothDamp
 
     private Transform cameraPivot; // The pivot point for the camera
     private Vector3 gridMidpoint;
     private float cameraDistance;
+
+    private void Start()
+    {
+        // Initialize the target distance to the initial camera distance
+        targetCameraDistance = cameraDistance;
+    }
 
     public void SetGridMidpointAndSize(Vector3 gridMidpoint, int rows, int columns, float tileSize)
     {
@@ -71,9 +79,15 @@ public class PreviewCameraController : MonoBehaviour
         // Get the scroll wheel input
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
 
-        // Adjust the camera distance based on the scroll input
-        cameraDistance -= scrollInput * zoomSpeed;
-        cameraDistance = Mathf.Clamp(cameraDistance, minZoomDistance, maxZoomDistance);
+        // Adjust the target camera distance based on the scroll input
+        targetCameraDistance -= scrollInput * zoomSpeed;
+        targetCameraDistance = Mathf.Clamp(targetCameraDistance, minZoomDistance, maxZoomDistance);
+
+        // Smoothly transition to the target camera distance using SmoothDamp
+        cameraDistance = Mathf.SmoothDamp(cameraDistance, targetCameraDistance, ref zoomVelocity, 0.2f);
+
+        // Alternatively, you could use Lerp for a different easing effect:
+        // cameraDistance = Mathf.Lerp(cameraDistance, targetCameraDistance, Time.deltaTime * zoomSpeed);
 
         // Update the camera's position
         previewCamera.localPosition = new Vector3(0, 0, -cameraDistance);

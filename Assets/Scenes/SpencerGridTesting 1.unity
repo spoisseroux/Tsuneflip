@@ -939,7 +939,7 @@ MonoBehaviour:
   previewCamera: {fileID: 163139827}
   minZoomDistance: 10
   maxZoomDistance: 50
-  zoomSpeed: 10
+  zoomSpeed: 30
 --- !u!1 &165158360
 GameObject:
   m_ObjectHideFlags: 0
@@ -5522,7 +5522,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level Name
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9949555c3ef3f8b4080d15c82b3986d1, type: 2}
   m_sharedMaterial: {fileID: 1875982535719754914, guid: 9949555c3ef3f8b4080d15c82b3986d1,
