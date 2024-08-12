@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15df164796d55447e85f2298fec45c6a, type: 3}
+  m_Name: Ehime
+  m_EditorClassIdentifier: 
+  worldName: Ehime
+  worldFolderName: EhimeData
+  worldCubemap: {fileID: 8900000, guid: 466a9a0b54dfc490cb781c529ece2939, type: 2}
+  worldCubemapColor: {r: 0.005784976, g: 0.24528301, b: 0.058684222, a: 0}

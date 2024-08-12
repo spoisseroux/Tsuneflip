@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2640dff0a93ba426a89abd5ea9747e8c, type: 3}
+  m_Name: EhimeLevel2
+  m_EditorClassIdentifier: 
+  levelName: Level 2
+  tileSize: 1
+  rows: 4
+  columns: 8
+  goalDataArray:
+    rows: 4
+    columns: 8
+    array: 0000000000000000000000000100000002000000000000000000000000000000010000000100000001000000020000000100000001000000010000000100000001000000010000000100000001000000020000000100000001000000010000000000000000000000000000000200000001000000000000000000000000000000
+  tileColorTop: {r: 0.003921569, g: 0.24705882, b: 0.05882353, a: 0}
+  tileColorBottom: {r: 0.7254902, g: 0.6313726, b: 0, a: 0}
+  cubemap: {fileID: 8900000, guid: 466a9a0b54dfc490cb781c529ece2939, type: 2}
+  cubemapColor: {r: 0.003921569, g: 0.24705882, b: 0.05882353, a: 0}
+  bestTime: 3.4028235e+38
