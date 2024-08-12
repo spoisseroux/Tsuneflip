@@ -19,9 +19,9 @@ MonoBehaviour:
   goalDataArray:
     rows: 2
     columns: 4
-    array: 0100000002000000020000000200000002000000020000000200000001000000
+    array: 0100000002000000020000000100000001000000020000000200000001000000
   tileColorTop: {r: 0.003921569, g: 0.24705882, b: 0.05882353, a: 0}
   tileColorBottom: {r: 0.7254902, g: 0.6313726, b: 0, a: 0}
   cubemap: {fileID: 8900000, guid: 466a9a0b54dfc490cb781c529ece2939, type: 2}
-  cubemapColor: {r: 0.003921569, g: 0.24705882, b: 0.05882353, a: 0}
-  bestTime: 3.4028235e+38
+  cubemapColor: {r: 0.69411767, g: 1, b: 0.78431374, a: 0}
+  bestTime: 7.457258

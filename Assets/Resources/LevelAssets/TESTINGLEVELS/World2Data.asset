@@ -15,4 +15,4 @@ MonoBehaviour:
   worldName: Fire World
   worldFolderName: World2
   worldCubemap: {fileID: 8900000, guid: 466a9a0b54dfc490cb781c529ece2939, type: 2}
-  worldCubemapColor: {r: 0.8987206, g: 0.6525454, b: 0.9811321, a: 0}
+  worldCubemapColor: {r: 0.98039216, g: 0.6509804, b: 0.7473393, a: 0}

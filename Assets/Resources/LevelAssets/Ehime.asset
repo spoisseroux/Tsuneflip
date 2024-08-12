@@ -15,4 +15,4 @@ MonoBehaviour:
   worldName: Ehime
   worldFolderName: EhimeData
   worldCubemap: {fileID: 8900000, guid: 466a9a0b54dfc490cb781c529ece2939, type: 2}
-  worldCubemapColor: {r: 0.005784976, g: 0.24528301, b: 0.058684222, a: 0}
+  worldCubemapColor: {r: 0.69411767, g: 1, b: 0.78431374, a: 0}
