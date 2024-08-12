@@ -59,6 +59,25 @@ public class LevelManager : MonoBehaviour
 
     // Enemy objects
 
+    //TODO: FMod
+    private FMOD.Studio.EventInstance playLevelMusic;
+
+    private FMOD.Studio.EventInstance playDeath;
+    private FMOD.Studio.EventInstance playWin;
+
+    void FModStarter() {
+        playLevelMusic = FMODUnity.RuntimeManager.CreateInstance("event:/PlayLevelMusic");
+        playLevelMusic.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+        playDeath = FMODUnity.RuntimeManager.CreateInstance("event:/PlayDeath");
+        playDeath.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        
+        playWin = FMODUnity.RuntimeManager.CreateInstance("event:/PlayWin");
+        playWin.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+
+    }
+
     void Update()
     {
         //Quick fix to freeze player on win sorry
@@ -68,6 +87,7 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log("Level manager Awake");
         //Get Results Screen Texts
+        FModStarter();
         resultsLevelNameText = resultsScreen.transform.Find("LevelName").GetComponent<TextMeshProUGUI>();
         resultsTimeText = resultsScreen.transform.Find("InfoHolder/TimeHolder/Time").GetComponent<TextMeshProUGUI>();
         resultsBestTimeText = resultsScreen.transform.Find("InfoHolder/BestTimeHolder/BestTime").GetComponent<TextMeshProUGUI>();
@@ -140,6 +160,8 @@ public class LevelManager : MonoBehaviour
     private void CheckGameOver(IDealDamage source, int livesLeft)
     {
         Debug.Log("Checking game over");
+        playDeath.start();
+        playDeath.release();
         StartCoroutine(retryLevelCoroutine()); //Just reload the level
         /*
         livesRemainingText.text = livesLeft.ToString(); // push lives to UI
@@ -161,25 +183,10 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log("in startlevel");
         StartCoroutine(StartLevelCoroutine());
-        // PUT PREVIEW IN AWAKE()
-
-        // Stuff to do here
-        // run player spawn routine (shader, etc.)
-
-        // enable player input
-
-        // start timer
-
-        // start enemy spawner routine or something idk yet
-
     }
 
     private IEnumerator StartLevelCoroutine()
     {
-        //TODO:Populate goal preview
-        //TODO: Load colors to tile material
-        //Load cubemap
-        //TogglePauseMenu(false);
         Debug.Log("in startlevelcoroutine");
         gridPreviewManager.goal = level;
         //gridPreviewCamera.levelData = level;
@@ -205,6 +212,10 @@ public class LevelManager : MonoBehaviour
         //Start Timer once countdown finishes
         playerMovement.ToggleMovementInput(false);
         gameTimer.StartTimer();
+
+        //Fmod start level music
+        playLevelMusic.start();
+        //playLevelMusic.release();
 
     }
 

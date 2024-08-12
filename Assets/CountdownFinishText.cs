@@ -6,6 +6,9 @@ public class CountdownFinishText : MonoBehaviour
 {
     public TextMeshProUGUI countdownText;
 
+    private FMOD.Studio.EventInstance playCountdownTick;
+    private FMOD.Studio.EventInstance playCountdownStart;
+
     private void Start()
     {
         if (countdownText == null)
@@ -14,6 +17,12 @@ public class CountdownFinishText : MonoBehaviour
         }
         countdownText.enabled = false;
         //Countdown();
+
+        playCountdownTick = FMODUnity.RuntimeManager.CreateInstance("event:/PlayCountdownTick");
+        playCountdownTick.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+        playCountdownStart = FMODUnity.RuntimeManager.CreateInstance("event:/PlayCountdownStart");
+        playCountdownStart.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     public void Finish()
@@ -87,6 +96,16 @@ public class CountdownFinishText : MonoBehaviour
 
                 yield return null;
             }
+
+            if (value != "Go!") {
+                Debug.Log("In countdown tick");
+                playCountdownTick.start();
+                playCountdownTick.release();
+            } else {
+                playCountdownStart.start();
+                playCountdownStart.release();
+            }
+            
 
             // Wait for another half a second
             yield return new WaitForSeconds(0.5f);

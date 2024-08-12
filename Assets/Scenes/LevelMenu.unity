@@ -342,11 +342,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1201229367
-      Data2: 1143146857
-      Data3: -944265838
-      Data4: -285717162
-    Path: event:/ArrowDown
+      Data1: 565280853
+      Data2: 1243384446
+      Data3: -665713256
+      Data4: 235374118
+    Path: event:/ClickA
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -400,11 +400,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -549587672
-      Data2: 1185435120
-      Data3: -256067186
-      Data4: 493276732
-    Path: event:/ArrowUp
+      Data1: 565280853
+      Data2: 1243384446
+      Data3: -665713256
+      Data4: 235374118
+    Path: event:/ClickA
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -982,11 +982,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -549587672
-      Data2: 1185435120
-      Data3: -256067186
-      Data4: 493276732
-    Path: event:/ArrowUp
+      Data1: 565280853
+      Data2: 1243384446
+      Data3: -665713256
+      Data4: 235374118
+    Path: event:/ClickA
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -1691,11 +1691,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1201229367
-      Data2: 1143146857
-      Data3: -944265838
-      Data4: -285717162
-    Path: event:/ArrowDown
+      Data1: 565280853
+      Data2: 1243384446
+      Data3: -665713256
+      Data4: 235374118
+    Path: event:/ClickA
   Event: 
   PlayEvent: 0
   StopEvent: 0
