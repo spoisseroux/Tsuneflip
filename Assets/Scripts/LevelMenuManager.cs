@@ -369,7 +369,7 @@ public class LevelMenuManager : MonoBehaviour
         }
         else
         {
-            levelBestTimeText.text = "Best: --:--";
+            levelBestTimeText.text = "Best: --:--:--";
         }
 
         gridPreviewCam.levelData = level;

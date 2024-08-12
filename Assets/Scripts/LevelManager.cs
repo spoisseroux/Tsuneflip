@@ -59,6 +59,10 @@ public class LevelManager : MonoBehaviour
 
     // Enemy objects
 
+    void Update()
+    {
+        //Quick fix to freeze player on win sorry
+    }
 
     private void Awake()
     {
@@ -136,6 +140,8 @@ public class LevelManager : MonoBehaviour
     private void CheckGameOver(IDealDamage source, int livesLeft)
     {
         Debug.Log("Checking game over");
+        StartCoroutine(retryLevelCoroutine()); //Just reload the level
+        /*
         livesRemainingText.text = livesLeft.ToString(); // push lives to UI
         if (livesLeft <= 0)
         {
@@ -147,6 +153,8 @@ public class LevelManager : MonoBehaviour
             // spawn depending on source of damage???
             RespawnPlayer();
         }
+        */
+
     }
 
     private void StartLevel()
@@ -222,6 +230,7 @@ public class LevelManager : MonoBehaviour
     private void HandleLevelWin()
     {
         // stop timer
+        playerMovement.enabled = false;
         StartCoroutine(HandleLevelWinCoroutine());
         // play things
         // return to menu
