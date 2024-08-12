@@ -60,22 +60,19 @@ public class LevelManager : MonoBehaviour
     // Enemy objects
 
     //TODO: FMod
-    private FMOD.Studio.EventInstance playLevelMusic;
 
     private FMOD.Studio.EventInstance playDeath;
-    private FMOD.Studio.EventInstance playWin;
+    private FMOD.Studio.EventInstance playRank;
+    public LevelMusicHandler levelMusic;
+
 
     void FModStarter() {
-        playLevelMusic = FMODUnity.RuntimeManager.CreateInstance("event:/PlayLevelMusic");
-        playLevelMusic.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-
         playDeath = FMODUnity.RuntimeManager.CreateInstance("event:/PlayDeath");
         playDeath.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-        
-        playWin = FMODUnity.RuntimeManager.CreateInstance("event:/PlayWin");
-        playWin.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+    
 
-
+        playRank = FMODUnity.RuntimeManager.CreateInstance("event:/PlayRank");
+        playRank.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     void Update()
@@ -162,6 +159,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Checking game over");
         playDeath.start();
         playDeath.release();
+        levelMusic.FadeOutAndStop();
         StartCoroutine(retryLevelCoroutine()); //Just reload the level
         /*
         livesRemainingText.text = livesLeft.ToString(); // push lives to UI
@@ -209,12 +207,12 @@ public class LevelManager : MonoBehaviour
         yield return StartCoroutine(countdownText.CountdownCoroutine());
         Debug.Log("Countdown finished");
 
+        levelMusic.PlayEvent("event:/PlayLevelMusic");
+
         //Start Timer once countdown finishes
         playerMovement.ToggleMovementInput(false);
         gameTimer.StartTimer();
 
-        //Fmod start level music
-        playLevelMusic.start();
         //playLevelMusic.release();
 
     }
@@ -249,6 +247,8 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator HandleLevelWinCoroutine()
     {
+        levelMusic.fadeOutDuration = 0.1f;
+        levelMusic.FadeOutAndStop();
         playerMovement.ToggleMovementInput(true);
         gameTimer.StopTimer();
         yield return StartCoroutine(countdownText.FinishCoroutine());
@@ -281,6 +281,8 @@ public class LevelManager : MonoBehaviour
         resultsBestTimeText.color = resultsTextColor;
         yield return StartCoroutine(gameTimer.AnimateTimeResult(gameTimer.GetBestTime(), resultsBestTimeText));
         yield return new WaitForSeconds(0.3f);
+        playRank.start();
+        playRank.release();
         resultsRankText.color = resultsTextColor;
         resultsRankText.text = "B";
         //STEP THRU EACH RESULT TEXT BOX
@@ -312,12 +314,14 @@ public class LevelManager : MonoBehaviour
 
     public void backToLevelSelect()
     {
+        levelMusic.FadeOutAndStop();
         Time.timeScale = 1;
         StartCoroutine(backToLevelSelectCoroutine());
     }
 
     public void retryLevel()
     {
+        levelMusic.FadeOutAndStop();
         Time.timeScale = 1;
         StartCoroutine(retryLevelCoroutine());
     }

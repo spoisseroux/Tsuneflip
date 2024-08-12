@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class StartMenuManager : MonoBehaviour
 {
+    public LevelMusicHandler levelMusic;
     // Start is called before the first frame update
     void Start()
     {
+        levelMusic.PlayEvent("event:/PlayStartMenuMusic");
         UnlockCursor();
     }
 

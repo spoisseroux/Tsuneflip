@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using FMODUnity;
+using FMOD.Studio;
 
 public class GameTimer : MonoBehaviour
 {
@@ -15,6 +17,9 @@ public class GameTimer : MonoBehaviour
     private float currentTime;
     private bool isRunning = false;
     public float animationDuration = 0.5f;
+
+    private EventInstance playTimeAnimation;
+
 
     public void Start()
     {
@@ -101,8 +106,12 @@ public class GameTimer : MonoBehaviour
         float finalTimeInSeconds = finalMinutes * 60 + finalSeconds + finalMilliseconds / 100f;
         float timer = 0f;
 
+        playTimeAnimation = FMODUnity.RuntimeManager.CreateInstance("event:/PlayTimeAnimation");
+        playTimeAnimation.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
         while (timer < animationDuration)
         {
+            playTimeAnimation.start();
             timer += Time.deltaTime;
             float animatedTime = Mathf.Lerp(0, finalTimeInSeconds, timer / animationDuration);
             textToUpdate.text = FormatTime(animatedTime);
@@ -111,6 +120,7 @@ public class GameTimer : MonoBehaviour
 
         // Ensure the final value is exactly the final formatted time
         textToUpdate.text = finalFormattedTime;
+        playTimeAnimation.release();
     }
 
     private string FormatTime(float time)

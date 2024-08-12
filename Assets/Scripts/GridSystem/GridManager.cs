@@ -104,7 +104,7 @@ public class GridManager : MonoBehaviour
         Tile tileToFlip = GetTileFromWorldSpace(position);
         tileToFlip.FlipTile();
         playTileFlip.start();
-        playTileFlip.release();
+        //playTileFlip.release();
     }
 
     // resolve a given position in world space to a Tile in the Grid, helper function for determining where on Grid events should happen

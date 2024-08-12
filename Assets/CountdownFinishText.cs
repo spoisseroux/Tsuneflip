@@ -8,6 +8,7 @@ public class CountdownFinishText : MonoBehaviour
 
     private FMOD.Studio.EventInstance playCountdownTick;
     private FMOD.Studio.EventInstance playCountdownStart;
+    private FMOD.Studio.EventInstance playWin;
 
     private void Start()
     {
@@ -23,6 +24,9 @@ public class CountdownFinishText : MonoBehaviour
 
         playCountdownStart = FMODUnity.RuntimeManager.CreateInstance("event:/PlayCountdownStart");
         playCountdownStart.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+        playWin = FMODUnity.RuntimeManager.CreateInstance("event:/PlayWin");
+        playWin.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     public void Finish()
@@ -44,6 +48,9 @@ public class CountdownFinishText : MonoBehaviour
         countdownText.text = "Finish";
         countdownText.alpha = 0f;
         countdownText.transform.localScale = Vector3.one;
+
+        playWin.start();
+        playWin.release();
 
         float duration = 0.2f;
         float time = 0f;
@@ -98,9 +105,10 @@ public class CountdownFinishText : MonoBehaviour
             }
 
             if (value != "Go!") {
-                Debug.Log("In countdown tick");
-                playCountdownTick.start();
-                playCountdownTick.release();
+                var tickInstance = FMODUnity.RuntimeManager.CreateInstance("event:/PlayCountdownTick");
+                tickInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+                tickInstance.start();
+                tickInstance.release();
             } else {
                 playCountdownStart.start();
                 playCountdownStart.release();

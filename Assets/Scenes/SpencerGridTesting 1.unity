@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: 81550000}
   - component: {fileID: 81549999}
   - component: {fileID: 81549998}
+  - component: {fileID: 81550001}
   m_Layer: 5
   m_Name: RetryButton
   m_TagString: Untagged
@@ -328,6 +329,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 81550001}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &81549999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,6 +379,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81549996}
   m_CullTransparentMesh: 1
+--- !u!114 &81550001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81549996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 565280853
+      Data2: 1243384446
+      Data3: -665713256
+      Data4: 235374118
+    Path: event:/ClickA
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &91819177
 GameObject:
   m_ObjectHideFlags: 0
@@ -3905,6 +3949,7 @@ GameObject:
   - component: {fileID: 1094389075}
   - component: {fileID: 1094389074}
   - component: {fileID: 1094389073}
+  - component: {fileID: 1094389076}
   m_Layer: 5
   m_Name: LevelSelectButton
   m_TagString: Untagged
@@ -3988,6 +4033,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1094389076}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1094389074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4026,6 +4083,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094389071}
   m_CullTransparentMesh: 1
+--- !u!114 &1094389076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094389071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 565280853
+      Data2: 1243384446
+      Data3: -665713256
+      Data4: 235374118
+    Path: event:/ClickA
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1094436498
 GameObject:
   m_ObjectHideFlags: 0
@@ -6749,6 +6837,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2026673316}
   - component: {fileID: 2026673315}
+  - component: {fileID: 2026673317}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -6795,6 +6884,7 @@ MonoBehaviour:
   gridPreviewImage: {fileID: 616783558}
   resultsCamera: {fileID: 1868921430}
   uiCanvas: {fileID: 1334471732591207987}
+  levelMusic: {fileID: 2026673317}
 --- !u!4 &2026673316
 Transform:
   m_ObjectHideFlags: 0
@@ -6810,6 +6900,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2026673317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026673314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5fb6d70c07834ccb903b618d904121d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2041734120
 GameObject:
   m_ObjectHideFlags: 0
