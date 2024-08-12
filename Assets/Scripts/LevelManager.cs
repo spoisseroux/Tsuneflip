@@ -269,7 +269,7 @@ public class LevelManager : MonoBehaviour
         DestroyAllInstancesByTag("Tile");
         yield return transitioner.EnterTransition();
 
-        resultsTextColor = level.cubemapColor;
+        resultsTextColor = level.tileColorTop;
         resultsTextColor.a = 1f;
 
         resultsLevelNameText.text = level.levelName;

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+
 
 public class LevelMenuManager : MonoBehaviour
 {
@@ -97,6 +99,7 @@ public class LevelMenuManager : MonoBehaviour
             if (levelDataHolder != null)
             {
                 ShowLevelPreview(levelDataHolder.levelData);
+                //TODO: 
             }
         }
     }
@@ -133,6 +136,9 @@ public class LevelMenuManager : MonoBehaviour
             Button levelButton = Instantiate(levelButtonPrefab, levelButtonContainer);
             TMP_Text buttonText = levelButton.GetComponentInChildren<TMP_Text>();
             buttonText.text = level.levelName;
+
+            //TODO:
+            //level.bestTime = float.MaxValue;
 
             // Store LevelData in the button itself
             LevelDataHolder dataHolder = levelButton.gameObject.AddComponent<LevelDataHolder>();
@@ -362,9 +368,9 @@ public class LevelMenuManager : MonoBehaviour
     {
         levelPreviewPanel.SetActive(true);
         levelNameText.text = level.levelName;
-
-        if (level.bestTime != float.MaxValue)
+        if (level.bestTime != float.MaxValue && level.bestTime != 1000000f)
         {
+            Debug.Log(level.bestTime);
             //set best time
             TimeSpan timeSpan = TimeSpan.FromSeconds(level.bestTime);
             int milliseconds = (int)(timeSpan.Milliseconds / 10); // Convert to two digits

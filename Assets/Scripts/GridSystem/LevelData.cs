@@ -15,6 +15,7 @@ public class LevelData : ScriptableObject
     public Cubemap cubemap;
     public Color cubemapColor;
     public float bestTime = float.MaxValue;
+    
     // probably need to add a respawn transform here
 
     private void OnValidate()

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15df164796d55447e85f2298fec45c6a, type: 3}
-  m_Name: Ehime
+  m_Name: 3_Ehime
   m_EditorClassIdentifier: 
   worldName: Ehime
   worldFolderName: EhimeData
   worldCubemap: {fileID: 8900000, guid: 466a9a0b54dfc490cb781c529ece2939, type: 2}
-  worldCubemapColor: {r: 0.69411767, g: 1, b: 0.78431374, a: 0}
+  worldCubemapColor: {r: 0.5801887, g: 1, b: 0.8980392, a: 0}

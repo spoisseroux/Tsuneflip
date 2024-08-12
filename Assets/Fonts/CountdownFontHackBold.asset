@@ -389,6 +389,21 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
+  - m_Index: 216
+    m_Metrics:
+      m_Width: 39.59375
+      m_Height: 50.5
+      m_HorizontalBearingX: 7.03125
+      m_HorizontalBearingY: 49.21875
+      m_HorizontalAdvance: 54.1875
+    m_GlyphRect:
+      m_X: 803
+      m_Y: 95
+      m_Width: 40
+      m_Height: 52
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 227
     m_Metrics:
       m_Width: 47.15625
@@ -506,21 +521,6 @@ MonoBehaviour:
       m_Y: 95
       m_Width: 52
       m_Height: 66
-    m_Scale: 1
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-  - m_Index: 216
-    m_Metrics:
-      m_Width: 39.59375
-      m_Height: 50.5
-      m_HorizontalBearingX: 7.03125
-      m_HorizontalBearingY: 49.21875
-      m_HorizontalAdvance: 54.1875
-    m_GlyphRect:
-      m_X: 803
-      m_Y: 95
-      m_Width: 40
-      m_Height: 52
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
@@ -642,16 +642,16 @@ MonoBehaviour:
     m_GlyphIndex: 206
     m_Scale: 1
   - m_ElementType: 1
+    m_Unicode: 117
+    m_GlyphIndex: 216
+    m_Scale: 1
+  - m_ElementType: 1
     m_Unicode: 118
     m_GlyphIndex: 227
     m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 8230
     m_GlyphIndex: 588
-    m_Scale: 1
-  - m_ElementType: 1
-    m_Unicode: 117
-    m_GlyphIndex: 216
     m_Scale: 1
   m_AtlasTextures:
   - {fileID: 6316671513146734596}
@@ -1022,7 +1022,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0
+    - _OutlineWidth: 0.234
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9
@@ -1052,9 +1052,9 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 1}
-    - _GlowColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 0.5}
+    - _GlowColor: {r: 0, g: 0, b: 0, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
-    - _OutlineColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0.28235295}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0.28235295}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
