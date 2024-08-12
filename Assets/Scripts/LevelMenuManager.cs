@@ -39,11 +39,13 @@ public class LevelMenuManager : MonoBehaviour
 
     // Reference to the UI Cubemap material
     public Material uiCubemapMat;
+    public LevelMusicHandler levelMusic;
 
 
     void Start()
     {
         UnlockCursor();
+        levelMusic.PlayEvent("event:/PlayLevelMenuMusic");
         levelPreviewPanel.SetActive(false);
         LoadWorlds();
         SetupButtonListeners();
@@ -343,6 +345,7 @@ public class LevelMenuManager : MonoBehaviour
     public void LoadLevel(LevelData level)
     {
         StartCoroutine(LoadLevelCoroutine(level));
+        levelMusic.FadeOutAndStop();
     }
 
     //TODO: PUT LEVEL DATA PIPING HERE

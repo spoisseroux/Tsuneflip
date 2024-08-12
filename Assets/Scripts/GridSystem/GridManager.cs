@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class GridManager : MonoBehaviour
 {
+    private FMOD.Studio.EventInstance playTileFlip;
+
     // the Grid being rendered
     private GameObject[,] grid;
     // could make another object here just storing tiles? then we can avoid (row x col) number of GetComponent<Tile>() calls
@@ -31,6 +33,9 @@ public class GridManager : MonoBehaviour
     #region Monobehaviour Functions
     private void Awake()
     {
+        playTileFlip = FMODUnity.RuntimeManager.CreateInstance("event:/PlayTileFlip");
+        playTileFlip.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
         //InitializeGrid(); // for debug
         player.JumpEvent += RequestTileFlip;
     }
@@ -98,6 +103,8 @@ public class GridManager : MonoBehaviour
     {
         Tile tileToFlip = GetTileFromWorldSpace(position);
         tileToFlip.FlipTile();
+        playTileFlip.start();
+        //playTileFlip.release();
     }
 
     // resolve a given position in world space to a Tile in the Grid, helper function for determining where on Grid events should happen

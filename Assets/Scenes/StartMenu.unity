@@ -440,7 +440,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4166240758020824872, guid: 378f1104bf20c41209ec10a5733e6e80, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -691,8 +692,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1323821338}
   - component: {fileID: 1323821337}
-  - component: {fileID: 1323821336}
   - component: {fileID: 1323821335}
+  - component: {fileID: 1323821339}
   m_Layer: 0
   m_Name: CursorCamera
   m_TagString: Untagged
@@ -744,14 +745,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &1323821336
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323821334}
-  m_Enabled: 1
 --- !u!20 &1323821337
 Camera:
   m_ObjectHideFlags: 0
@@ -818,6 +811,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1323821339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323821334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
 --- !u!1 &1378633947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,9 +1148,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1967684760}
   - component: {fileID: 1967684759}
-  - component: {fileID: 1967684758}
   - component: {fileID: 1967684757}
   - component: {fileID: 1967684761}
+  - component: {fileID: 1967684762}
   m_Layer: 0
   m_Name: PlayerRunningCam
   m_TagString: Untagged
@@ -1196,14 +1202,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &1967684758
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1967684756}
-  m_Enabled: 1
 --- !u!20 &1967684759
 Camera:
   m_ObjectHideFlags: 0
@@ -1291,6 +1289,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1967684762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967684756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
 --- !u!114 &2017326350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1303,6 +1314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cea9635cb6944bb380b603ba299d721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelMusic: {fileID: 5545168773067497859}
 --- !u!4 &21872315071812255
 Transform:
   m_ObjectHideFlags: 0
@@ -1776,6 +1788,7 @@ GameObject:
   - component: {fileID: 2876261364710484596}
   - component: {fileID: 850690154704889545}
   - component: {fileID: 2017326350}
+  - component: {fileID: 5545168773067497859}
   m_Layer: 5
   m_Name: StartMenuCanvas
   m_TagString: Untagged
@@ -2004,6 +2017,18 @@ MonoBehaviour:
       - m_Target: {fileID: 7268304842842356818}
         m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
         m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5545168773067497859}
+        m_TargetAssemblyTypeName: LevelMusicHandler, Assembly-CSharp
+        m_MethodName: FadeOutAndStop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4727,6 +4752,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &5545168773067497859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953382579785719613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5fb6d70c07834ccb903b618d904121d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5624019660194493902
 GameObject:
   m_ObjectHideFlags: 0
