@@ -176,7 +176,7 @@ public class PlayerMovement : EntityMovement
     public override bool GroundedCheck()
     {
         // returns true if grounded
-        return Physics.CheckSphere(transform.position + (Vector3.down * character.radius * 0.7f), character.radius * 0.5f, groundLayer);
+        return Physics.CheckSphere(transform.position + (Vector3.down * character.radius * 0.5f), character.radius * 0.5f, groundLayer);
     }
 
     public void HandleRotation()
@@ -203,5 +203,16 @@ public class PlayerMovement : EntityMovement
     private void SetWorkingDirectionVector()
     {
         workingDirection = movementRightVector + movementForwardVector + movementUpVector;
+    }
+
+
+    public void ToggleMovementInput(bool value)
+    {
+        playerInput.ToggleMovementInput(value);
+        if (value)
+        {
+            workingDirection = Vector3.zero;
+            currentDirection = Vector3.zero;
+        }
     }
 }

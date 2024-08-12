@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 using UnityEngine.SceneManagement;
 
 public class LevelMenuManager : MonoBehaviour
@@ -21,7 +22,7 @@ public class LevelMenuManager : MonoBehaviour
     public TransitionHandler transitioner;
     public GameObject levelPreviewPanel;
     public TMP_Text levelNameText;
-    public TMP_Text levelDescriptionText;
+    public TMP_Text levelBestTimeText;
     public Button startButton;
 
     public GridGoalPreview gridPreview;
@@ -226,17 +227,22 @@ public class LevelMenuManager : MonoBehaviour
             currentWorldIndex = targetIndex;
             UpdateWorldButtonPositions();
 
-            // Load levels for the new current world
+            // Load levels for the new current world and update levelBestTimeText
             WorldData currentWorldData = worlds[currentWorldIndex];
             LoadLevels(currentWorldData, worldButtonContainer.GetChild(currentWorldIndex).GetComponent<Button>());
 
-            // Show preview of the first level of the new world with a delay
+            // Show preview of the first level of the new world
             if (levelButtonContainer.childCount > 0)
             {
-                Invoke("UpdateLevelPreviewAfterScroll", 0.2f); // Adjust the delay as needed
+                LevelDataHolder levelDataHolder = levelButtonContainer.GetChild(0).GetComponent<LevelDataHolder>();
+                if (levelDataHolder != null)
+                {
+                    ShowLevelPreview(levelDataHolder.levelData);
+                }
             }
         }));
     }
+
 
     void UpdateLevelPreviewAfterScroll()
     {
@@ -252,7 +258,7 @@ public class LevelMenuManager : MonoBehaviour
             currentLevelIndex = targetIndex;
             UpdateLevelButtonPositions();
 
-            // Show preview of the current level
+            // Show preview of the current level and update levelBestTimeText
             LevelDataHolder levelDataHolder = levelButtonContainer.GetChild(currentLevelIndex).GetComponent<LevelDataHolder>();
             if (levelDataHolder != null)
             {
@@ -260,6 +266,7 @@ public class LevelMenuManager : MonoBehaviour
             }
         }));
     }
+
 
     IEnumerator AnimateCarousel(Transform container, int startIndex, int targetIndex, System.Action onComplete)
     {
@@ -352,13 +359,26 @@ public class LevelMenuManager : MonoBehaviour
     {
         levelPreviewPanel.SetActive(true);
         levelNameText.text = level.levelName;
+
+        if (level.bestTime != float.MaxValue)
+        {
+            //set best time
+            TimeSpan timeSpan = TimeSpan.FromSeconds(level.bestTime);
+            int milliseconds = (int)(timeSpan.Milliseconds / 10); // Convert to two digits
+            levelBestTimeText.text = string.Format("Best: {0:D2}:{1:D2}:{2:D2}", timeSpan.Minutes, timeSpan.Seconds, milliseconds);
+        }
+        else
+        {
+            levelBestTimeText.text = "Best: --:--:--";
+        }
+
         gridPreviewCam.levelData = level;
         gridPreview.goal = level;
         startButton.onClick.RemoveAllListeners();
         startButton.onClick.AddListener(() => LoadLevel(level));
 
         gridPreview.InitializeGridPreview(level);
-        
+
         // set the static variable for persistence when selecting
         loaded = level;
     }

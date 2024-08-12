@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDamage : MonoBehaviour, ITakeDamage /* is the second interface necessary? could just do two hitboxes */
+public class PlayerDamage : MonoBehaviour, ITakeDamage
 {
     // total lives
     [SerializeField] private int lives;

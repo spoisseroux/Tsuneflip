@@ -9,11 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2441047546148461625}
-  - component: {fileID: 3400889828006518076}
-  - component: {fileID: 390748902568069582}
   m_Layer: 0
-  m_Name: Tile
-  m_TagString: Tile
+  m_Name: TileLevelPreview
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34,33 +32,6 @@ Transform:
   - {fileID: 682806762351859257}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3400889828006518076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2993567531171733788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89fb3b6cdd18e4114b32c0e967f99d7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &390748902568069582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2993567531171733788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c930a454ea3d949a286ac5a0505d09df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grid: {fileID: 0}
-  tile:
-    flipState: 0
 --- !u!1 &4748471228177660113
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,7 +45,7 @@ GameObject:
   - component: {fileID: 3869613311220870684}
   m_Layer: 3
   m_Name: TileCollider
-  m_TagString: Tile
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,7 +108,7 @@ GameObject:
   - component: {fileID: 2564686744020402791}
   m_Layer: 3
   m_Name: TileMesh
-  m_TagString: Tile
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

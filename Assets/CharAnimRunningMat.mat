@@ -7,9 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UI_CubemapMat
-  m_Shader: {fileID: -6465566751694194690, guid: f86b2c62f010c4c4ab2060d11794d1bb,
-    type: 3}
+  m_Name: CharAnimRunningMat
+  m_Shader: {fileID: 4800000, guid: 3ce8c2e136bc13641b706a23aea690a5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,14 +29,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _CubemapCurr:
-        m_Texture: {fileID: 8900000, guid: 5fd5d12f891864dc997cfbb61835a9ae, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _CubemapNext:
-        m_Texture: {fileID: 8900000, guid: 5fd5d12f891864dc997cfbb61835a9ae, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -93,7 +84,6 @@ Material:
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
-    - _BlendFactor: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -110,10 +100,11 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _Opacity: 0.36
     - _Parallax: 0.005
-    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _RedThreshold: 0.99
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -125,13 +116,11 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorCurr: {r: 0.55602527, g: 0.57477015, b: 0.99056596, a: 0}
-    - _ColorNext: {r: 0.55602527, g: 0.57477015, b: 0.990566, a: 0}
-    - _Emission: {r: 0.22641504, g: 0.22641504, b: 0.22641504, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SkyboxColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &6190361825525390352
+--- !u!114 &677853228915962393
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

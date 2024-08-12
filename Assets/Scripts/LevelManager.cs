@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 // maybe a singleton? in case we actually load new scenes and instantiate everything
 public class LevelManager : MonoBehaviour
 {
     // Player objects
+    public CinemachineFreeLook playerCamera;
     [SerializeField] GameObject player;
     [SerializeField] PlayerDamage playerDamage;
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] PlayerInputHandler playerInput;
 
     // Gameplay UI objects
-    [SerializeField] GameObject gameplayUI;
+    //[SerializeField] GameObject gameplayUI;
     [SerializeField] TextMeshProUGUI levelNameText;
     [SerializeField] TextMeshProUGUI livesRemainingText;
     [SerializeField] TextMeshProUGUI timerText;
@@ -37,13 +39,40 @@ public class LevelManager : MonoBehaviour
     public GameTimer gameTimer;
     public CountdownFinishText countdownText;
     public Material skyboxMaterial;
+    public LevelGoalPreview gridPreviewManager;
+    [SerializeField] private PreviewCameraController previewCameraController;
 
+    //Results Screen
+    public GameObject resultsScreen;
+
+    private TextMeshProUGUI resultsLevelNameText;
+    private TextMeshProUGUI resultsTimeText;
+    private TextMeshProUGUI resultsBestTimeText;
+    private TextMeshProUGUI resultsRankText;
+    public Material resultsCubemapMat;
+    public Material defaultSkybox;
+
+    public GameObject gridPreviewImage;
+    private Color resultsTextColor;
+    public Camera resultsCamera;
+    public Canvas uiCanvas;
 
     // Enemy objects
 
+    void Update()
+    {
+        //Quick fix to freeze player on win sorry
+    }
 
     private void Awake()
     {
+        Debug.Log("Level manager Awake");
+        //Get Results Screen Texts
+        resultsLevelNameText = resultsScreen.transform.Find("LevelName").GetComponent<TextMeshProUGUI>();
+        resultsTimeText = resultsScreen.transform.Find("InfoHolder/TimeHolder/Time").GetComponent<TextMeshProUGUI>();
+        resultsBestTimeText = resultsScreen.transform.Find("InfoHolder/BestTimeHolder/BestTime").GetComponent<TextMeshProUGUI>();
+        resultsRankText = resultsScreen.transform.Find("InfoHolder/RankHolder/Rank").GetComponent<TextMeshProUGUI>();
+        resultsScreen.SetActive(false);
         /*
          * Need to make a refactor when it's clear how many of these can be Serialized 
          * and how many need to be instantiated/built at runtime, then found
@@ -55,21 +84,21 @@ public class LevelManager : MonoBehaviour
         player = GameObject.Find("Player");
         playerDamage = player.GetComponent<PlayerDamage>();
         playerMovement = player.GetComponent<PlayerMovement>();
+        playerMovement.ToggleMovementInput(true); // turn off input, will be turned on again when timer hits go
 
         // read this from leveldata later i guess
         respawnPosition = new Vector3(0.5f, 1.5f, 0.5f);
         respawnRotation = new Vector3(0.5f, 0f, 0.5f);
 
         // find Grid, get components
-
         grid = GameObject.Find("Grid").GetComponent<GridManager>();
         grid.InitializeLevelData(level);
         grid.InitializeGrid();
 
         // find Gameplay UI, get components
-        gameplayUI = GameObject.Find("GameplayUI");
+        //gameplayUI = GameObject.Find("GameplayUI");
         // levelNameText.text = "Level " + level.levelName;
-        livesRemainingText.text = playerDamage.GetLives().ToString();
+        //livesRemainingText.text = playerDamage.GetLives().ToString();
 
         // find PauseMenu UI and set false
         pauseMenuUI = GameObject.Find("PauseMenuUI");
@@ -111,6 +140,8 @@ public class LevelManager : MonoBehaviour
     private void CheckGameOver(IDealDamage source, int livesLeft)
     {
         Debug.Log("Checking game over");
+        StartCoroutine(retryLevelCoroutine()); //Just reload the level
+        /*
         livesRemainingText.text = livesLeft.ToString(); // push lives to UI
         if (livesLeft <= 0)
         {
@@ -122,10 +153,13 @@ public class LevelManager : MonoBehaviour
             // spawn depending on source of damage???
             RespawnPlayer();
         }
+        */
+
     }
 
     private void StartLevel()
     {
+        Debug.Log("in startlevel");
         StartCoroutine(StartLevelCoroutine());
         // PUT PREVIEW IN AWAKE()
 
@@ -145,11 +179,20 @@ public class LevelManager : MonoBehaviour
         //TODO:Populate goal preview
         //TODO: Load colors to tile material
         //Load cubemap
+        //TogglePauseMenu(false);
+        Debug.Log("in startlevelcoroutine");
+        gridPreviewManager.goal = level;
+        //gridPreviewCamera.levelData = level;
+
+        Debug.Log("calling init grid preview");
+        gridPreviewManager.InitializeLevelGridPreview(level, previewCameraController);
+
+        //playerMovement.ToggleMovementInput(true);
         skyboxMaterial.SetTexture("_Cubemap", level.cubemap);
         skyboxMaterial.SetColor("_Color", level.cubemapColor);
 
 
-        //Wait .5 Seconds
+        //Wait 2 Seconds
         yield return new WaitForSeconds(2f);
 
         //Check if transitioner is not in transition
@@ -160,6 +203,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Countdown finished");
 
         //Start Timer once countdown finishes
+        playerMovement.ToggleMovementInput(false);
         gameTimer.StartTimer();
 
     }
@@ -186,9 +230,54 @@ public class LevelManager : MonoBehaviour
     private void HandleLevelWin()
     {
         // stop timer
-        gameTimer.StopTimer();
+        playerMovement.enabled = false;
+        StartCoroutine(HandleLevelWinCoroutine());
         // play things
         // return to menu
+    }
+
+    private IEnumerator HandleLevelWinCoroutine()
+    {
+        playerMovement.ToggleMovementInput(true);
+        gameTimer.StopTimer();
+        yield return StartCoroutine(countdownText.FinishCoroutine());
+        yield return transitioner.ExitTransition();
+        PauseCamera();
+        resultsScreen.SetActive(true);
+        ResetSky();
+        //TURN OFF PREVIEW
+        //TURN OFF TIMER TEXT
+        resultsCubemapMat.SetTexture("_CubemapCurr", level.cubemap);
+        resultsCubemapMat.SetColor("_ColorCurr", level.cubemapColor);
+        UnlockCursor();
+        timerText.enabled = false;
+        gridPreviewImage.SetActive(false);
+        resultsCamera.enabled = true;
+        uiCanvas.worldCamera = resultsCamera;
+
+        DestroyAllInstancesByTag("Tile");
+        yield return transitioner.EnterTransition();
+
+        resultsTextColor = level.cubemapColor;
+        resultsTextColor.a = 1f;
+
+        resultsLevelNameText.text = level.levelName;
+        resultsTimeText.color = resultsTextColor;
+        yield return new WaitForSeconds(0.3f);
+        yield return StartCoroutine(gameTimer.AnimateTimeResult(gameTimer.GetTimeResult(), resultsTimeText));
+        yield return new WaitForSeconds(0.3f);
+        gameTimer.UpdateBestTime();
+        resultsBestTimeText.color = resultsTextColor;
+        yield return StartCoroutine(gameTimer.AnimateTimeResult(gameTimer.GetBestTime(), resultsBestTimeText));
+        yield return new WaitForSeconds(0.3f);
+        resultsRankText.color = resultsTextColor;
+        resultsRankText.text = "B";
+        //STEP THRU EACH RESULT TEXT BOX
+        //Set level name
+        //show time, count up for style?
+        //show best time, is new record?
+        //show rank
+        //show buttons
     }
 
     private void HandleLevelLoss()
@@ -236,5 +325,62 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Retrying Level");
         //TODO: Change scene name
         SceneManager.LoadScene("SpencerGridTesting 1");
+    }
+
+    public void PauseCamera()
+    {
+        if (playerCamera != null)
+        {
+            // Set the speed to 0 to stop camera movement
+            playerCamera.m_XAxis.m_MaxSpeed = 0f;
+            playerCamera.m_YAxis.m_MaxSpeed = 0f;
+        }
+    }
+
+    void ResetSky()
+    {
+        // Reset Skybox to Unity's default procedural skybox
+        //Material defaultSkybox = RenderSettings.defaultSkybox;
+        if (defaultSkybox != null)
+        {
+            RenderSettings.skybox = defaultSkybox;
+            Debug.Log("Skybox set to Unity's default procedural skybox.");
+        }
+        else
+        {
+            Debug.LogError("Default procedural skybox material not found.");
+        }
+
+        // Reset ambient lighting to default
+        RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Skybox;
+        RenderSettings.ambientIntensity = 1.0f;
+        RenderSettings.ambientSkyColor = Color.white;
+        RenderSettings.ambientEquatorColor = Color.gray;
+        RenderSettings.ambientGroundColor = Color.black;
+        RenderSettings.ambientLight = Color.white;
+
+        // Reset reflection settings to default
+        RenderSettings.defaultReflectionMode = UnityEngine.Rendering.DefaultReflectionMode.Skybox;
+        RenderSettings.defaultReflectionResolution = 128;
+        RenderSettings.reflectionBounces = 1;
+        RenderSettings.reflectionIntensity = 1.0f;
+
+        // Reset fog settings to default
+        RenderSettings.fog = false;
+        RenderSettings.fogMode = FogMode.ExponentialSquared;
+        RenderSettings.fogDensity = 0.01f;
+        RenderSettings.fogStartDistance = 0.0f;
+        RenderSettings.fogEndDistance = 300.0f;
+
+        Debug.Log("Lighting and Skybox settings reset to default.");
+    }
+
+    public void DestroyAllInstancesByTag(string tag)
+    {
+        GameObject[] instances = GameObject.FindGameObjectsWithTag(tag);
+        foreach (GameObject instance in instances)
+        {
+            Destroy(instance);
+        }
     }
 }

@@ -53,6 +53,7 @@ public class CountdownFinishText : MonoBehaviour
 
         // Wait for another half a second
         yield return new WaitForSeconds(1f);
+        countdownText.enabled = false;
 
     }
 

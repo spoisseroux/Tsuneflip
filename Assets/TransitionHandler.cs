@@ -43,9 +43,9 @@ public class TransitionHandler : MonoBehaviour
         IsAnimating = false; // Animation ends
     }
 
-    public void EnterTransition()
+    public Coroutine EnterTransition()
     {
-        StartCoroutine(EnterTransitionCoroutine());
+        return StartCoroutine(EnterTransitionCoroutine());
     }
 
     private IEnumerator EnterTransitionCoroutine()
