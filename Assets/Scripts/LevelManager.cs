@@ -63,7 +63,8 @@ public class LevelManager : MonoBehaviour
 
     private FMOD.Studio.EventInstance playDeath;
     private FMOD.Studio.EventInstance playRank;
-    public LevelMusicHandler levelMusic;
+    private FMOD.Studio.EventInstance playLevelMusic;
+    //public LevelMusicHandler levelMusic;
 
 
     void FModStarter() {
@@ -73,6 +74,9 @@ public class LevelManager : MonoBehaviour
 
         playRank = FMODUnity.RuntimeManager.CreateInstance("event:/PlayRank");
         playRank.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+        playLevelMusic = FMODUnity.RuntimeManager.CreateInstance("event:/PlayLevelMusic");
+        playLevelMusic.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     void Update()
@@ -159,7 +163,9 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Checking game over");
         playDeath.start();
         playDeath.release();
-        levelMusic.FadeOutAndStop();
+        //levelMusic.FadeOutAndStop();
+        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        playLevelMusic.release();
         StartCoroutine(retryLevelCoroutine()); //Just reload the level
         /*
         livesRemainingText.text = livesLeft.ToString(); // push lives to UI
@@ -207,7 +213,8 @@ public class LevelManager : MonoBehaviour
         yield return StartCoroutine(countdownText.CountdownCoroutine());
         Debug.Log("Countdown finished");
 
-        levelMusic.PlayEvent("event:/PlayLevelMusic");
+        //levelMusic.PlayEvent("event:/PlayLevelMusic");
+        playLevelMusic.start();
 
         //Start Timer once countdown finishes
         playerMovement.ToggleMovementInput(false);
@@ -247,8 +254,10 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator HandleLevelWinCoroutine()
     {
-        levelMusic.fadeOutDuration = 0.1f;
-        levelMusic.FadeOutAndStop();
+        //levelMusic.fadeOutDuration = 0.1f;
+        //levelMusic.FadeOutAndStop();
+        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        playLevelMusic.release();
         playerMovement.ToggleMovementInput(true);
         gameTimer.StopTimer();
         yield return StartCoroutine(countdownText.FinishCoroutine());
@@ -314,14 +323,18 @@ public class LevelManager : MonoBehaviour
 
     public void backToLevelSelect()
     {
-        levelMusic.FadeOutAndStop();
+        //levelMusic.FadeOutAndStop();
+        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        playLevelMusic.release();
         Time.timeScale = 1;
         StartCoroutine(backToLevelSelectCoroutine());
     }
 
     public void retryLevel()
     {
-        levelMusic.FadeOutAndStop();
+        //levelMusic.FadeOutAndStop();
+        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        playLevelMusic.release();
         Time.timeScale = 1;
         StartCoroutine(retryLevelCoroutine());
     }

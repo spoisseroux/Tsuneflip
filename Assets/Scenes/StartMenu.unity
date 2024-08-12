@@ -1315,6 +1315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelMusic: {fileID: 5545168773067497859}
+  transitioner: {fileID: 456635283}
 --- !u!4 &21872315071812255
 Transform:
   m_ObjectHideFlags: 0
@@ -2026,9 +2027,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5545168773067497859}
-        m_TargetAssemblyTypeName: LevelMusicHandler, Assembly-CSharp
-        m_MethodName: FadeOutAndStop
+      - m_Target: {fileID: 2017326350}
+        m_TargetAssemblyTypeName: StartMenuManager, Assembly-CSharp
+        m_MethodName: toLevelMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4764,6 +4765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5fb6d70c07834ccb903b618d904121d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeOutDuration: 1.4
 --- !u!1 &5624019660194493902
 GameObject:
   m_ObjectHideFlags: 0

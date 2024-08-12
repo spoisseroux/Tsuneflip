@@ -41,16 +41,38 @@ public class LevelMenuManager : MonoBehaviour
 
     // Reference to the UI Cubemap material
     public Material uiCubemapMat;
-    public LevelMusicHandler levelMusic;
+    //public LevelMusicHandler levelMusic;
+    private FMOD.Studio.EventInstance playLevelMusic;
 
 
     void Start()
     {
         UnlockCursor();
-        levelMusic.PlayEvent("event:/PlayLevelMenuMusic");
+        //levelMusic.PlayEvent("event:/PlayLevelMenuMusic");
         levelPreviewPanel.SetActive(false);
         LoadWorlds();
         SetupButtonListeners();
+
+        playLevelMusic = FMODUnity.RuntimeManager.CreateInstance("event:/PlayLevelMenuMusic");
+        playLevelMusic.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        playLevelMusic.start();
+    }
+
+    public void backToStartMenu()
+    {
+        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        playLevelMusic.release();
+        //levelMusic.FadeOutAndStop();
+        Time.timeScale = 1;
+        StartCoroutine(backToStartMenuCoroutine());
+    }
+
+    private IEnumerator backToStartMenuCoroutine()
+    {
+        yield return transitioner.ExitTransition();
+        Debug.Log("Going back to level select");
+        //TODO: Change scene name
+        SceneManager.LoadScene("StartMenu");
     }
 
     void SetupButtonListeners()
@@ -60,6 +82,8 @@ public class LevelMenuManager : MonoBehaviour
         levelUpButton.onClick.AddListener(() => ScrollLevels(1));
         levelDownButton.onClick.AddListener(() => ScrollLevels(-1));
     }
+
+
 
     void LoadWorlds()
     {
@@ -351,7 +375,9 @@ public class LevelMenuManager : MonoBehaviour
     public void LoadLevel(LevelData level)
     {
         StartCoroutine(LoadLevelCoroutine(level));
-        levelMusic.FadeOutAndStop();
+        //levelMusic.FadeOutAndStop();
+        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        playLevelMusic.release();
     }
 
     //TODO: PUT LEVEL DATA PIPING HERE

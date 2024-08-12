@@ -6,7 +6,7 @@ using System.Collections;
 public class LevelMusicHandler : MonoBehaviour
 {
     private EventInstance eventInstance;
-    public float fadeOutDuration = 1.4f; // Duration of the fade-out in seconds
+    public float fadeOutDuration = 0.9f; // Duration of the fade-out in seconds
 
     // Start the sound event
     public void PlayEvent(string eventPath)
@@ -18,11 +18,13 @@ public class LevelMusicHandler : MonoBehaviour
     // Fade out and stop the event
     public void FadeOutAndStop()
     {
-        StartCoroutine(FadeOutCoroutine());
+        eventInstance.release();
+        //StartCoroutine(FadeOutCoroutine());
     }
 
     private IEnumerator FadeOutCoroutine()
     {
+        /*
         float currentVolume = 1.0f;
         eventInstance.getParameterByName("Volume", out currentVolume);
 
@@ -39,6 +41,7 @@ public class LevelMusicHandler : MonoBehaviour
         // Ensure the volume is set to 0 and stop the event
         eventInstance.setParameterByName("Volume", 0.0f);
         eventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        eventInstance.release();
+        */
+        yield return null;
     }
 }
