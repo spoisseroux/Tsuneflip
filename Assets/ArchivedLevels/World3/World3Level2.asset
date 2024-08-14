@@ -20,8 +20,9 @@ MonoBehaviour:
     rows: 3
     columns: 3
     array: 000000000000000002000000000000000000000000000000020000000000000000000000
-  tileColorTop: {r: 0.12941177, g: 0.6431373, b: 0, a: 0}
-  tileColorBottom: {r: 0.8392157, g: 0.8392157, b: 0.8392157, a: 0}
+  associatedWorldData: {fileID: 0}
+  bestTime: 3.4028235e+38
   cubemap: {fileID: 8900000, guid: c9c60898fa8c845be9f52a98155d409b, type: 2}
   cubemapColor: {r: 0.69411767, g: 1, b: 0.78431374, a: 0}
-  bestTime: 3.4028235e+38
+  tileColorTop: {r: 0.12941177, g: 0.6431373, b: 0, a: 0}
+  tileColorBottom: {r: 0.8392157, g: 0.8392157, b: 0.8392157, a: 0}

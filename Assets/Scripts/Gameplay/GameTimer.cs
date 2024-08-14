@@ -84,7 +84,18 @@ public class GameTimer : MonoBehaviour
         if (elapsedTime < levelData.bestTime)
         {
             levelData.bestTime = elapsedTime;
+            // Save changes to the ScriptableObject instance
+            SaveLevelData(levelData);
         }
+    }
+
+    //Make sure besttime is actually saved from static var to real leveldata
+    private void SaveLevelData(LevelData levelData)
+    {
+        #if UNITY_EDITOR
+        // Mark the levelData as dirty to ensure it gets saved in the Editor
+        UnityEditor.EditorUtility.SetDirty(levelData);
+        #endif
     }
 
     private void Update()
