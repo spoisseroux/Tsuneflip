@@ -18,10 +18,17 @@ public class LevelData : ScriptableObject
 
     private void OnValidate()
     {
-        cubemap = associatedWorldData.worldCubemap;
-        cubemapColor = associatedWorldData.worldCubemapColor;
-        tileColorTop = associatedWorldData.tileColorTop;
-        tileColorBottom = associatedWorldData.tileColorBottom;
+        if (associatedWorldData != null)
+        {
+            cubemap = associatedWorldData.worldCubemap;
+            cubemapColor = associatedWorldData.worldCubemapColor;
+            tileColorTop = associatedWorldData.tileColorTop;
+            tileColorBottom = associatedWorldData.tileColorBottom;
+        }
+        else
+        {
+            Debug.LogWarning($"Associated WorldData is not set for LevelData '{levelName}'");
+        }
 
         if (goalDataArray == null || goalDataArray.array == null || goalDataArray.rows != rows || goalDataArray.columns != columns)
         {

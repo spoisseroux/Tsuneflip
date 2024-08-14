@@ -16,3 +16,5 @@ MonoBehaviour:
   worldFolderName: HokkaidoData
   worldCubemap: {fileID: 8900000, guid: 0bc36878a4a8442f3a0aaf2e222894c1, type: 2}
   worldCubemapColor: {r: 0.5568628, g: 0.5764706, b: 0.99215686, a: 0}
+  tileColorTop: {r: 0, g: 0, b: 0, a: 0}
+  tileColorBottom: {r: 0, g: 0, b: 0, a: 0}
