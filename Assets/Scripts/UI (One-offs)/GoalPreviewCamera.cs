@@ -15,11 +15,6 @@ public class GoalPreviewCamera : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
-        if (cam == null)
-        {
-            Debug.LogError("No Camera component found on this GameObject.");
-            return;
-        }
         cam.clearFlags = CameraClearFlags.SolidColor;
         cam.backgroundColor = new Color(0, 0, 0, 0);  // Transparent background
         SetCameraPosition();
@@ -35,9 +30,22 @@ public class GoalPreviewCamera : MonoBehaviour
 
     public void SetCameraPosition()
     {
-        if (levelData == null || grid == null)
+        // Ensure the camera and grid are assigned
+        if (cam == null)
         {
-            Debug.LogError("LevelData or Grid is not assigned!");
+            Debug.Log("Preview camera is not assigned or delayed!");
+            return;
+        }
+
+        if (levelData == null)
+        {
+            Debug.LogError("LevelData is not assigned!");
+            return;
+        }
+
+        if (grid == null)
+        {
+            Debug.LogError("Grid is not assigned!");
             return;
         }
 
