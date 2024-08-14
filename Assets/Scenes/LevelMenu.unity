@@ -1766,7 +1766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e6a0e3c38c9a4a5a8d8a6934cb1d3ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelMusicManager: {fileID: 0}
+  levelMusicManager: {fileID: 2036225176}
   transitioner: {fileID: 2036225175}
 --- !u!4 &2036225178
 Transform:

@@ -16,6 +16,10 @@ public class LevelData : ScriptableObject
     
     // probably need to add a respawn transform here
 
+    public void ResetBestTime()
+    {
+        bestTime = float.MaxValue;
+    }
     private void OnValidate()
     {
         if (associatedWorldData != null)
