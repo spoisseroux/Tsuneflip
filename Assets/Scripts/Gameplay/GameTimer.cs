@@ -79,13 +79,17 @@ public class GameTimer : MonoBehaviour
     }
 
 
-    public void UpdateBestTime()
+    public bool UpdateBestTime()
     {
         if (elapsedTime < levelData.bestTime)
         {
             levelData.bestTime = elapsedTime;
             // Save changes to the ScriptableObject instance
             SaveLevelData(levelData);
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

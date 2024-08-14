@@ -49,6 +49,8 @@ public class LevelManager : MonoBehaviour
     private TextMeshProUGUI resultsTimeText;
     private TextMeshProUGUI resultsBestTimeText;
     private TextMeshProUGUI resultsRankText;
+    private RainbowTextEffect resultsBestTimeRainbowEffect;
+    private bool isNewRecord = false;
     public Material resultsCubemapMat;
     public Material defaultSkybox;
 
@@ -65,7 +67,7 @@ public class LevelManager : MonoBehaviour
 
     private FMOD.Studio.EventInstance playDeath;
     private FMOD.Studio.EventInstance playRank;
-    private FMOD.Studio.EventInstance playLevelMusic;
+    private FMOD.Studio.EventInstance playNewRecord;
     //public LevelMusicHandler levelMusic;
 
     private void Awake()
@@ -76,6 +78,7 @@ public class LevelManager : MonoBehaviour
         resultsLevelNameText = resultsScreen.transform.Find("LevelName").GetComponent<TextMeshProUGUI>();
         resultsTimeText = resultsScreen.transform.Find("InfoHolder/TimeHolder/Time").GetComponent<TextMeshProUGUI>();
         resultsBestTimeText = resultsScreen.transform.Find("InfoHolder/BestTimeHolder/BestTime").GetComponent<TextMeshProUGUI>();
+        resultsBestTimeRainbowEffect = resultsBestTimeText.GetComponent<RainbowTextEffect>();
         resultsRankText = resultsScreen.transform.Find("InfoHolder/RankHolder/Rank").GetComponent<TextMeshProUGUI>();
         resultsScreen.SetActive(false);
         /*
@@ -121,10 +124,12 @@ public class LevelManager : MonoBehaviour
     void FModStarter() {
         playDeath = FMODUnity.RuntimeManager.CreateInstance("event:/PlayDeath");
         playDeath.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-    
 
         playRank = FMODUnity.RuntimeManager.CreateInstance("event:/PlayRank");
         playRank.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+        playNewRecord = FMODUnity.RuntimeManager.CreateInstance("event:/PlayNewRecord");
+        playNewRecord.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     private void OnDisable()
@@ -270,9 +275,19 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         yield return StartCoroutine(gameTimer.AnimateTimeResult(gameTimer.GetTimeResult(), resultsTimeText));
         yield return new WaitForSeconds(0.3f);
-        gameTimer.UpdateBestTime();
         resultsBestTimeText.color = resultsTextColor;
+
+        //BEST TIME/NEW RECORD HANDLER
+        if (gameTimer.UpdateBestTime() == true) {
+            isNewRecord = true;
+        }
         yield return StartCoroutine(gameTimer.AnimateTimeResult(gameTimer.GetBestTime(), resultsBestTimeText));
+        if (isNewRecord == true) { //New record
+            resultsBestTimeRainbowEffect.enabled = true;
+            playNewRecord.start();
+            playNewRecord.release();
+        }
+
         yield return new WaitForSeconds(0.3f);
         playRank.start();
         playRank.release();
