@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] DeathZone deathZone;
 
     //UI
-    public TransitionHandler transitioner;
+    public TransitionManager transitioner;
     public GameTimer gameTimer;
     public CountdownFinishText countdownText;
     public Material skyboxMaterial;
@@ -60,29 +60,13 @@ public class LevelManager : MonoBehaviour
     // Enemy objects
 
     //TODO: FMod
+    public LevelMusicManager levelMusicManager;
+    public SceneChangeManager sceneChangerManager;
 
     private FMOD.Studio.EventInstance playDeath;
     private FMOD.Studio.EventInstance playRank;
     private FMOD.Studio.EventInstance playLevelMusic;
     //public LevelMusicHandler levelMusic;
-
-
-    void FModStarter() {
-        playDeath = FMODUnity.RuntimeManager.CreateInstance("event:/PlayDeath");
-        playDeath.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-    
-
-        playRank = FMODUnity.RuntimeManager.CreateInstance("event:/PlayRank");
-        playRank.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-
-        playLevelMusic = FMODUnity.RuntimeManager.CreateInstance("event:/PlayLevelMusic");
-        playLevelMusic.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-    }
-
-    void Update()
-    {
-        //Quick fix to freeze player on win sorry
-    }
 
     private void Awake()
     {
@@ -98,7 +82,7 @@ public class LevelManager : MonoBehaviour
          * Need to make a refactor when it's clear how many of these can be Serialized 
          * and how many need to be instantiated/built at runtime, then found
          */
-        LockCursor();
+        CursorManager.LockCursor();
         level = LevelMenuManager.loaded; // STATIC VARIABLE, READ FOR PERSISTENT MEMORY ACROSS SCENES
 
         // find Player, get components
@@ -134,6 +118,15 @@ public class LevelManager : MonoBehaviour
         StartLevel();
     }
 
+    void FModStarter() {
+        playDeath = FMODUnity.RuntimeManager.CreateInstance("event:/PlayDeath");
+        playDeath.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+    
+
+        playRank = FMODUnity.RuntimeManager.CreateInstance("event:/PlayRank");
+        playRank.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+    }
+
     private void OnDisable()
     {
         grid.OnGridMatch -= HandleLevelWin;
@@ -148,12 +141,12 @@ public class LevelManager : MonoBehaviour
         pauseMenuUI.SetActive(!pauseMenuUI.activeSelf);
         if (!pause)
         {
-            LockCursor();
+            CursorManager.LockCursor();
             Time.timeScale = 1;
         }
         else
         {
-            UnlockCursor();
+            CursorManager.UnlockCursor();
             Time.timeScale = 0;
         }
     }
@@ -163,10 +156,8 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Checking game over");
         playDeath.start();
         playDeath.release();
-        //levelMusic.FadeOutAndStop();
-        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        playLevelMusic.release();
-        StartCoroutine(retryLevelCoroutine()); //Just reload the level
+        //TODO: Just reloading the scene on death for now
+        sceneChangerManager.SceneChange("LevelScene"); //Just reload the level
         /*
         livesRemainingText.text = livesLeft.ToString(); // push lives to UI
         if (livesLeft <= 0)
@@ -193,7 +184,6 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log("in startlevelcoroutine");
         gridPreviewManager.goal = level;
-        //gridPreviewCamera.levelData = level;
 
         Debug.Log("calling init grid preview");
         gridPreviewManager.InitializeLevelGridPreview(level, previewCameraController);
@@ -201,7 +191,6 @@ public class LevelManager : MonoBehaviour
         //playerMovement.ToggleMovementInput(true);
         skyboxMaterial.SetTexture("_Cubemap", level.cubemap);
         skyboxMaterial.SetColor("_Color", level.cubemapColor);
-
 
         //Wait 2 Seconds
         yield return new WaitForSeconds(2f);
@@ -213,14 +202,11 @@ public class LevelManager : MonoBehaviour
         yield return StartCoroutine(countdownText.CountdownCoroutine());
         Debug.Log("Countdown finished");
 
-        //levelMusic.PlayEvent("event:/PlayLevelMusic");
-        playLevelMusic.start();
+        levelMusicManager.PlayEvent("event:/PlayLevelMusic");
 
         //Start Timer once countdown finishes
         playerMovement.ToggleMovementInput(false);
         gameTimer.StartTimer();
-
-        //playLevelMusic.release();
 
     }
 
@@ -256,20 +242,18 @@ public class LevelManager : MonoBehaviour
     {
         //levelMusic.fadeOutDuration = 0.1f;
         //levelMusic.FadeOutAndStop();
-        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        playLevelMusic.release();
+        levelMusicManager.StopEvent();
         playerMovement.ToggleMovementInput(true);
         gameTimer.StopTimer();
         yield return StartCoroutine(countdownText.FinishCoroutine());
         yield return transitioner.ExitTransition();
         PauseCamera();
         resultsScreen.SetActive(true);
-        ResetSky();
         //TURN OFF PREVIEW
         //TURN OFF TIMER TEXT
         resultsCubemapMat.SetTexture("_CubemapCurr", level.cubemap);
         resultsCubemapMat.SetColor("_ColorCurr", level.cubemapColor);
-        UnlockCursor();
+        CursorManager.UnlockCursor();
         timerText.enabled = false;
         gridPreviewImage.SetActive(false);
         resultsCamera.enabled = true;
@@ -293,11 +277,8 @@ public class LevelManager : MonoBehaviour
         playRank.start();
         playRank.release();
         resultsRankText.color = resultsTextColor;
+        //TODO: Implement ranking
         resultsRankText.text = "B";
-        //STEP THRU EACH RESULT TEXT BOX
-        //Set level name
-        //show time, count up for style?
-        //show best time, is new record?
         //show rank
         //show buttons
     }
@@ -309,52 +290,6 @@ public class LevelManager : MonoBehaviour
         // return to menu
     }
 
-    public void LockCursor()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
-    public void UnlockCursor()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
-    public void backToLevelSelect()
-    {
-        //levelMusic.FadeOutAndStop();
-        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        playLevelMusic.release();
-        Time.timeScale = 1;
-        StartCoroutine(backToLevelSelectCoroutine());
-    }
-
-    public void retryLevel()
-    {
-        //levelMusic.FadeOutAndStop();
-        playLevelMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        playLevelMusic.release();
-        Time.timeScale = 1;
-        StartCoroutine(retryLevelCoroutine());
-    }
-
-    private IEnumerator backToLevelSelectCoroutine()
-    {
-        yield return transitioner.ExitTransition();
-        Debug.Log("Going back to level select");
-        //TODO: Change scene name
-        SceneManager.LoadScene("LevelMenu");
-    }
-
-    private IEnumerator retryLevelCoroutine()
-    {
-        yield return transitioner.ExitTransition();
-        Debug.Log("Retrying Level");
-        //TODO: Change scene name
-        SceneManager.LoadScene("SpencerGridTesting 1");
-    }
-
     public void PauseCamera()
     {
         if (playerCamera != null)
@@ -363,44 +298,6 @@ public class LevelManager : MonoBehaviour
             playerCamera.m_XAxis.m_MaxSpeed = 0f;
             playerCamera.m_YAxis.m_MaxSpeed = 0f;
         }
-    }
-
-    void ResetSky()
-    {
-        // Reset Skybox to Unity's default procedural skybox
-        //Material defaultSkybox = RenderSettings.defaultSkybox;
-        if (defaultSkybox != null)
-        {
-            RenderSettings.skybox = defaultSkybox;
-            Debug.Log("Skybox set to Unity's default procedural skybox.");
-        }
-        else
-        {
-            Debug.LogError("Default procedural skybox material not found.");
-        }
-
-        // Reset ambient lighting to default
-        RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Skybox;
-        RenderSettings.ambientIntensity = 1.0f;
-        RenderSettings.ambientSkyColor = Color.white;
-        RenderSettings.ambientEquatorColor = Color.gray;
-        RenderSettings.ambientGroundColor = Color.black;
-        RenderSettings.ambientLight = Color.white;
-
-        // Reset reflection settings to default
-        RenderSettings.defaultReflectionMode = UnityEngine.Rendering.DefaultReflectionMode.Skybox;
-        RenderSettings.defaultReflectionResolution = 128;
-        RenderSettings.reflectionBounces = 1;
-        RenderSettings.reflectionIntensity = 1.0f;
-
-        // Reset fog settings to default
-        RenderSettings.fog = false;
-        RenderSettings.fogMode = FogMode.ExponentialSquared;
-        RenderSettings.fogDensity = 0.01f;
-        RenderSettings.fogStartDistance = 0.0f;
-        RenderSettings.fogEndDistance = 300.0f;
-
-        Debug.Log("Lighting and Skybox settings reset to default.");
     }
 
     public void DestroyAllInstancesByTag(string tag)

@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridGoalPreview : MonoBehaviour
+public class GoalPreviewInstancer : MonoBehaviour
 {
-    // the Grid being rendered
-    private GameObject[,] grid;
+    // The Grid being rendered
+    public GameObject[,] grid; // Expose this as public
 
-    // level data
-    [SerializeField]
-    public LevelData goal;
+    // Level data
+    [SerializeField] public LevelData goal;
 
-    public GridPreviewCamera previewCam;
+    public GoalPreviewCamera previewCam;
 
     // Tile creator
-    [SerializeField] private GameObject tilePrefab; // for instantiating new Tiles upon level load
+    [SerializeField] private GameObject tilePrefab; // For instantiating new Tiles upon level load
 
-    // boards
+    // Boards
     private FlipCode2DArray goalBoard;
 
     #region Monobehaviour Functions
@@ -29,7 +28,7 @@ public class GridGoalPreview : MonoBehaviour
     public void InitializeGridPreview(LevelData goal)
     {
         DestroyGrid();
-        previewCam.SetCameraPosition();
+        
         // Create Grid object & create + set GoalGrid object
         grid = new GameObject[goal.rows, goal.columns];
         goalBoard = goal.goalDataArray;
@@ -82,9 +81,13 @@ public class GridGoalPreview : MonoBehaviour
                 grid[row, col] = tile;
             }
         }
+        
+        // Set camera position after grid is fully instantiated
+        previewCam.grid = grid; // Pass the grid to the camera
+        previewCam.SetCameraPosition();
     }
 
-        // Destroy the current grid of tiles
+    // Destroy the current grid of tiles
     public void DestroyGrid()
     {
         if (grid != null)
@@ -102,7 +105,7 @@ public class GridGoalPreview : MonoBehaviour
         }
     }
 
-    // resolve a given position in world space to a Tile in the Grid
+    // Resolve a given position in world space to a Tile in the Grid
     public Tile GetTileFromWorldSpace(Vector3 worldPos)
     {
         int x = Mathf.FloorToInt(worldPos.x / goal.tileSize);

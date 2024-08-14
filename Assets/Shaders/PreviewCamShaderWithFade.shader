@@ -1,4 +1,4 @@
-Shader "Custom/CamSpacePreviewCamTransShader"
+Shader "Custom/PreviewCamShaderWithFade"
 {
     Properties
     {

@@ -27,4 +27,12 @@ public class StartMenuCharRunningScript : MonoBehaviour
 
         }
     }
+
+    public void PlayFootstep() {
+        //Suppress warning
+    }
+
+    public void PlayOtherFootstep() {
+        //Suppress warning
+    }
 }

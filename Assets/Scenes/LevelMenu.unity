@@ -548,7 +548,6 @@ GameObject:
   - component: {fileID: 752443709}
   - component: {fileID: 752443708}
   - component: {fileID: 752443707}
-  - component: {fileID: 752443706}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -576,20 +575,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 144.4, y: 44.6}
   m_Pivot: {x: 0.55, y: 1.39}
---- !u!114 &752443706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752443704}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e6a0e3c38c9a4a5a8d8a6934cb1d3ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transitioner: {fileID: 1512126950}
-  sceneName: StartMenu
 --- !u!114 &752443707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -665,18 +650,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3186521227659838752}
-        m_TargetAssemblyTypeName: LevelMenuManager, Assembly-CSharp
-        m_MethodName: backToStartMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
       - m_Target: {fileID: 752443707}
         m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
         m_MethodName: Play
@@ -689,6 +662,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2036225177}
+        m_TargetAssemblyTypeName: SceneChangeManager, Assembly-CSharp
+        m_MethodName: SceneChange
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: StartMenu
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &752443709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -875,12 +860,12 @@ GameObject:
   - component: {fileID: 865241848}
   - component: {fileID: 865241847}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: PreviewBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &865241847
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -962,7 +947,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.07200642, y: -0.8042977, z: 0.07893458, w: 0.5845423}
   m_LocalPosition: {x: -65.5, y: -15, z: 0.6589365}
-  m_LocalScale: {x: 100, y: 100, z: 1}
+  m_LocalScale: {x: 354.5054, y: 354.5054, z: 3.545054}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1223,18 +1208,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 946923e48f715484fba071e9d1a2bd7c, type: 3}
---- !u!114 &1512126950 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 623710000752019166, guid: 378f1104bf20c41209ec10a5733e6e80,
-    type: 3}
-  m_PrefabInstance: {fileID: 879213327179515520}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b315295d0214e4a12bebe418467a1c60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1514553039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,7 +1220,7 @@ GameObject:
   - component: {fileID: 1514553042}
   - component: {fileID: 1514553041}
   m_Layer: 5
-  m_Name: NullSpacer (1)
+  m_Name: NullSpacer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1734,6 +1707,102 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.2784314}
   m_EffectDistance: {x: 1.85, y: -0.86}
   m_UseGraphicAlpha: 1
+--- !u!1 &2036225174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2036225178}
+  - component: {fileID: 2036225177}
+  - component: {fileID: 2036225176}
+  - component: {fileID: 2036225175}
+  - component: {fileID: 2036225179}
+  m_Layer: 0
+  m_Name: LevelMenuManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2036225175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036225174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b315295d0214e4a12bebe418467a1c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition1: {fileID: 258086297681943471}
+  transition2: {fileID: 8556133258609390831}
+  transitionSphere: {fileID: 2100000, guid: 206e341f0f80d4ecab9a76d73ca68ea4, type: 2}
+--- !u!114 &2036225176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036225174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5fb6d70c07834ccb903b618d904121d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2036225177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036225174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e6a0e3c38c9a4a5a8d8a6934cb1d3ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelMusicManager: {fileID: 2036225176}
+  transitioner: {fileID: 2036225175}
+--- !u!4 &2036225178
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036225174}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.55000305, y: -858.07, z: 15.87}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2036225179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036225174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cb43872feda24c88946c32790b778fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldButtonPrefab: {fileID: 1923797469898659193, guid: a32040669cc314cb9929784a244e62bd,
+    type: 3}
+  levelButtonPrefab: {fileID: 5948340339102550408, guid: 3847e735fe3ee49b3b9bca3d054062dd,
+    type: 3}
+  uiCubemapMat: {fileID: 2100000, guid: 2f9a14e9c6dc34e9588ec669cd846834, type: 2}
+  levelMusicManager: {fileID: 2036225176}
+  gridPreview: {fileID: 1151913562}
+  gridPreviewCam: {fileID: 2140336580}
 --- !u!1 &2075073436 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6426929927091641773, guid: 378f1104bf20c41209ec10a5733e6e80,
@@ -1833,7 +1902,7 @@ Transform:
   m_GameObject: {fileID: 2140336575}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -727, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1898,6 +1967,7 @@ MonoBehaviour:
   levelData: {fileID: 11400000, guid: ccc2f87f21e55469980ac3e6fe043a34, type: 2}
   padding: 10
   rotationSpeed: 0.3
+  gizmoColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!114 &2140336581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1979,10 +2049,9 @@ GameObject:
   - component: {fileID: 6584410162280845652}
   - component: {fileID: 3309994523203128856}
   - component: {fileID: 8084296194723892528}
-  - component: {fileID: 3186521227659838752}
   - component: {fileID: 8084296194723892529}
   m_Layer: 5
-  m_Name: LevelMenuCanvas
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2214,6 +2283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4166240758020824872, guid: 378f1104bf20c41209ec10a5733e6e80, type: 3}
+    - {fileID: 623710000752019166, guid: 378f1104bf20c41209ec10a5733e6e80, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -2769,38 +2839,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 43.4765}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3186521227659838752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433487376456716469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cb43872feda24c88946c32790b778fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  worldButtonContainer: {fileID: 498365381975009481}
-  levelButtonContainer: {fileID: 6624177026557267645}
-  worldButtonPrefab: {fileID: 1923797469898659193, guid: a32040669cc314cb9929784a244e62bd,
-    type: 3}
-  levelButtonPrefab: {fileID: 5948340339102550408, guid: 3847e735fe3ee49b3b9bca3d054062dd,
-    type: 3}
-  worldUpButton: {fileID: 6507914110578228527}
-  worldDownButton: {fileID: 5592023384091060992}
-  levelUpButton: {fileID: 8865890783063327120}
-  levelDownButton: {fileID: 7748914280180528440}
-  levelAssetsRootPath: LevelAssets
-  transitioner: {fileID: 1512126950}
-  levelPreviewPanel: {fileID: 6843635180716508428}
-  levelNameText: {fileID: 1535675153228304344}
-  levelBestTimeText: {fileID: 8285234339716429150}
-  startButton: {fileID: 8682089965299940916}
-  gridPreview: {fileID: 1151913562}
-  gridPreviewCam: {fileID: 2140336580}
-  uiCubemapMat: {fileID: 2100000, guid: 2f9a14e9c6dc34e9588ec669cd846834, type: 2}
-  levelMusic: {fileID: 8084296194723892529}
 --- !u!114 &3309994523203128856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3504,7 +3542,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5fb6d70c07834ccb903b618d904121d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeOutDuration: 1.4
 --- !u!1 &8185746881002084408
 GameObject:
   m_ObjectHideFlags: 0
@@ -3663,7 +3700,6 @@ GameObject:
   - component: {fileID: 8682089965299940916}
   - component: {fileID: 1198089855}
   - component: {fileID: 1198089860}
-  - component: {fileID: 8682089965299940917}
   m_Layer: 5
   m_Name: LevelStart
   m_TagString: Untagged
@@ -3727,20 +3763,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8682089965299940917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8575328940475869762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e6a0e3c38c9a4a5a8d8a6934cb1d3ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transitioner: {fileID: 1512126950}
-  sceneName: 
+      - m_Target: {fileID: 2036225177}
+        m_TargetAssemblyTypeName: SceneChangeManager, Assembly-CSharp
+        m_MethodName: SceneChange
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: LevelScene
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8797853078937048996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3753,7 +3787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: c11ec1c8fcfef4750a2a2cc0e7c44e65, type: 2}
+  m_Material: {fileID: 2100000, guid: 4d96366d272de4738983bbad00c66693, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -3889,14 +3923,15 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 2036225178}
+  - {fileID: 1976217426987863223}
+  - {fileID: 1151913563}
   - {fileID: 2140336578}
+  - {fileID: 865241850}
   - {fileID: 1534411197}
   - {fileID: 44812459}
-  - {fileID: 1151913563}
   - {fileID: 1570761947}
   - {fileID: 879213327179515520}
   - {fileID: 456431586}
   - {fileID: 1293688135}
   - {fileID: 736566776}
-  - {fileID: 865241850}
-  - {fileID: 1976217426987863223}

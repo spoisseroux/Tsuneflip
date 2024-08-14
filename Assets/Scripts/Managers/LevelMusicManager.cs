@@ -3,21 +3,23 @@ using FMODUnity;
 using FMOD.Studio;
 using System.Collections;
 
-public class LevelMusicHandler : MonoBehaviour
+public class LevelMusicManager : MonoBehaviour
 {
     private EventInstance eventInstance;
-    public float fadeOutDuration = 0.9f; // Duration of the fade-out in seconds
+    //public float fadeOutDuration = 0.9f; // Duration of the fade-out in seconds
 
     // Start the sound event
     public void PlayEvent(string eventPath)
     {
         eventInstance = RuntimeManager.CreateInstance(eventPath);
+        //eventInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         eventInstance.start();
     }
 
     // Fade out and stop the event
-    public void FadeOutAndStop()
+    public void StopEvent()
     {
+        eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         eventInstance.release();
         //StartCoroutine(FadeOutCoroutine());
     }

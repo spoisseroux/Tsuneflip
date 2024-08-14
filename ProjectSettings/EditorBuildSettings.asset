@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/OtherScenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/StartMenu.unity
@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/LevelMenu.unity
     guid: ec3bda44d99f6485d848c08cd52707ed
   - enabled: 1
-    path: Assets/Scenes/SpencerGridTesting 1.unity
+    path: Assets/Scenes/LevelScene.unity
     guid: 5e37997d99f3b394eab0884f534198a1
   m_configObjects: {}
