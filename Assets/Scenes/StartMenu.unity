@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 347652081}
   - component: {fileID: 347652080}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: CursorBackgroundWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -442,22 +442,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4166240758020824872, guid: 378f1104bf20c41209ec10a5733e6e80, type: 3}
+    - {fileID: 623710000752019166, guid: 378f1104bf20c41209ec10a5733e6e80, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 378f1104bf20c41209ec10a5733e6e80, type: 3}
---- !u!114 &456635283 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 623710000752019166, guid: 378f1104bf20c41209ec10a5733e6e80,
-    type: 3}
-  m_PrefabInstance: {fileID: 456635282}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b315295d0214e4a12bebe418467a1c60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &682837084
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -570,7 +559,7 @@ GameObject:
   - component: {fileID: 770057237}
   - component: {fileID: 770057236}
   m_Layer: 0
-  m_Name: WhiteBgAnim
+  m_Name: CharAnimBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -966,6 +955,97 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
+--- !u!1 &1747485616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1747485621}
+  - component: {fileID: 1747485620}
+  - component: {fileID: 1747485619}
+  - component: {fileID: 1747485618}
+  - component: {fileID: 1747485617}
+  m_Layer: 0
+  m_Name: StartMenuManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1747485617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747485616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b315295d0214e4a12bebe418467a1c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition1: {fileID: 6547352419956055277}
+  transition2: {fileID: 8487281372140413846}
+  transitionSphere: {fileID: 2100000, guid: 206e341f0f80d4ecab9a76d73ca68ea4, type: 2}
+--- !u!114 &1747485618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747485616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e6a0e3c38c9a4a5a8d8a6934cb1d3ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelMusicManager: {fileID: 1747485619}
+  transitioner: {fileID: 1747485617}
+  sceneName: LevelMenu
+--- !u!114 &1747485619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747485616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5fb6d70c07834ccb903b618d904121d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1747485620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747485616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cea9635cb6944bb380b603ba299d721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneChangeManager: {fileID: 1747485618}
+  levelMusicManager: {fileID: 1747485619}
+--- !u!4 &1747485621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747485616}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1796974851
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,20 +1382,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
---- !u!114 &2017326350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 953382579785719613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cea9635cb6944bb380b603ba299d721, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelMusic: {fileID: 5545168773067497859}
-  transitioner: {fileID: 456635283}
 --- !u!4 &21872315071812255
 Transform:
   m_ObjectHideFlags: 0
@@ -1788,10 +1854,8 @@ GameObject:
   - component: {fileID: 3509155456914685781}
   - component: {fileID: 2876261364710484596}
   - component: {fileID: 850690154704889545}
-  - component: {fileID: 2017326350}
-  - component: {fileID: 5545168773067497859}
   m_Layer: 5
-  m_Name: StartMenuCanvas
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2027,16 +2091,16 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2017326350}
-        m_TargetAssemblyTypeName: StartMenuManager, Assembly-CSharp
-        m_MethodName: toLevelMenu
-        m_Mode: 1
+      - m_Target: {fileID: 1747485618}
+        m_TargetAssemblyTypeName: SceneChangeManager, Assembly-CSharp
+        m_MethodName: SceneChange
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: LevelMenu
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1835178751568176279
@@ -4753,19 +4817,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &5545168773067497859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 953382579785719613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5fb6d70c07834ccb903b618d904121d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeOutDuration: 1.4
 --- !u!1 &5624019660194493902
 GameObject:
   m_ObjectHideFlags: 0
@@ -5118,7 +5169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e6a0e3c38c9a4a5a8d8a6934cb1d3ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitioner: {fileID: 456635283}
+  levelMusicManager: {fileID: 0}
+  transitioner: {fileID: 0}
   sceneName: LevelMenu
 --- !u!114 &6321932113683254712
 MonoBehaviour:
@@ -5132,7 +5184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e6a0e3c38c9a4a5a8d8a6934cb1d3ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitioner: {fileID: 456635283}
+  levelMusicManager: {fileID: 0}
+  transitioner: {fileID: 0}
   sceneName: LevelMenu
 --- !u!114 &6326695109765112316
 MonoBehaviour:
@@ -7021,9 +7074,10 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1747485621}
+  - {fileID: 5545168773067497858}
   - {fileID: 1378633950}
   - {fileID: 1796974853}
-  - {fileID: 5545168773067497858}
   - {fileID: 97437049}
   - {fileID: 456635282}
   - {fileID: 5642687148848534787}

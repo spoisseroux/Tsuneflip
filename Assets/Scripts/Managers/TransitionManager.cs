@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TransitionHandler : MonoBehaviour
+public class TransitionManager : MonoBehaviour
 {
     public GameObject transition1;
     public GameObject transition2;

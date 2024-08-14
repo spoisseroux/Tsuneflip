@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] DeathZone deathZone;
 
     //UI
-    public TransitionHandler transitioner;
+    public TransitionManager transitioner;
     public GameTimer gameTimer;
     public CountdownFinishText countdownText;
     public Material skyboxMaterial;
