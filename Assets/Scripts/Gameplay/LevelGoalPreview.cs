@@ -26,7 +26,7 @@ public class LevelGoalPreview : MonoBehaviour
         goalBoard = goal.goalDataArray;
 
         // Calculate grid midpoint at the correct Y level (100)
-        Vector3 gridMidpoint = new Vector3((goal.rows - 1) * goal.tileSize / 2f, 100, (goal.columns - 1) * goal.tileSize / 2f);
+        Vector3 gridMidpoint = new Vector3((goal.rows - 1) * goal.tileSize / 2f, 3000, (goal.columns - 1) * goal.tileSize / 2f);
 
         // Set up the camera with the grid midpoint and size
         previewCameraController.SetGridMidpointAndSize(gridMidpoint, goal.rows, goal.columns, goal.tileSize);
@@ -38,7 +38,7 @@ public class LevelGoalPreview : MonoBehaviour
             {
                 // Instantiate Tile at y = 100
                 GameObject tile = Instantiate(tilePrefab,
-                    new Vector3(row * (goal.tileSize), 200, col * (goal.tileSize)),
+                    new Vector3(row * (goal.tileSize), 3100, col * (goal.tileSize)),
                     Quaternion.identity);
 
                 // Set Tile data
