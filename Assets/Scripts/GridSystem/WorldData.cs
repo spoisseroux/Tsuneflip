@@ -7,4 +7,6 @@ public class WorldData : ScriptableObject
     public string worldFolderName;
     public Cubemap worldCubemap;
     public Color worldCubemapColor;
+    [SerializeField] public Color tileColorTop;
+    [SerializeField] public Color tileColorBottom;
 }
