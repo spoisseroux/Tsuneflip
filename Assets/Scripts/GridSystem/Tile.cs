@@ -101,6 +101,9 @@ public class Tile : MonoBehaviour
         // rotate tile if not already rotating
         if (!rotateTileScript.IsRotating)
         {
+            //Add this flip to rank calculator
+            RankCalculator.IncrementFlips();
+            
             //Debug.Log("Starting Rotation...");
             yield return StartCoroutine(rotateTileScript.Rotate());
 

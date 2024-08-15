@@ -69,6 +69,7 @@ public class LevelManager : MonoBehaviour
     private FMOD.Studio.EventInstance playRank;
     private FMOD.Studio.EventInstance playNewRecord;
     //public LevelMusicHandler levelMusic;
+    public RankCalculator rankCalculator;
 
     private void Awake()
     {
@@ -289,11 +290,14 @@ public class LevelManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.3f);
+        
         playRank.start();
         playRank.release();
         resultsRankText.color = resultsTextColor;
         //TODO: Implement ranking
-        resultsRankText.text = "B";
+        resultsRankText.text = rankCalculator.CalculateRank(level, gameTimer.GetElapsedTime());
+        RankCalculator.ResetFlips();
+        RankCalculator.ResetMinFlips();
         //show rank
         //show buttons
     }

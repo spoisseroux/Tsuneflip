@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.Rendering;
 
 public class GameTimer : MonoBehaviour
 {
@@ -54,6 +55,10 @@ public class GameTimer : MonoBehaviour
         stopTime = Time.time;
         isRunning = false;
         elapsedTime = stopTime - startTime;
+    }
+
+    public float GetElapsedTime(){
+        return elapsedTime;
     }
 
     public string GetTime()

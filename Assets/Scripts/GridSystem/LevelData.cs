@@ -9,8 +9,8 @@ public class LevelData : ScriptableObject
     [SerializeField] public int tileSize, rows, columns;
     [SerializeField] public FlipCode2DArray goalDataArray;
     [SerializeField] public WorldData associatedWorldData;
-    public float bestTime = float.MaxValue;
-
+    [SerializeField] public float optimalTimeS = 10.0f;
+    [HideInInspector] public float bestTime = float.MaxValue;
     [HideInInspector] public Cubemap cubemap;
     [HideInInspector] public Color cubemapColor, tileColorTop, tileColorBottom;
     

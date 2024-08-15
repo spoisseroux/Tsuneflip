@@ -59,6 +59,7 @@ public class LevelGoalPreview : MonoBehaviour
                     {
                         // Rotate the TileMesh 180 degrees on the x-axis
                         tileMesh.rotation = Quaternion.Euler(180, 0, 0);
+                        RankCalculator.IncrementMinFlips();
                     }
                     else
                     {
