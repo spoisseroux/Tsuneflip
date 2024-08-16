@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cinemachine;
+using UnityEngine.Rendering.Universal;
 
 // maybe a singleton? in case we actually load new scenes and instantiate everything
 public class LevelManager : MonoBehaviour
@@ -70,6 +71,8 @@ public class LevelManager : MonoBehaviour
     private FMOD.Studio.EventInstance playNewRecord;
     //public LevelMusicHandler levelMusic;
     public RankCalculator rankCalculator;
+    [SerializeField] UniversalRendererData feature;
+
 
     private void Awake()
     {
@@ -94,6 +97,9 @@ public class LevelManager : MonoBehaviour
         playerDamage = player.GetComponent<PlayerDamage>();
         playerMovement = player.GetComponent<PlayerMovement>();
         playerMovement.ToggleMovementInput(true); // turn off input, will be turned on again when timer hits go
+
+        //TURN ON OUTLINE
+        feature.rendererFeatures[1].SetActive(true);
 
         // read this from leveldata later i guess
         respawnPosition = new Vector3(0.5f, 1.5f, 0.5f);
@@ -147,11 +153,15 @@ public class LevelManager : MonoBehaviour
         pauseMenuUI.SetActive(!pauseMenuUI.activeSelf);
         if (!pause)
         {
+            //TURN ON OUTLINE
+            feature.rendererFeatures[1].SetActive(true);
             CursorManager.LockCursor();
             Time.timeScale = 1;
         }
         else
         {
+            //TURN OFF OUTLINE
+            feature.rendererFeatures[1].SetActive(false);
             CursorManager.UnlockCursor();
             Time.timeScale = 0;
         }
@@ -254,6 +264,10 @@ public class LevelManager : MonoBehaviour
         yield return StartCoroutine(countdownText.FinishCoroutine());
         yield return transitioner.ExitTransition();
         PauseCamera();
+
+        //TURN OFF OUTLINE
+        feature.rendererFeatures[1].SetActive(false);
+
         resultsScreen.SetActive(true);
         //TURN OFF PREVIEW
         //TURN OFF TIMER TEXT
