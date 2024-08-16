@@ -315,7 +315,8 @@ public class LevelManager : MonoBehaviour
         RankCalculator.ResetMinFlips();
 
         //TODO: handle leaderboard
-        StartCoroutine(leaderboard.SubmitScore("testLevel", "testUser", gameTimer.GetElapsedTime(), gameTimer.GetTimeResult()));
+        StartCoroutine(leaderboard.SubmitScore(level.levelId, "testUser", gameTimer.GetElapsedTime(), gameTimer.GetTimeResult()));
+        StartCoroutine(leaderboard.GetLeaderboard(level.levelId));
         //show rank
         //show buttons
     }
