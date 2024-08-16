@@ -72,6 +72,7 @@ public class LevelManager : MonoBehaviour
     //public LevelMusicHandler levelMusic;
     public RankCalculator rankCalculator;
     [SerializeField] UniversalRendererData feature;
+    public LeaderboardManager leaderboard;
 
 
     private void Awake()
@@ -312,6 +313,9 @@ public class LevelManager : MonoBehaviour
         resultsRankText.text = rankCalculator.CalculateRank(level, gameTimer.GetElapsedTime());
         RankCalculator.ResetFlips();
         RankCalculator.ResetMinFlips();
+
+        //TODO: handle leaderboard
+        StartCoroutine(leaderboard.SubmitScore("testLevel", "testUser", gameTimer.GetElapsedTime(), gameTimer.GetTimeResult()));
         //show rank
         //show buttons
     }

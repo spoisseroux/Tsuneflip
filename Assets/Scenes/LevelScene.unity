@@ -5973,6 +5973,7 @@ GameObject:
   - component: {fileID: 2026673317}
   - component: {fileID: 2026673318}
   - component: {fileID: 2026673319}
+  - component: {fileID: 2026673320}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -6023,6 +6024,7 @@ MonoBehaviour:
   sceneChangerManager: {fileID: 2026673318}
   rankCalculator: {fileID: 2026673319}
   feature: {fileID: 11400000, guid: c40be3174f62c4acf8c1216858c64956, type: 2}
+  leaderboard: {fileID: 2026673320}
 --- !u!4 &2026673316
 Transform:
   m_ObjectHideFlags: 0
@@ -6074,6 +6076,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c3b209cbf5b84cc79b43a4363d5bda0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2026673320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026673314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b065a0a0ed2464e84a1762bcba795b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2041734120
