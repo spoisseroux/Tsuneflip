@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using TMPro; 
 using UnityEngine.UI;
 using System;
+using System.Linq;
 
 public class LeaderboardManager : MonoBehaviour
 {
@@ -18,6 +19,12 @@ public class LeaderboardManager : MonoBehaviour
     public IEnumerator SubmitScore(string levelId, string username, float rawTime, string formattedTime)
     {
         username = FilterProfanity(username);  // Apply profanity filter
+
+        // Truncate the username if it's longer than 7 characters
+        if (username.Length > 7)
+        {
+            username = username.Substring(0, 7);
+        }
 
         // Create a JSON object with the score data
         string json = JsonUtility.ToJson(new ScoreData(levelId, username, rawTime, formattedTime));
@@ -66,53 +73,30 @@ public class LeaderboardManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // Populate new leaderboard entries
-        foreach (var entry in entries)
+        // Sort the entries by raw_time in ascending order
+        var sortedEntries = entries.OrderBy(entry => entry.raw_time).Take(5).ToArray();
+
+        // Populate the leaderboard with the top 5 entries
+        foreach (var entry in sortedEntries)
         {
-            // Instantiate the template
             GameObject newEntry = Instantiate(leaderboardEntryTemplate, leaderboardContainer);
-
-            // Debug the state of the instantiated entry
-            Debug.Log("Instantiated new entry: " + newEntry.name);
-            Debug.Log("Is the new entry active? " + newEntry.activeSelf);
-
-            // Activate the new entry (this should activate it and all its children)
             newEntry.SetActive(true);
 
-            // Debug the state after activation
-            Debug.Log("Is the new entry active after SetActive? " + newEntry.activeSelf);
-
-            // Get and debug the TMP_Text components
             TMP_Text[] texts = newEntry.GetComponentsInChildren<TMP_Text>(true);
-            Debug.Log("Number of TMP_Text components found: " + texts.Length);
 
-            // Ensure there are at least two TMP_Text components before accessing them
             if (texts.Length >= 2)
             {
                 texts[0].text = entry.username;
-                texts[1].text = entry.raw_time.ToString("F2");  // Or entry.formatted_time
+                texts[1].text = entry.formatted_time;  // Display formatted time
 
-                // Ensure the TMP_Text components are active
                 foreach (var text in texts)
                 {
                     text.enabled = true;
-                    Debug.Log("Text component activated: " + text.gameObject.name);
                 }
             }
             else
             {
                 Debug.LogError("LeaderboardEntryTemplate must have at least two TMP_Text components.");
-            }
-
-            // Debugging the Layout Groups
-            var horizontalLayout = newEntry.GetComponent<HorizontalLayoutGroup>();
-            if (horizontalLayout != null)
-            {
-                Debug.Log("Horizontal Layout Group found and is active: " + horizontalLayout.gameObject.activeSelf);
-            }
-            else
-            {
-                Debug.LogError("Horizontal Layout Group not found in the entry.");
             }
         }
     }
@@ -149,7 +133,8 @@ public class LeaderboardManager : MonoBehaviour
     public class LeaderboardEntry
     {
         public string username;
-        public float raw_time;  // or string formatted_time
+        public float raw_time;  // Assuming this exists
+        public string formatted_time;  // Add this property if it doesn't exist
     }
 
     public static class JsonHelper
