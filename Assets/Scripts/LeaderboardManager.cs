@@ -6,9 +6,20 @@ using System.Text.RegularExpressions;
 using TMPro;
 using System.Linq;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.IO;
 
 public class LeaderboardManager : MonoBehaviour
 {
+    private static readonly string[] ProfanityList = new string[]
+    {
+        "abuse", "abusive", "asshole", "arsehole", "bastard", "bitch", "biatch",
+        "bollocks", "bullshit", "bs", "crap", "crappy", "cunt", "damn",
+        "dammit", "dick", "douche", "douchebag", "faggot", "fag", "fucker",
+        "fuck", "fucking", "motherfucker", "mf", "nigga", "nigger",
+        "piss", "pissed", "prick", "shit", "shitty", "slut", "twat", "whore"
+    };
+
     private const string submitScoreURL = "https://tsuneflip.keehar.net/submitScore";
     private const string getLeaderboardURL = "https://tsuneflip.keehar.net/getLeaderboard/";
 
@@ -16,18 +27,45 @@ public class LeaderboardManager : MonoBehaviour
     public Transform leaderboardContainer;
     private List<GameObject> leaderboardEntries;  // List to hold the persistent entries
     private bool alreadySubmitted = false;
+    private string secretKey;
 
     private void Start()
     {
         leaderboardEntries = new List<GameObject>();
+        LoadSecretKey();  // Load the secret key from config.txt
+    }
+
+    private void LoadSecretKey()
+    {
+        string configPath = Path.Combine(Application.streamingAssetsPath, "config.txt");
+        if (File.Exists(configPath))
+        {
+            string[] configLines = File.ReadAllLines(configPath);
+            foreach (var line in configLines)
+            {
+                if (line.StartsWith("TSUNE_SECRET_KEY="))
+                {
+                    secretKey = line.Substring("TSUNE_SECRET_KEY=".Length);
+                    Debug.Log("Loaded TSUNE_SECRET_KEY from config file.");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("Config file not found.");
+        }
     }
 
     public IEnumerator SubmitScore(string levelId, string username, float rawTime, string formattedTime)
     {
-        //if not already submitted
-        if (!alreadySubmitted) {
+        if (!alreadySubmitted)
+        {
             alreadySubmitted = true;
-                        // Fetch the current leaderboard for the level
+
+            //filter profanity in usernames
+            username = FilterProfanity(username);
+
+            // Fetch the current leaderboard for the level
             UnityWebRequest www = UnityWebRequest.Get(getLeaderboardURL + levelId);
             yield return www.SendWebRequest();
 
@@ -61,8 +99,12 @@ public class LeaderboardManager : MonoBehaviour
                 username = username.Substring(0, 7);
             }
 
-            // Create a JSON object with the score data
-            string json = JsonUtility.ToJson(new ScoreData(levelId, username, rawTime, formattedTime));
+            // Create a hash of the score data
+            string hash = GenerateHash(levelId, username, rawTime.ToString(), formattedTime);
+
+            // Create a JSON object with the score data and the hash
+            ScoreData scoreData = new ScoreData(levelId, username, rawTime, formattedTime, hash);
+            string json = JsonUtility.ToJson(scoreData);
 
             // Submit the score
             www = new UnityWebRequest(submitScoreURL, "POST");
@@ -81,12 +123,35 @@ public class LeaderboardManager : MonoBehaviour
             {
                 Debug.Log("Score submitted successfully!");
             }
-            
+
             // Reload the leaderboard to show updated scores
             StartCoroutine(GetLeaderboard(levelId));
         }
-        else {
+        else
+        {
             Debug.Log("Already submitted");
+        }
+    }
+
+    private string GenerateHash(string levelId, string username, string rawTime, string formattedTime)
+    {
+        // Format rawTime to match the server-side precision
+        string formattedRawTime = float.Parse(rawTime).ToString("F6"); // 6 decimal places
+
+        string dataToHash = levelId + username + formattedRawTime + formattedTime + secretKey;
+        Debug.Log("Data to hash (client): " + dataToHash);
+
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(dataToHash));
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                builder.Append(bytes[i].ToString("x2"));
+            }
+            string hash = builder.ToString();
+            Debug.Log("Generated hash (client): " + hash);
+            return hash;
         }
     }
 
@@ -174,12 +239,12 @@ public class LeaderboardManager : MonoBehaviour
         }
     }
 
-    private string FilterProfanity(string input)
+    public static string FilterProfanity(string input)
     {
-        string[] bannedWords = { "badword1", "badword2" };  // Add more words as needed
-        foreach (string word in bannedWords)
+        foreach (var word in ProfanityList)
         {
-            input = Regex.Replace(input, word, "****", RegexOptions.IgnoreCase);
+            string pattern = @"\b" + Regex.Escape(word) + @"\b";
+            input = Regex.Replace(input, pattern, "****", RegexOptions.IgnoreCase);
         }
         return input;
     }
@@ -192,13 +257,15 @@ public class LeaderboardManager : MonoBehaviour
         public string username;
         public float raw_time;
         public string formatted_time;
+        public string hash;  // Added hash field
 
-        public ScoreData(string levelId, string username, float rawTime, string formattedTime)
+        public ScoreData(string levelId, string username, float rawTime, string formattedTime, string hash)
         {
             this.level_id = levelId;
             this.username = username;
             this.raw_time = rawTime;
             this.formatted_time = formattedTime;
+            this.hash = hash;
         }
     }
 
