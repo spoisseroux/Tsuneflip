@@ -73,6 +73,8 @@ public class LevelManager : MonoBehaviour
     public RankCalculator rankCalculator;
     [SerializeField] UniversalRendererData feature;
     public LeaderboardManager leaderboard;
+    public TMP_InputField leaderboardUsername;
+    public TextMeshProUGUI leaderboardInputTime;
 
 
     private void Awake()
@@ -315,8 +317,7 @@ public class LevelManager : MonoBehaviour
         RankCalculator.ResetMinFlips();
 
         //TODO: handle leaderboard
-        StartCoroutine(leaderboard.SubmitScore(level.levelId, "testUser", gameTimer.GetElapsedTime(), gameTimer.GetTimeResult()));
-        StartCoroutine(leaderboard.GetLeaderboard(level.levelId));
+        
         //show rank
         //show buttons
     }
@@ -345,5 +346,23 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(instance);
         }
+    }
+
+    public void openLeaderboard() {
+        //add time to leaderboard input box
+        StartCoroutine(leaderboard.GetLeaderboard(level.levelId));
+        leaderboardInputTime.text = gameTimer.GetTimeResult();
+    }
+
+    public void onAddToBoard()
+    {
+        // Get the input from the input field
+
+
+        string userInput = leaderboardUsername.text;
+        StartCoroutine(leaderboard.SubmitScore(level.levelId, userInput, gameTimer.GetElapsedTime(), gameTimer.GetTimeResult()));
+        //StartCoroutine(leaderboard.GetLeaderboard(level.levelId));
+        // Do something with the input
+        Debug.Log("User input: " + userInput);
     }
 }
