@@ -20,6 +20,9 @@ public class LeaderboardManager : MonoBehaviour
         "piss", "pissed", "prick", "shit", "shitty", "slut", "twat", "whore"
     };
 
+    private FMOD.Studio.EventInstance playSubmitConfirm;
+    private FMOD.Studio.EventInstance playSubmitDeny;
+
     private const string submitScoreURL = "https://tsuneflip.keehar.net/submitScore";
     private const string getLeaderboardURL = "https://tsuneflip.keehar.net/getLeaderboard/";
 
@@ -33,6 +36,12 @@ public class LeaderboardManager : MonoBehaviour
     {
         leaderboardEntries = new List<GameObject>();
         LoadSecretKey();  // Load the secret key from config.txt
+
+        playSubmitConfirm = FMODUnity.RuntimeManager.CreateInstance("event:/SubmitConfirm");
+        playSubmitConfirm.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+        playSubmitDeny = FMODUnity.RuntimeManager.CreateInstance("event:/SubmitDeny");
+        playSubmitDeny.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     private void LoadSecretKey()
@@ -87,6 +96,8 @@ public class LeaderboardManager : MonoBehaviour
 
             if (!shouldSubmit)
             {
+                playSubmitDeny.start();
+                playSubmitDeny.release();
                 Debug.Log("Score not submitted: Raw time is not in the top 5.");
                 yield break;  // Stop if the score shouldn't be submitted
             }
@@ -121,6 +132,8 @@ public class LeaderboardManager : MonoBehaviour
             }
             else
             {
+                playSubmitConfirm.start();
+                playSubmitConfirm.release();
                 Debug.Log("Score submitted successfully!");
             }
 
