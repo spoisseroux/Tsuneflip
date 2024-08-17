@@ -11,6 +11,15 @@ using System.IO;
 
 public class LeaderboardManager : MonoBehaviour
 {
+    private static readonly string[] ProfanityList = new string[]
+    {
+        "abuse", "abusive", "asshole", "arsehole", "bastard", "bitch", "biatch",
+        "bollocks", "bullshit", "bs", "crap", "crappy", "cunt", "damn",
+        "dammit", "dick", "douche", "douchebag", "faggot", "fag", "fucker",
+        "fuck", "fucking", "motherfucker", "mf", "nigga", "nigger",
+        "piss", "pissed", "prick", "shit", "shitty", "slut", "twat", "whore"
+    };
+
     private const string submitScoreURL = "https://tsuneflip.keehar.net/submitScore";
     private const string getLeaderboardURL = "https://tsuneflip.keehar.net/getLeaderboard/";
 
@@ -52,6 +61,9 @@ public class LeaderboardManager : MonoBehaviour
         if (!alreadySubmitted)
         {
             alreadySubmitted = true;
+
+            //filter profanity in usernames
+            username = FilterProfanity(username);
 
             // Fetch the current leaderboard for the level
             UnityWebRequest www = UnityWebRequest.Get(getLeaderboardURL + levelId);
@@ -227,12 +239,12 @@ public class LeaderboardManager : MonoBehaviour
         }
     }
 
-    private string FilterProfanity(string input)
+    public static string FilterProfanity(string input)
     {
-        string[] bannedWords = { "badword1", "badword2" };  // Add more words as needed
-        foreach (string word in bannedWords)
+        foreach (var word in ProfanityList)
         {
-            input = Regex.Replace(input, word, "****", RegexOptions.IgnoreCase);
+            string pattern = @"\b" + Regex.Escape(word) + @"\b";
+            input = Regex.Replace(input, pattern, "****", RegexOptions.IgnoreCase);
         }
         return input;
     }
