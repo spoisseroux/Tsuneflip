@@ -45,6 +45,7 @@ public class LevelManager : MonoBehaviour
 
     //Results Screen
     public GameObject resultsScreen;
+    public GameObject endScreenBackground;
 
     private TextMeshProUGUI resultsLevelNameText;
     private TextMeshProUGUI resultsTimeText;
@@ -72,6 +73,9 @@ public class LevelManager : MonoBehaviour
     //public LevelMusicHandler levelMusic;
     public RankCalculator rankCalculator;
     [SerializeField] UniversalRendererData feature;
+    public LeaderboardManager leaderboard;
+    public TMP_InputField leaderboardUsername;
+    public TextMeshProUGUI leaderboardInputTime;
 
 
     private void Awake()
@@ -79,12 +83,13 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Level manager Awake");
         //Get Results Screen Texts
         FModStarter();
-        resultsLevelNameText = resultsScreen.transform.Find("LevelName").GetComponent<TextMeshProUGUI>();
-        resultsTimeText = resultsScreen.transform.Find("InfoHolder/TimeHolder/Time").GetComponent<TextMeshProUGUI>();
-        resultsBestTimeText = resultsScreen.transform.Find("InfoHolder/BestTimeHolder/BestTime").GetComponent<TextMeshProUGUI>();
+        resultsLevelNameText = resultsScreen.transform.Find("ResultsScreen/LevelName").GetComponent<TextMeshProUGUI>();
+        resultsTimeText = resultsScreen.transform.Find("ResultsScreen/InfoHolder/TimeHolder/Time").GetComponent<TextMeshProUGUI>();
+        resultsBestTimeText = resultsScreen.transform.Find("ResultsScreen/InfoHolder/BestTimeHolder/BestTime").GetComponent<TextMeshProUGUI>();
         resultsBestTimeRainbowEffect = resultsBestTimeText.GetComponent<RainbowTextEffect>();
-        resultsRankText = resultsScreen.transform.Find("InfoHolder/RankHolder/Rank").GetComponent<TextMeshProUGUI>();
+        resultsRankText = resultsScreen.transform.Find("ResultsScreen/InfoHolder/RankHolder/Rank").GetComponent<TextMeshProUGUI>();
         resultsScreen.SetActive(false);
+        endScreenBackground.SetActive(false);
         /*
          * Need to make a refactor when it's clear how many of these can be Serialized 
          * and how many need to be instantiated/built at runtime, then found
@@ -268,7 +273,9 @@ public class LevelManager : MonoBehaviour
         //TURN OFF OUTLINE
         feature.rendererFeatures[1].SetActive(false);
 
+        endScreenBackground.SetActive(true);
         resultsScreen.SetActive(true);
+
         //TURN OFF PREVIEW
         //TURN OFF TIMER TEXT
         resultsCubemapMat.SetTexture("_CubemapCurr", level.cubemap);
@@ -312,6 +319,9 @@ public class LevelManager : MonoBehaviour
         resultsRankText.text = rankCalculator.CalculateRank(level, gameTimer.GetElapsedTime());
         RankCalculator.ResetFlips();
         RankCalculator.ResetMinFlips();
+
+        //TODO: handle leaderboard
+        
         //show rank
         //show buttons
     }
@@ -340,5 +350,23 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(instance);
         }
+    }
+
+    public void openLeaderboard() {
+        //add time to leaderboard input box
+        StartCoroutine(leaderboard.GetLeaderboard(level.levelId));
+        leaderboardInputTime.text = gameTimer.GetTimeResult();
+    }
+
+    public void onAddToBoard()
+    {
+        // Get the input from the input field
+
+
+        string userInput = leaderboardUsername.text;
+        StartCoroutine(leaderboard.SubmitScore(level.levelId, userInput, gameTimer.GetElapsedTime(), gameTimer.GetTimeResult()));
+        //StartCoroutine(leaderboard.GetLeaderboard(level.levelId));
+        // Do something with the input
+        Debug.Log("User input: " + userInput);
     }
 }
