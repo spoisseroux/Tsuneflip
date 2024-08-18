@@ -11,9 +11,15 @@ public class PreviewToLeaderboardUIController : MonoBehaviour
     private bool onPreview = true;
     private bool isRunning = false;
     public Button swapButton;
+    private FMOD.Studio.EventInstance toLeaderboardSound;
+    private FMOD.Studio.EventInstance toPreviewSound;
 
     void Start() {
+        toLeaderboardSound = FMODUnity.RuntimeManager.CreateInstance("event:/SwipeForward");
+        toLeaderboardSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
 
+        toPreviewSound = FMODUnity.RuntimeManager.CreateInstance("event:/SwipeBackward");
+        toPreviewSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     public void PlayAnimation()
@@ -26,6 +32,8 @@ public class PreviewToLeaderboardUIController : MonoBehaviour
             isRunning = true;
             swapButton.interactable = false;
             if (onPreview) {
+                toLeaderboardSound.start();
+                //toLeaderboardSound.release();
                 animator.SetTrigger("ToLeaderboardTrigger");
                 // Wait for the Animator to be in the correct state
                 while (!animator.GetCurrentAnimatorStateInfo(0).IsName("PreviewToLeaderboard"))
@@ -44,6 +52,8 @@ public class PreviewToLeaderboardUIController : MonoBehaviour
                 onLeaderboard = true;
             }
             else {
+                toPreviewSound.start();
+                //toPreviewSound.release();
                 animator.SetTrigger("ToPreviewTrigger");
                 // Wait for the Animator to be in the correct state
                 while (!animator.GetCurrentAnimatorStateInfo(0).IsName("LeaderboardToPreview"))
