@@ -27,6 +27,7 @@ public class LevelMenuManager : MonoBehaviour
     private List<WorldData> worlds;
     // static LevelData to indicate which level we are loading, persists into Gameplay Scene!!!
     public static LevelData loaded;
+    public PreviewToLeaderboardUIController previewToLeaderboard;
 
     void Start()
     {
@@ -259,9 +260,16 @@ public class LevelMenuManager : MonoBehaviour
 
             // Show preview of the current level and update levelBestTimeText
             LevelDataHolder levelDataHolder = levelOrganizer.GetChild(currentLevelIndex).GetComponent<LevelDataHolder>();
+            
             if (levelDataHolder != null)
             {
                 ShowLevelPreview(levelDataHolder.levelData);
+                //get leaderboard for level
+                previewToLeaderboard.currentLevel = levelDataHolder.levelData;
+                //if on leaderboard screen update
+                if (previewToLeaderboard.onLeaderboard == true) {
+                    previewToLeaderboard.RefreshLeaderboard();
+                } 
             }
         }));
     }
@@ -367,6 +375,8 @@ public class LevelMenuManager : MonoBehaviour
 
         // Initialize the grid preview
         gridPreview.InitializeGridPreview(level);
+        
+        previewToLeaderboard.currentLevel = level;
 
         // Set the static variable for persistence when selecting
         loaded = level;
