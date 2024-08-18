@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LevelX
   m_EditorClassIdentifier: 
   levelName: hi
+  levelId: test
   tileSize: 1
   rows: 9
   columns: 9

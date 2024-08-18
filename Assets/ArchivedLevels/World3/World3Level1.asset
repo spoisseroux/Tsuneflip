@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: World3Level1
   m_EditorClassIdentifier: 
   levelName: Apple
+  levelId: test
   tileSize: 1
   rows: 2
   columns: 2

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: World2Level2
   m_EditorClassIdentifier: 
   levelName: Dog
+  levelId: test
   tileSize: 1
   rows: 8
   columns: 8

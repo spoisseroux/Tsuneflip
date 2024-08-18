@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: EhimeLevel3
   m_EditorClassIdentifier: 
   levelName: Level 3
+  levelId: test
   tileSize: 1
   rows: 4
   columns: 4

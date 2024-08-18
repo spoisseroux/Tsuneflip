@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: OkayamaLevel2
   m_EditorClassIdentifier: 
   levelName: Level 2
+  levelId: test
   tileSize: 1
   rows: 7
   columns: 7

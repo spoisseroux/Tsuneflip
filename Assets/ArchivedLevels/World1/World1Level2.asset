@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: World1Level2
   m_EditorClassIdentifier: 
   levelName: Heart
+  levelId: test
   tileSize: 1
   rows: 2
   columns: 2

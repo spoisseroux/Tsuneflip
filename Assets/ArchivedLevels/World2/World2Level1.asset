@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: World2Level1
   m_EditorClassIdentifier: 
   levelName: Cat
+  levelId: test
   tileSize: 1
   rows: 10
   columns: 10

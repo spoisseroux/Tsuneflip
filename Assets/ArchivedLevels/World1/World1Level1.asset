@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: World1Level1
   m_EditorClassIdentifier: 
   levelName: Arrow
+  levelId: test
   tileSize: 1
   rows: 5
   columns: 5
