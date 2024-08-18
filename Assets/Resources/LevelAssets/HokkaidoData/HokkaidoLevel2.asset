@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HokkaidoLevel2
   m_EditorClassIdentifier: 
   levelName: Level 2
+  levelId: test2
   tileSize: 1
   rows: 8
   columns: 6

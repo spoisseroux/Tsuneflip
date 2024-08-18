@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: World2Level3
   m_EditorClassIdentifier: 
   levelName: Horse
+  levelId: test
   tileSize: 1
   rows: 3
   columns: 3

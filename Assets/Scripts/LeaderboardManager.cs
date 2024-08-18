@@ -8,6 +8,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.IO;
+using System;
 
 public class LeaderboardManager : MonoBehaviour
 {
@@ -148,8 +149,8 @@ public class LeaderboardManager : MonoBehaviour
 
     private string GenerateHash(string levelId, string username, string rawTime, string formattedTime)
     {
-        // Format rawTime to match the server-side precision
-        string formattedRawTime = float.Parse(rawTime).ToString("F6"); // 6 decimal places
+        // Round rawTime to 6 decimal places before formatting
+        string formattedRawTime = Math.Round(float.Parse(rawTime), 6).ToString("F6");
 
         string dataToHash = levelId + username + formattedRawTime + formattedTime + secretKey;
         Debug.Log("Data to hash (client): " + dataToHash);
