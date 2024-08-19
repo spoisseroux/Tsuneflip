@@ -48,10 +48,10 @@ public class LevelMenuManager : MonoBehaviour
         levelNameText = GameObject.Find("Canvas/LevelPreview/LevelNameAndSwapButton/LevelNameText").GetComponent<TMP_Text>();
         levelBestTimeText = GameObject.Find("Canvas/LevelPreview/LevelBestTime").GetComponent<TMP_Text>();
 
-        worldUpButton.onClick.AddListener(() => ScrollWorlds(1));
-        worldDownButton.onClick.AddListener(() => ScrollWorlds(-1));
-        levelUpButton.onClick.AddListener(() => ScrollLevels(1));
-        levelDownButton.onClick.AddListener(() => ScrollLevels(-1));
+        worldUpButton.onClick.AddListener(() => ScrollWorlds(-1));
+        worldDownButton.onClick.AddListener(() => ScrollWorlds(1));
+        levelUpButton.onClick.AddListener(() => ScrollLevels(-1));
+        levelDownButton.onClick.AddListener(() => ScrollLevels(1));
     }
 
     void LoadWorlds()
