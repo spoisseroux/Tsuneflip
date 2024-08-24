@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class HoverToggleRawImage : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private RawImage targetImage;
+    [SerializeField] private RawImage otherImage;
 
     // This method is called when the pointer enters the button
     public void OnPointerEnter(PointerEventData eventData)
@@ -12,6 +13,9 @@ public class HoverToggleRawImage : MonoBehaviour, IPointerEnterHandler, IPointer
         if (targetImage != null)
         {
             targetImage.enabled = true;
+            if (otherImage.isActiveAndEnabled) {
+                otherImage.enabled = false;
+            }
         }
     }
 
