@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum FlipCode
 {
@@ -71,6 +72,11 @@ public class Tile : MonoBehaviour
             // Do not render the Tile, set Collider to false
             Transform tileCollider = this.transform.Find("TileCollider");
             tileCollider.gameObject.SetActive(false);
+
+            // add a nav mesh obstacle component
+            NavMeshObstacle emptyTile = this.gameObject.AddComponent<NavMeshObstacle>();
+            emptyTile.carving = true;
+            emptyTile.size = new Vector3(0.1f, 0.5f, 0.1f);
         }
         else
         {

@@ -1,15 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-// NPC class, maybe we make this more generic or less generic (not even NPCMovement, specify one for each like HandMovement BunnyMovement)?
+public enum State
+{
+    Idle,
+    Roam,
+    Ability,
+    Alert
+}
+
+
 public class NPCMovement : EntityMovement
 {
-    // statemachine
-    public NPCStateMachine stateMachine;
+    // navmesh
+    public NavMeshAgent agent;
 
-    // states
-    public NPCState roam { get; private set; }
+    // animator
+    protected float animationName;
+    private Animator animator;
+
+    // states & implementations (each of these have their own update time to check player distance???)
+    protected State mode;
+    private float timePassed;
+    // roam
+    private IRoaming roam;
+    private float roamTargetUpdate = 0.1f; // depends on roam strategy
+    private float roamPlayerUpdate = 0.5f;
+
+    // ability
+    //private IAbility ability;
+    private float castTime = 0.5f; // in practice, this will depend on the ability!
+    public bool casting;
+
+    // alert
+    //private IAlert alert;
+    //private float alertUpdate = 0.25f; // depends on alert strategy
+
+    // idle
+    //private IIdle idle;
+    private float idleTime = 1.0f; // depends on NPC
+    public bool waiting;
 
     // distance to player
     [SerializeField] Transform player;
@@ -29,16 +61,20 @@ public class NPCMovement : EntityMovement
     #region Monobehaviours
     private void Awake()
     {
-        // constants made
+        // constants
         constantY = 1.0f;
-        maxX = 5.0f;//LevelMenuManager.loaded.rows - 0.5f;
-        maxZ = 5.0f;//LevelMenuManager.loaded.columns - 0.5f;
-        minX = 0.0f;
-        minZ = 0.0f;
+        maxX = 8.5f;//LevelMenuManager.loaded.rows - 0.5f;
+        maxZ = 8.5f;//LevelMenuManager.loaded.columns - 0.5f;
+        minX = 0.5f;
+        minZ = 0.5f;
+        agent.speed = constants.moveSpeed;
+        agent.stoppingDistance = 0.01f; // hmm
+        // agent.angularSpeed = ???;
 
-        // state machine
-        stateMachine = new NPCStateMachine();
-        roam = new RoamingState(this, stateMachine, new FindRandomTile(3.0f, 10.0f));
+        // states and movement strategies
+        roam = new FindRandomTile(2.0f, 10.0f, minX, maxX, minZ, maxZ);
+        waiting = false;
+        casting = false;
 
         // get player
         player = GameObject.Find("Player").GetComponent<Transform>();
@@ -46,21 +82,175 @@ public class NPCMovement : EntityMovement
 
     protected override void Start()
     {
-        stateMachine.Initialize(roam);
+        mode = State.Idle;
+        EnterIdle();
     }
 
+    // logic updates
     protected override void Update()
     {
+        // update constants
         base.Update();
         distanceToPlayer = UpdatePlayerDistance();
         distanceToTarget = UpdateTargetDistance();
-        stateMachine.currentState.LogicUpdate();
+        timePassed += Time.deltaTime;
+
+        // big switch statement
+        switch (mode)
+        {
+            case State.Idle:
+                UpdateIdle();
+                break;
+
+            case State.Roam:
+                UpdateRoam();
+                break;
+
+            case State.Ability:
+                UpdateAbility();
+                break;
+
+            case State.Alert:
+                // UpdateAlert();
+                break;
+        }
     }
 
+    // physics updates
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        stateMachine.currentState.PhysicsUpdate();
+    }
+    #endregion
+
+    #region Idle State
+    private void EnterIdle()
+    {
+        Debug.Log("NPC entering Idle");
+        timePassed = 0.0f;
+        mode = State.Idle;
+        // begin waiting coroutine
+        StartCoroutine(Wait(idleTime));
+    }
+
+    private void UpdateIdle()
+    {
+        if (!waiting)
+        {
+            // go to ability (TAKES PRECEDENCE) needs a distant target on initialize IDLE <--> ABILITY loops
+            distanceToTarget = UpdateTargetDistance(); 
+            /*
+            if (distanceToTarget <= 0.05f)
+            {
+                mode = State.Ability;
+                EnterAbility();
+            }
+            */
+
+            // go to alert (SECOND MOST)
+
+            // go to roam (THIRD MOST)
+            //else
+            //{
+                mode = State.Roam;
+                EnterRoam();
+            //}
+        }
+    }
+    #endregion
+
+    #region Roam State
+    private void EnterRoam()
+    {
+        Debug.Log("NPC entering Roam");
+        // set up mode and time
+        timePassed = 0.0f;
+        mode = State.Roam;
+
+        // generate next destination
+        Vector2 pos = roam.FindNextPosition(this.transform);
+        currentTarget = new Vector3(pos.x, constantY, pos.y);
+        NavMeshPath path = new NavMeshPath();
+        agent.CalculatePath(currentTarget, path);
+        // if we cannot fully reach the target, reset it to a random corner point on partial path
+        if (path.status != NavMeshPathStatus.PathComplete)
+        {
+            int randomCorner = Random.Range(0, path.corners.Length-1);
+            currentTarget = path.corners[randomCorner];
+            pos = new Vector2(currentTarget.x, currentTarget.z);
+        }
+
+        //Debug.Log(currentTarget);
+        Move(pos);
+
+        // update distances
+        distanceToTarget = UpdateTargetDistance();
+        distanceToPlayer = UpdatePlayerDistance();
+    }
+
+    private void UpdateRoam()
+    {
+        // check if near target, then check to go to idle (TAKES PRECEDENCE)
+        if (timePassed >= roamTargetUpdate)
+        {
+            distanceToTarget = UpdateTargetDistance();
+            if (distanceToTarget <= 0.05f)
+            {
+                mode = State.Idle;
+                EnterIdle();
+            }
+        }
+        // go to alert (SECOND)
+        if (timePassed >= roamPlayerUpdate)
+        {
+            /*
+            distanceToPlayer = UpdatePlayerDistance();
+            if (distanceToPlayer <= 3.0f)
+            {
+                mode = State.Alert;
+                EnterAlert();
+            }
+            */
+        }
+    }
+    #endregion
+
+    #region Alert State
+    private void EnterAlert()
+    {
+        Debug.Log("NPC entering Alert");
+        timePassed = 0.0f;
+        mode = State.Alert;
+
+        //currentTarget = alert.FindNextPosition(this.transform);
+
+        // update distances
+        //distanceToTarget = UpdateTargetDistance();
+        //distanceToPlayer = UpdatePlayerDistance();
+    }
+
+    private void UpdateAlert()
+    {
+        // go to idle (only)
+    }
+    #endregion
+
+    #region Ability State
+    private void EnterAbility()
+    {
+        Debug.Log("NPC entering Ability");
+        timePassed = 0.0f;
+        mode = State.Ability;
+        StartCoroutine(Cast(castTime));
+    }
+
+    private void UpdateAbility()
+    {
+        if (!casting)
+        {
+            mode = State.Idle;
+            EnterIdle();
+        }
     }
     #endregion
 
@@ -75,7 +265,8 @@ public class NPCMovement : EntityMovement
     {
         // set currentTarget and moveVector
         currentTarget = new Vector3(move.x, constantY, move.y);
-        //moveVector = new Vector3(move.normalized.x, 0.0f, move.normalized.y);
+        agent.SetDestination(currentTarget);
+
     }
 
     // probly not needed, can just lock all NPCs at a given y
@@ -91,11 +282,7 @@ public class NPCMovement : EntityMovement
     }
     #endregion
 
-    public EntityMovementConstants GetConstants()
-    {
-        return constants;
-    }
-
+    #region Logic Updates
     private float UpdatePlayerDistance()
     {
         return Vector3.Distance(player.position, transform.position);
@@ -104,5 +291,38 @@ public class NPCMovement : EntityMovement
     private float UpdateTargetDistance()
     {
         return Vector3.Distance(currentTarget, transform.position);
+    }
+    #endregion
+
+    #region Gizmos
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        if (currentTarget != null)
+        {
+            Gizmos.DrawSphere(currentTarget, 0.1f);
+        }
+    }
+
+    #endregion
+
+    public EntityMovementConstants GetConstants()
+    {
+        return constants;
+    }
+
+    private IEnumerator Wait(float waitTime)
+    {
+        waiting = true;
+        yield return new WaitForSeconds(waitTime);
+        waiting = false;
+    }
+
+    private IEnumerator Cast(float waitTime)
+    {
+        casting = true;
+        yield return new WaitForSeconds(waitTime);
+        casting = false;
     }
 }

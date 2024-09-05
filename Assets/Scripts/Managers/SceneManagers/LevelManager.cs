@@ -25,14 +25,11 @@ public class LevelManager : MonoBehaviour
     // Pause Menu UI objects
     [SerializeField] GameObject pauseMenuUI;
 
-    // Time object
-    // have to create this
-
     // Grid objects
     [SerializeField] GridManager grid;
     [SerializeField] public LevelData level;
     [SerializeField] Vector3 respawnPosition;
-    [SerializeField] Vector3 respawnRotation; // quaternion? :/
+    [SerializeField] Vector3 respawnRotation;
     [SerializeField] DeathZone deathZone;
 
     //UI

@@ -1,33 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class FindRandomTile : IRoaming
 {
     private float maxDistanceAway;
     private float minDistanceAway;
 
-    public FindRandomTile(float distMin, float distMax)
+    private float minX, maxX, minZ, maxZ;
+
+    public FindRandomTile(float distMin, float distMax, float Xmin, float Xmax, float Zmin, float Zmax)
     {
         minDistanceAway = distMin;
         maxDistanceAway = distMax;
+        minX = Xmin;
+        maxX = Xmax;
+        minZ = Zmin;
+        maxZ = Zmax;
     }
 
-    // produces a vector in local space, have to convert to world based on NPC's rotation and position
+    // produce the next target position for roaming NPC
     public Vector2 FindNextPosition(Transform currentNPCPos)
     {
-        // generate a random direction in local space for NPC, convert it to world space, normalize it
-        Vector3 localRight = currentNPCPos.right;
-        Vector3 localForward = currentNPCPos.forward;
-        float randomWeightX = Random.Range(-1.0f, 0.25f); // emphasize finding a "newer" direction by making the random range favor negatives
-        float randomWeightZ = Random.Range(-1.0f, 0.25f);
-        Vector3 direction = currentNPCPos.TransformPoint(localRight * randomWeightX + localForward * randomWeightZ).normalized;
+        Vector2 randomPos = RandomPos(currentNPCPos);
+        return ResolveToGrid(randomPos);//ResolveToTile(ResolveToGrid(randomPos));
+    }
 
-        // get a random distance away
-        float randomDist = Random.Range(minDistanceAway, maxDistanceAway);
+    // generates a random position away from our given position
+    private Vector2 RandomPos(Transform currentPos)
+    {
+        // generate a random point
+        Vector2 v2 = new Vector3(Random.Range(minX, maxX), Random.Range(minZ, maxZ));
 
-        // scale our direction the randomDist to yield new target
-        Vector3 choice = direction * randomDist;
-        return new Vector2(choice.x, choice.z);
+        // scale our direction by randomDist
+        Vector3 target = new Vector3(v2.x, 1.0f, v2.y);
+
+        // do a NavMesh hit to find nearest distance on NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(target, out hit, maxX * maxZ, NavMesh.AllAreas))
+        {
+            target = hit.position;
+        }
+        return new Vector2(target.x, target.z);
+    }
+
+    // resolves generated position to our Grid
+    private Vector2 ResolveToGrid(Vector2 potentialMove)
+    {
+        potentialMove.x = Mathf.Clamp(potentialMove.x, minX, maxX);
+        potentialMove.y = Mathf.Clamp(potentialMove.y, minZ, maxZ);
+        return potentialMove;
+    }
+
+    // converts any arbitrary point inside our grid to the center of the Tile it's on
+    private Vector2 ResolveToTile(Vector2 gridLocation)
+    {
+        return new Vector2(NearestHalf(gridLocation.x), NearestHalf(gridLocation.y));
+    }
+
+    // rounding function
+    private float NearestHalf(float num)
+    {
+        return Mathf.Round(num * 2) / 2;
     }
 }

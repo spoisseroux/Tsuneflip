@@ -12,6 +12,3 @@ public interface IRoaming
 // possible:
 //      FindFlippedTile (YES FOR NOW)
 //      FindRandomTile
-
-// issues:
-//      How do we move around Empty tiles? path finding algorithm?

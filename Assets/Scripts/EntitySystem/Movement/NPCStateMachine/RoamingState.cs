@@ -30,7 +30,7 @@ public class RoamingState : NPCState
     public override void Enter()
     {
         base.Enter();
-        nextPos = ResolveToTile(ResolveToGrid(roamStrategy.FindNextPosition(npc.transform)));
+        nextPos = ResolveToTile(ResolveToGrid(roamStrategy.FindNextPosition(npc.transform))); // find new position upon entering
         timePassed = 0.0f;
     }
 
@@ -52,23 +52,22 @@ public class RoamingState : NPCState
         // if at target position or alerted, change... maybe depends on unit
         if (bufferedDistanceToPlayer <= 0.5f)
         {
-            // chase
-            // flee
-            // etc
+            // alert state transition
         }
         
         else if (npc.distanceToTarget <= 0.05f)
         {
-            // stop
+            // stop & change state
+            //npcStateMachine.ChangeState(npc.ability);
 
-            // flip tile (change to ability) WOULD GO HERE
-
+            /*
             // pick new target spot
             nextPos = ResolveToTile(ResolveToGrid(roamStrategy.FindNextPosition(npc.transform)));
             // for now, we just move to new target
             npc.Move(new Vector2(nextPos.x, nextPos.y));
 
             // maybe in tileflip ability we send an event out to the grid and request that the tile at our world position flips?
+            */
         }
         // else move towards position
         else

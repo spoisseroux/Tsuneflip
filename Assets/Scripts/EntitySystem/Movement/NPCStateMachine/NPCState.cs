@@ -6,8 +6,6 @@ public class NPCState
 {
     protected NPCMovement npc;
     protected NPCStateMachine npcStateMachine;
-
-    protected float startTime;
     protected float animationName;
 
     public NPCState(NPCMovement entityIn, NPCStateMachine npcSM)
@@ -19,7 +17,7 @@ public class NPCState
     public virtual void Enter()
     {
         DoChecks();
-        startTime = Time.time;
+        // startTime = Time.time;
         // npc.GetComponent<Animator>().SetBool(animationName, true);
         Debug.Log("NPC entering state: " + this.ToString());
     }
