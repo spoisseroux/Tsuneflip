@@ -716,6 +716,7 @@ MonoBehaviour:
   minZoomDistance: 10
   maxZoomDistance: 50
   zoomSpeed: 30
+  playerMinimapLocation: {fileID: 1772293296}
 --- !u!1 &165158360
 GameObject:
   m_ObjectHideFlags: 0
@@ -855,7 +856,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191161168}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.057448816, y: -0.00000004217196, z: 0.0000000015043153, w: 0.99834853}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
