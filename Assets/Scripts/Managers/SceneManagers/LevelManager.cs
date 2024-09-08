@@ -151,7 +151,7 @@ public class LevelManager : MonoBehaviour
         playerInput.OnPauseInput -= TogglePauseMenu;
     }
 
-    private void TogglePauseMenu(bool pause)
+    public void TogglePauseMenu(bool pause)
     {
         Debug.Log("we r pausing !");
         // toggle back and forth

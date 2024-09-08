@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="Workspace" id="{fa3bf06d-ad83-439d-8549-039e9bfea550}">
-		<property name="builtBanksOutputDirectory">
-			<value>../../../../../Documents/GitHub/GameJamAug24/Assets/StreamingAssets</value>
-		</property>
+	<object class="Workspace" id="{e01dd96b-d578-4bb8-899d-f13614d1b01b}">
+		<property name="builtBanksOutputDirectory" />
 		<relationship name="masterEventFolder">
-			<destination>{9b71b332-0965-4dda-8719-913514dfc33e}</destination>
+			<destination>{d29d0859-f681-4416-8148-7921260640ce}</destination>
 		</relationship>
 		<relationship name="masterTagFolder">
-			<destination>{7fce9800-b15f-4863-bb50-58898758b817}</destination>
+			<destination>{ef12f67e-fe9b-4071-a94e-d54b853c7826}</destination>
 		</relationship>
 		<relationship name="masterEffectPresetFolder">
-			<destination>{b0aa8b3d-33a9-41ad-ad66-dbf38dac2310}</destination>
+			<destination>{6a8452f9-9903-4ba5-8362-735a9970ecde}</destination>
 		</relationship>
 		<relationship name="masterParameterPresetFolder">
-			<destination>{3c58380f-c109-4c40-a753-30aebf6b63c2}</destination>
+			<destination>{9219f24d-cb0e-4a41-887c-dd0fe416687a}</destination>
 		</relationship>
 		<relationship name="masterBankFolder">
-			<destination>{54e84090-b1ff-42e1-b756-8c58df08eb20}</destination>
+			<destination>{72aac388-9db5-4122-a22b-4e9aff8a8658}</destination>
 		</relationship>
 		<relationship name="masterSandboxFolder">
-			<destination>{53e735f3-d3c5-4558-a6d6-e36b3031ad57}</destination>
+			<destination>{e3029e0d-8aae-45ca-a52a-9a1dfafbb8f1}</destination>
 		</relationship>
 		<relationship name="masterAssetFolder">
-			<destination>{aaf9cb76-0f22-4583-a40b-bc8aa983b0e0}</destination>
+			<destination>{6a035af9-120c-4411-80fe-21fcef7cdbb7}</destination>
 		</relationship>
 		<relationship name="mixer">
-			<destination>{16588baa-ef4f-48cd-88cd-8b8de462da62}</destination>
+			<destination>{74cb572d-75a0-4bed-a330-0fac7d48f017}</destination>
 		</relationship>
 		<relationship name="profilerSessionFolder">
-			<destination>{20fb0aed-0d67-4a2a-91fc-a4af2f8ca60f}</destination>
+			<destination>{de07fa9b-eca5-4c2e-b675-9558b7d935bd}</destination>
 		</relationship>
 		<relationship name="platforms">
-			<destination>{061eb874-be43-436b-b997-f1ecec469eb5}</destination>
+			<destination>{407a144c-1a7c-4fff-a43a-c223b76d0356}</destination>
 		</relationship>
 	</object>
 </objects>
