@@ -39,14 +39,15 @@ public class LevelMenuManager : MonoBehaviour
 
     void SetupButtons()
     {
-        worldOrganizer = GameObject.Find("Canvas/LevelSelectHolder/WorldOrganizer").transform;
-        levelOrganizer = GameObject.Find("Canvas/LevelSelectHolder/LevelOrganizer").transform;
-        worldUpButton = GameObject.Find("Canvas/LevelSelectHolder/WorldUpButton").GetComponent<Button>();
-        worldDownButton = GameObject.Find("Canvas/LevelSelectHolder/WorldDownButton").GetComponent<Button>();
-        levelUpButton = GameObject.Find("Canvas/LevelSelectHolder/LevelUpButton").GetComponent<Button>();
-        levelDownButton = GameObject.Find("Canvas/LevelSelectHolder/LevelDownButton").GetComponent<Button>();
-        levelNameText = GameObject.Find("Canvas/LevelPreview/LevelNameAndSwapButton/LevelNameText").GetComponent<TMP_Text>();
-        levelBestTimeText = GameObject.Find("Canvas/LevelPreview/LevelBestTime").GetComponent<TMP_Text>();
+        //TODO: FIx these:///
+        worldOrganizer = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/WorldOrganizer").transform;
+        levelOrganizer = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/LevelOrganizer").transform;
+        worldUpButton = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/WorldUpButton").GetComponent<Button>();
+        worldDownButton = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/WorldDownButton").GetComponent<Button>();
+        levelUpButton = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/LevelUpButton").GetComponent<Button>();
+        levelDownButton = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/LevelDownButton").GetComponent<Button>();
+        levelNameText = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelPreview/LevelNameAndSwapButton/LevelNameText").GetComponent<TMP_Text>();
+        levelBestTimeText = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelPreview/LevelBestTime").GetComponent<TMP_Text>();
 
         worldUpButton.onClick.AddListener(() => ScrollWorlds(-1));
         worldDownButton.onClick.AddListener(() => ScrollWorlds(1));
