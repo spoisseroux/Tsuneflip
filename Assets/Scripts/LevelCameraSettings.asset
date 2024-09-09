@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 719f635d3c48749bab0c5b998abbd2e1, type: 3}
   m_Name: LevelCameraSettings
   m_EditorClassIdentifier: 
-  cameraSensitivity: 0
+  cameraSensitivity: 0.5
   cameraIsInverted: 0

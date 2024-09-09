@@ -76,7 +76,7 @@ public class LevelManager : MonoBehaviour
     public LeaderboardManager leaderboard;
     public TMP_InputField leaderboardUsername;
     public TextMeshProUGUI leaderboardInputTime;
-
+    public ReadSettingsFromCameraSO readCameraSettings;
 
     private void Awake()
     {
@@ -156,6 +156,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("we r pausing !");
         // toggle back and forth
         pauseMenuUI.SetActive(!pauseMenuUI.activeSelf);
+        readCameraSettings.UpdateCamSettings();
         if (!pause)
         {
             //TURN ON OUTLINE
