@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3f9a73c07d3345898ac5670e6f0be28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugMode: 1
   goal: {fileID: 11400000, guid: 013b77faafdcc4f18896042c9786aa8a, type: 2}
   tilePrefab: {fileID: 2993567531171733788, guid: edf31d6d781df43dfb766938d6ffe1ca,
     type: 3}
@@ -839,6 +840,9 @@ MonoBehaviour:
   facingDir: {x: 0, y: 0, z: 0, w: 0}
   constants: {fileID: 11400000, guid: 2e412edeb62214d12a10b7121f1dec21, type: 2}
   agent: {fileID: 1351777026}
+  mode: 0
+  casting: 0
+  waiting: 0
   player: {fileID: 659074403}
   distanceToPlayer: 0
   maxX: 0
@@ -849,7 +853,6 @@ MonoBehaviour:
   moveVector: {x: 0, y: 0, z: 0}
   distanceToTarget: 0
   constantY: 1
-  waiting: 0
 --- !u!23 &1351777021
 MeshRenderer:
   m_ObjectHideFlags: 0

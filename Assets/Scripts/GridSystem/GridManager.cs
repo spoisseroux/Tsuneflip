@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GridManager : MonoBehaviour
 {
     private FMOD.Studio.EventInstance playTileFlip;
+    [SerializeField] bool debugMode = false;
 
     // the Grid being rendered
     private GameObject[,] grid;
@@ -33,8 +34,11 @@ public class GridManager : MonoBehaviour
     #region Monobehaviour Functions
     private void Awake()
     {
-        playTileFlip = FMODUnity.RuntimeManager.CreateInstance("event:/PlayTileFlip");
-        playTileFlip.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        if (!debugMode)
+        {
+            playTileFlip = FMODUnity.RuntimeManager.CreateInstance("event:/PlayTileFlip");
+            playTileFlip.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        }
 
         //InitializeGrid(); // for debug
         player.JumpEvent += RequestTileFlip;

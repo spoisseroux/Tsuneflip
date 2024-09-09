@@ -11,7 +11,7 @@ public enum State
     Alert
 }
 
-
+// this is just the movement class for the hand NPC for now. can abstract and refactor later for multiple use (PassiveNPC, AggressiveNPC)
 public class NPCMovement : EntityMovement
 {
     // navmesh
@@ -22,7 +22,7 @@ public class NPCMovement : EntityMovement
     private Animator animator;
 
     // states & implementations (each of these have their own update time to check player distance???)
-    protected State mode;
+    [SerializeField] protected State mode;
     private float timePassed;
     // roam
     private IRoaming roam;
@@ -52,6 +52,7 @@ public class NPCMovement : EntityMovement
 
     // distance to Target
     public Vector3 currentTarget;
+    private Vector3 startingTarget = new Vector3(-5.0f, 1.0f, -5.0f);
     public Vector3 moveVector;
     public float distanceToTarget;
 
@@ -61,6 +62,9 @@ public class NPCMovement : EntityMovement
     #region Monobehaviours
     private void Awake()
     {
+        // setup stuff
+        currentTarget = startingTarget;
+
         // constants
         constantY = 1.0f;
         maxX = 8.5f;//LevelMenuManager.loaded.rows - 0.5f;
@@ -131,30 +135,39 @@ public class NPCMovement : EntityMovement
         mode = State.Idle;
         // begin waiting coroutine
         StartCoroutine(Wait(idleTime));
+        // begin coroutine to change startingTarget to a new target upong Ready! Go! completing!
+        // this could also just be changed to disabling movement for all EntityMovement units, like we do for Player at start, end, yada yada
     }
 
     private void UpdateIdle()
     {
-        if (!waiting)
+        // change from starting Target
+        if (startingTarget == currentTarget)
+        {
+            mode = State.Roam;
+            EnterRoam();
+        }
+
+        if (!waiting && currentTarget != startingTarget)
         {
             // go to ability (TAKES PRECEDENCE) needs a distant target on initialize IDLE <--> ABILITY loops
             distanceToTarget = UpdateTargetDistance(); 
-            /*
+            
             if (distanceToTarget <= 0.05f)
             {
                 mode = State.Ability;
                 EnterAbility();
             }
-            */
+            
 
             // go to alert (SECOND MOST)
 
             // go to roam (THIRD MOST)
-            //else
-            //{
+            else
+            {
                 mode = State.Roam;
                 EnterRoam();
-            //}
+            }
         }
     }
     #endregion
@@ -173,6 +186,7 @@ public class NPCMovement : EntityMovement
         NavMeshPath path = new NavMeshPath();
         agent.CalculatePath(currentTarget, path);
         // if we cannot fully reach the target, reset it to a random corner point on partial path
+        // MAYBE WE MAKE AN IRoamFromPartial strategy, like choose random along path, choose last along path, etc.
         if (path.status != NavMeshPathStatus.PathComplete)
         {
             int randomCorner = Random.Range(0, path.corners.Length-1);
@@ -248,8 +262,12 @@ public class NPCMovement : EntityMovement
     {
         if (!casting)
         {
-            mode = State.Idle;
-            EnterIdle();
+            // update distance from Player --> enter alert or roam
+            distanceToPlayer = UpdatePlayerDistance();
+
+            // debug for now, so just roam
+            mode = State.Roam;
+            EnterRoam();
         }
     }
     #endregion
