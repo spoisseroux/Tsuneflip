@@ -77,7 +77,7 @@ public class CountdownFinishText : MonoBehaviour
     {
         Debug.Log("in countdown");
         countdownText.enabled = true;
-        string[] countdownValues = { "3", "2", "1", "Go!" };
+        string[] countdownValues = {"Ready?", "Go!" };
 
         foreach (string value in countdownValues)
         {
@@ -109,14 +109,19 @@ public class CountdownFinishText : MonoBehaviour
                 tickInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
                 tickInstance.start();
                 tickInstance.release();
+                yield return new WaitForSeconds(1f);
+                tickInstance = FMODUnity.RuntimeManager.CreateInstance("event:/PlayCountdownTick");
+                tickInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+                tickInstance.start();
+                tickInstance.release();
             } else {
                 playCountdownStart.start();
                 playCountdownStart.release();
+                yield return new WaitForSeconds(0.5f);
+
             }
             
-
-            // Wait for another half a second
-            yield return new WaitForSeconds(0.5f);
+            
         }
 
         //Go

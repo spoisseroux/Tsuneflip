@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{d114424a-5759-44e0-af66-af5786e5f4d8}">
+		<property name="assetPath">
+			<value>Tile_FlipConfirm2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.2654195011337868</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{6a035af9-120c-4411-80fe-21fcef7cdbb7}</destination>
+		</relationship>
+	</object>
+</objects>
