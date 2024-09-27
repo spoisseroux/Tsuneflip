@@ -55,6 +55,7 @@ public class LevelManager : MonoBehaviour
     private bool isNewRecord = false;
     public Material resultsCubemapMat;
     public Material defaultSkybox;
+    public Material resultsUnlitMat;
 
     public GameObject gridPreviewImage;
     private Color resultsTextColor;
@@ -267,6 +268,7 @@ public class LevelManager : MonoBehaviour
         levelMusicManager.StopEvent();
         playerMovement.ToggleMovementInput(true);
         gameTimer.StopTimer();
+        resultsUnlitMat.color = level.cubemapColor * 2f;
         yield return StartCoroutine(countdownText.FinishCoroutine());
         yield return transitioner.ExitTransition();
         PauseCamera();

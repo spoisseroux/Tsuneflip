@@ -2860,6 +2860,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1328947457}
+  - {fileID: 1040515450}
   - {fileID: 730105314}
   - {fileID: 1986021768}
   - {fileID: 1391604059}
@@ -3743,6 +3744,89 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!1 &1040515449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1040515450}
+  - component: {fileID: 1040515452}
+  - component: {fileID: 1040515451}
+  m_Layer: 0
+  m_Name: ResultsTransWhiteBG
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1040515450
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040515449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0109120775, y: -0.000000038155434, z: -4.1637982e-10, w: 0.9999405}
+  m_LocalPosition: {x: 219.15271, y: 634.51874, z: 1222.7235}
+  m_LocalScale: {x: 10000.002, y: 9999.999, z: 1.0001576}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 749872166}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1040515451
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040515449}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 89aae419c38d84475b4f95f3248aa169, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1040515452
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040515449}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1051307285
 GameObject:
   m_ObjectHideFlags: 0
@@ -5026,7 +5110,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 88bb250f7604c43189c35fc2dde97a36, type: 2}
+      objectReference: {fileID: 2100000, guid: f8da3d2f191ec493a8ab555106c38e84, type: 2}
     - target: {fileID: 5587411162084033318, guid: 946923e48f715484fba071e9d1a2bd7c,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -5100,7 +5184,7 @@ PrefabInstance:
     - target: {fileID: 8308113391359930918, guid: 946923e48f715484fba071e9d1a2bd7c,
         type: 3}
       propertyPath: m_Name
-      value: WhiteCubemapBackground
+      value: CubemapBG
       objectReference: {fileID: 0}
     - target: {fileID: 8308113391359930918, guid: 946923e48f715484fba071e9d1a2bd7c,
         type: 3}
@@ -8016,6 +8100,7 @@ MonoBehaviour:
   endScreenBackground: {fileID: 749872165}
   resultsCubemapMat: {fileID: 2100000, guid: 4fccac2b4d0f5894fb542a51668563d2, type: 2}
   defaultSkybox: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  resultsUnlitMat: {fileID: 2100000, guid: f8da3d2f191ec493a8ab555106c38e84, type: 2}
   gridPreviewImage: {fileID: 616783558}
   resultsCamera: {fileID: 1868921430}
   uiCanvas: {fileID: 1334471732591207987}
