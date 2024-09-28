@@ -135,7 +135,7 @@ public class Tile : MonoBehaviour
                 tile.flipState = FlipCode.Flipped;
                 break;
         }
-        Debug.Log("New Flip State: " + tile.flipState);
+        //Debug.Log("New Flip State: " + tile.flipState);
     }
 
 

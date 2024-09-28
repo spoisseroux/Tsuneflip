@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class LevelGoalPreview : MonoBehaviour
 {
     // the Grid being rendered
     private GameObject[,] grid;
+    public int numOfGoalTiles = 0;
+    public int numOfAllTiles = 0;
 
     // level data
     [SerializeField]
@@ -64,11 +67,14 @@ public class LevelGoalPreview : MonoBehaviour
                         // Rotate the TileMesh 180 degrees on the x-axis
                         tileMesh.rotation = Quaternion.Euler(180, 0, 0);
                         RankCalculator.IncrementMinFlips();
+                        numOfGoalTiles += 1;
+                        numOfAllTiles += 1;
                     }
                     else
                     {
                         // Set the TileMesh rotation to 0 degrees
                         tileMesh.rotation = Quaternion.Euler(0, 0, 0);
+                        numOfAllTiles += 1;
                     }
                 }
 
@@ -79,6 +85,8 @@ public class LevelGoalPreview : MonoBehaviour
                 grid[row, col] = tile;
             }
         }
+        Debug.Log("All tiles: " + numOfAllTiles);
+        Debug.Log("Goal tiles: " + numOfGoalTiles);
     }
 
     // Destroy the current grid of tiles

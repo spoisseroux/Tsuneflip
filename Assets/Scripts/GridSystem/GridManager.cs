@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GridManager : MonoBehaviour
 {
@@ -29,6 +30,9 @@ public class GridManager : MonoBehaviour
 
     public delegate void HandleGridMatch();
     public event HandleGridMatch OnGridMatch;
+    public List<Vector2Int> tilesCorrect = new List<Vector2Int>();
+    private FlipCode[,] currentGridStates;
+    public Vector2Int currCoord;
 
     #region Monobehaviour Functions
     private void Awake()
@@ -75,6 +79,7 @@ public class GridManager : MonoBehaviour
     // pass in positioning data
     public void InitializeGrid()
     {
+        currentGridStates = new FlipCode[goal.rows, goal.columns];
         // create Grid object & create + set GoalGrid object
         grid = new GameObject[goal.rows, goal.columns];
         goalBoard = goal.goalDataArray;
@@ -94,6 +99,14 @@ public class GridManager : MonoBehaviour
 
                 // set Tile data
                 grid[row, col].GetComponent<Tile>().InitializeGameTile(goalBoard.GetValue(row, col), this);
+
+                //set current grid data(intermediate grid)
+                if (goalBoard.GetValue(row, col) == FlipCode.Empty) {
+                    currentGridStates[row, col] = FlipCode.Empty;
+                } else {
+                    currentGridStates[row, col] = FlipCode.Unflipped;
+                }
+                
             }
         }
     }
@@ -130,6 +143,35 @@ public class GridManager : MonoBehaviour
     // 4) Either a barrier around empty tiles and side of level OR a fall zone & respawn zone
 
     // Check for whether each Tile's flipcode is the same between current Grid and goal Grid
+
+    private Vector2Int updateCurrCoord() {
+        currCoord = new Vector2Int(int.MinValue, int.MinValue);
+        for (int i = 0; i < goal.rows; i++)
+        {
+            for (int j = 0; j < goal.columns; j++)
+            {
+                //get coord we are currently at 
+                if (grid[i, j].GetComponent<Tile>().GetFlipCode() != currentGridStates[i, j]) {
+                    currCoord = new Vector2Int(i, j);
+                    Debug.Log("Added correct tile: " + currCoord);
+
+                    //if its already in correct list, remove because it was unflipped
+                    if (tilesCorrect.Contains(currCoord)){
+                        tilesCorrect.Remove(currCoord);
+                        Debug.Log("Removed correct tile: " + currCoord);
+                    }
+                    //check if tiled flipped was correct
+                    if (grid[i, j].GetComponent<Tile>().GetFlipCode() == goalBoard.GetValue(i, j) && grid[i, j].GetComponent<Tile>().GetFlipCode() == FlipCode.Flipped){
+                        tilesCorrect.Add(new Vector2Int(i, j));
+                    }
+                    Debug.Log("Tiles correct: " + tilesCorrect.Count);
+                    currentGridStates[i, j] = grid[i, j].GetComponent<Tile>().GetFlipCode();
+                }
+            }
+        }
+        return currCoord;
+    }
+
     private bool CheckForMatchingGrids()
     {
         for (int i = 0; i < goal.rows; i++)
@@ -149,6 +191,7 @@ public class GridManager : MonoBehaviour
     // Check whether the current grid matches the goal grid, and then hand off this info to the current LevelManager
     public void RequestLevelWinCheck()
     {
+        updateCurrCoord();
         bool win = CheckForMatchingGrids();
         if (win)
         {

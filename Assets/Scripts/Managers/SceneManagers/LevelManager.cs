@@ -78,6 +78,9 @@ public class LevelManager : MonoBehaviour
     public TMP_InputField leaderboardUsername;
     public TextMeshProUGUI leaderboardInputTime;
     public ReadSettingsFromCameraSO readCameraSettings;
+    public GameObject katamariCamImage;
+    public GameObject tileCounter;
+    public GameObject tileCounterPointer;
 
     private void Awake()
     {
@@ -286,6 +289,9 @@ public class LevelManager : MonoBehaviour
         CursorManager.UnlockCursor();
         timerText.enabled = false;
         gridPreviewImage.SetActive(false);
+        katamariCamImage.SetActive(false);
+        tileCounter.SetActive(false);
+        tileCounterPointer.SetActive(false);
         resultsCamera.enabled = true;
         uiCanvas.worldCamera = resultsCamera;
 
