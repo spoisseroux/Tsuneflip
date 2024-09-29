@@ -35,7 +35,7 @@ public class PlayerMovement : EntityMovement
     #endregion
 
 
-    public delegate void OnJump(Vector3 playerWorldPosition);
+    public delegate void OnJump(Vector3 playerWorldPosition, PlayerMovement source);
     public event OnJump JumpEvent;
 
 
@@ -90,12 +90,6 @@ public class PlayerMovement : EntityMovement
         ApplyGravity(); // can split this into falling and jumping states probably
         // update state machine logic
         stateMachine.currentState.LogicUpdate();
-        /*
-        // apply jump to workingdir
-        Jump(); // called from entering AirborneState
-        // apply movement to workingdir
-        Move(playerInput.currentInput.planeMove);
-        */
         // combine all into workingDirection
         SetWorkingDirectionVector();
         // set rotation based on currentDir
@@ -125,7 +119,7 @@ public class PlayerMovement : EntityMovement
     public override void Jump()
     {
         movementUpVector = Vector3.up * constants.jumpSpeed;
-        JumpEvent?.Invoke(transform.position);
+        JumpEvent?.Invoke(transform.position, this);
     }
 
     public override void Move(Vector2 move)

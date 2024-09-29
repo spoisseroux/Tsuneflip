@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class DeathZone : MonoBehaviour, IDealDamage
 {
+    public bool debugMode = false;
+
     [SerializeField] LevelData level; // for creating a dynamically sized death zone
     private int width, height;
 
@@ -17,23 +19,21 @@ public class DeathZone : MonoBehaviour, IDealDamage
 
     public int hitDamage { get => hitDamage; set => hitDamage = value; }
 
-    // do we screen for trigger here or in player?
-
-    // all damage is done in 1 life increments!!! no value for damage
-
-    // player.Respawn(Vector3 startTransform, Vector3 startRotation, Space.World); IF PLAYER DIES TO THIS
-    // player.Respawn(Vector3 currentTransform, Vector3 currentRotation, Space.World) IF PLAYER DIES TO ENEMY
-
     // Generate and toggle death zone below Grid
     void Awake()
     {
-        level = LevelMenuManager.loaded; // static variable from level select
+        if (!debugMode)
+        {
+            level = LevelMenuManager.loaded; // static variable from level select
+        }
         yPlane = -5.0f;
         scalingConstant = 100.0f;
         width = level.rows;
         height = level.columns;
         GenerateZone();
         //deathBox.isTrigger = true;
+
+        if (!debugMode) 
 
         this.gameObject.transform.position = new Vector3(0f, yPlane, 0f);
     }
@@ -42,6 +42,9 @@ public class DeathZone : MonoBehaviour, IDealDamage
 
     private void OnTriggerEnter(Collider other)
     {
+        // Hurtbox damageableUnit = other.GetComponent<Hurtbox>();
+        // damageableUnit?.TakeDamage(this);
+
         ITakeDamage damageableObject = other.GetComponent<ITakeDamage>();
         damageableObject?.TakeDamage(this);
     }

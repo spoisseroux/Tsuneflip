@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class GridManager : MonoBehaviour
 {
+    // singleton attempt??? maybe have to delet, just trying shit
+    //private static GridManager instance;
+    //public static GridManager Instance { get { return instance; } }
+
     private FMOD.Studio.EventInstance playTileFlip;
     [SerializeField] bool debugMode = false;
 
@@ -18,15 +22,21 @@ public class GridManager : MonoBehaviour
     // Tile creator
     [SerializeField] private GameObject tilePrefab; // for instantiating new Tiles upon level load
 
-    // board for reference
+    // goal board for reference
     private FlipCode2DArray goalBoard;
-    //private Dictionary<Tuple<int, int>, Tile> currentBoard = new Dictionary<Tuple<int, int>, Tile>();
-    // do we need a Grid object to avoid weird monobehavior initializations??? how to deal with level initializations
-    // maybe keep the goal grid in another class? like a level manager or game manager?
-    // current grid is just the grid[,] object?
 
     // PlayerMovement Object for reference
     [SerializeField] PlayerMovement player;
+
+    // List of NPCs to listen to
+    [SerializeField] List<NPCMovement> npcList;
+
+
+    /*
+     * find a way to use the open stackoverflow articles to poll NPC tile flips
+     * maybe we can combine a tile flip event into single composite callback
+     * pass the source object (player, npc...) thru up to the gridmanager and react accordingly (check win, sound file, etc.)
+     */
 
     public delegate void HandleGridMatch();
     public event HandleGridMatch OnGridMatch;
@@ -34,6 +44,18 @@ public class GridManager : MonoBehaviour
     #region Monobehaviour Functions
     private void Awake()
     {
+        /*
+        // singleton thing
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+        */
+
         if (!debugMode)
         {
             playTileFlip = FMODUnity.RuntimeManager.CreateInstance("event:/PlayTileFlip");
@@ -66,6 +88,7 @@ public class GridManager : MonoBehaviour
     */
     #endregion
 
+    #region Initializing Grid
     // feed Grid its necessary LevelData
     public void InitializeLevelData(LevelData readThis)
     {
@@ -101,13 +124,21 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+    #endregion
 
     // pushing a flip down to a given Tile in our grid
-    public void RequestTileFlip(Vector3 position)
+    public void RequestTileFlip(Vector3 position, EntityMovement sourceEntity)
     {
+        // use source entity to decide sound
+        Debug.Log("flip requested!");
+
         Tile tileToFlip = GetTileFromWorldSpace(position);
         tileToFlip.FlipTile();
-        playTileFlip.start();
+        // play sound
+        if (!debugMode)
+        {
+            playTileFlip.start();
+        }
         //playTileFlip.release();
     }
 
@@ -125,14 +156,7 @@ public class GridManager : MonoBehaviour
         return grid[x, z].GetComponent<Tile>();
     }
 
-    // TODO:
-    // 1) A method to check current grid against the goal grid
-    // 2) A method of determing WHEN to do checks
-    // 3) A way of communicating when a level has been finished
-    //      - possible error situation when player flips the last needed tile but dies right after jumping 
-    //      - in this case we need a way to interrupt the tile flip OR the board check and proceed to Death sequence
-    // 4) Either a barrier around empty tiles and side of level OR a fall zone & respawn zone
-
+    #region Win Condition
     // Check for whether each Tile's flipcode is the same between current Grid and goal Grid
     private bool CheckForMatchingGrids()
     {
@@ -160,4 +184,5 @@ public class GridManager : MonoBehaviour
             OnGridMatch?.Invoke();
         }
     }
+    #endregion
 }

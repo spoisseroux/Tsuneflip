@@ -30,7 +30,7 @@ public class NPCMovement : EntityMovement
     private float roamPlayerUpdate = 0.5f;
 
     // ability
-    //private IAbility ability;
+    private IAbility ability;
     private float castTime = 0.5f; // in practice, this will depend on the ability!
     public bool casting;
 
@@ -77,6 +77,7 @@ public class NPCMovement : EntityMovement
 
         // states and movement strategies
         roam = new FindRandomTile(2.0f, 10.0f, minX, maxX, minZ, maxZ);
+        ability = new FlipTile(1.0f, "FlipTile", this);
         waiting = false;
         casting = false;
 
@@ -130,7 +131,7 @@ public class NPCMovement : EntityMovement
     #region Idle State
     private void EnterIdle()
     {
-        Debug.Log("NPC entering Idle");
+        //Debug.Log("NPC entering Idle");
         timePassed = 0.0f;
         mode = State.Idle;
         // begin waiting coroutine
@@ -175,7 +176,7 @@ public class NPCMovement : EntityMovement
     #region Roam State
     private void EnterRoam()
     {
-        Debug.Log("NPC entering Roam");
+        //Debug.Log("NPC entering Roam");
         // set up mode and time
         timePassed = 0.0f;
         mode = State.Roam;
@@ -252,10 +253,11 @@ public class NPCMovement : EntityMovement
     #region Ability State
     private void EnterAbility()
     {
-        Debug.Log("NPC entering Ability");
+        //Debug.Log("NPC entering Ability");
         timePassed = 0.0f;
         mode = State.Ability;
-        StartCoroutine(Cast(castTime));
+        ability.CastAbility(this.transform);
+        StartCoroutine(Cast(ability.CastTime));
     }
 
     private void UpdateAbility()
@@ -276,7 +278,7 @@ public class NPCMovement : EntityMovement
     // not needed for now
     public override void Jump()
     {
-        Debug.Log("NPC will jump");
+        //Debug.Log("NPC will jump");
     }
 
     public override void Move(Vector2 move)
@@ -284,7 +286,6 @@ public class NPCMovement : EntityMovement
         // set currentTarget and moveVector
         currentTarget = new Vector3(move.x, constantY, move.y);
         agent.SetDestination(currentTarget);
-
     }
 
     // probly not needed, can just lock all NPCs at a given y

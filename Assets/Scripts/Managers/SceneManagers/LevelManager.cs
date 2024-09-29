@@ -176,20 +176,6 @@ public class LevelManager : MonoBehaviour
         playDeath.release();
         //TODO: Just reloading the scene on death for now
         sceneChangerManager.SceneChange("LevelScene"); //Just reload the level
-        /*
-        livesRemainingText.text = livesLeft.ToString(); // push lives to UI
-        if (livesLeft <= 0)
-        {
-            //HandleLevelLoss();
-            RespawnPlayer();
-        }
-        else
-        {
-            // spawn depending on source of damage???
-            RespawnPlayer();
-        }
-        */
-
     }
 
     private void StartLevel()

@@ -19,8 +19,15 @@ public interface IAbility
         set;
     }
 
+    // owner of the ability
+    EntityMovement Source
+    {
+        get;
+        set;
+    }
+
     // cast the ability
-    public abstract void CastAbility();
+    public abstract void CastAbility(Transform caster);
 }
 
 // possible other things?

@@ -11,26 +11,16 @@ public class PlayerDamage : MonoBehaviour, ITakeDamage
     public delegate void LivesChangeHandler(IDealDamage source, int newHealth);
     public event LivesChangeHandler OnLivesNumberChange;
 
-    // how do we set up the colliders here???
-    // parent object (whole body hitbox): has movement, itakedamage component + boxcollider (for taking damage when colliding with enemy)
-    // child object (feet): idealdamage component + boxcollider (for when jumping)
-    // child object (whole body hurtbox): idealdamage component + boxcollider (for dealing damage when colliding with enemy) THIS COMPONENT
-
-
-    // enemies have a hurtbox on their head?
-    // hit box is rest of it?
-
     private void Awake()
     {
         SetLives(1); // can be changed later for more lives
     }
 
-
     // interface implementations
-    public void TakeDamage(IDealDamage damager)
+    public void TakeDamage(IDealDamage damager /*= null*/)
     {
         // take away a life
-        //Debug.Log("I " + this.name + " was hit by " + damager.ToString());
+        Debug.Log(this.name + " was hit by " + damager.ToString());
         lives--;
         OnLivesNumberChange?.Invoke(damager, lives); // game manager, UI, etc. reacts to info
     }
