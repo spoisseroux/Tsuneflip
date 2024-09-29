@@ -8,6 +8,7 @@ public class PlayerMovement : EntityMovement
 {
     [SerializeField] public PlayerInputHandler playerInput; // receive input from InputSystem
     [SerializeField] public CharacterController character; // character controller
+    [SerializeField] public GameObject footHitbox; // hitbox for player's foot, disabled when grounded, enabled when airborne
 
     [SerializeField] public Camera thirdPersonCamera; // for camera-relative movement
 

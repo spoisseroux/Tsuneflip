@@ -11,6 +11,7 @@ public class GroundedState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.footHitbox?.SetActive(false); // disable Hitbox for player's foot, with nullcheck for debug
     }
 
     public override void Exit()

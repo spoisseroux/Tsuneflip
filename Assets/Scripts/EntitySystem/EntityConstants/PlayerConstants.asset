@@ -18,4 +18,4 @@ MonoBehaviour:
   groundedGravity: -0.5
   turnSpeed: 5
   turnSmoothTime: 0.0005
-  jumpSpeed: 15
+  jumpSpeed: 10

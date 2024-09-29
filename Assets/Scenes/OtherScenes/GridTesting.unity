@@ -1115,6 +1115,7 @@ MonoBehaviour:
   constants: {fileID: 11400000, guid: cf3917428b6d84c9594883b48786eedd, type: 2}
   playerInput: {fileID: 659074406}
   character: {fileID: 659074405}
+  footHitbox: {fileID: 0}
   thirdPersonCamera: {fileID: 994780465}
   currentDirection: {x: 0, y: 0, z: 0}
   workingDirection: {x: 0, y: 0, z: 0}
@@ -3543,6 +3544,7 @@ MonoBehaviour:
   constants: {fileID: 11400000, guid: cf3917428b6d84c9594883b48786eedd, type: 2}
   playerInput: {fileID: 1427204656}
   character: {fileID: 0}
+  footHitbox: {fileID: 2111992636}
   thirdPersonCamera: {fileID: 2071800022}
   currentDirection: {x: 0, y: 0, z: 0}
   workingDirection: {x: 0, y: 0, z: 0}

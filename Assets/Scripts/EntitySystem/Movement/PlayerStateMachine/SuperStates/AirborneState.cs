@@ -20,6 +20,7 @@ public class AirborneState : PlayerState
         base.Enter();
         // send jump signal to player
         player.Jump(); // maybe we delegate this out to individual states, i.e. jump from ground, leap off enemy head, etc.
+        player.footHitbox?.SetActive(true); // turn on Hitbox for player's foot, with nullcheck for debug
     }
 
     public override void Exit()
