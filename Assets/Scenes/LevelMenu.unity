@@ -2583,6 +2583,7 @@ MonoBehaviour:
   transition1: {fileID: 258086297681943471}
   transition2: {fileID: 8556133258609390831}
   transitionSphere: {fileID: 2100000, guid: 206e341f0f80d4ecab9a76d73ca68ea4, type: 2}
+  transitionColor: {fileID: 11400000, guid: 9acf29f4c05954f42b2e5f5c66295da8, type: 2}
 --- !u!114 &2036225176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2644,6 +2645,8 @@ MonoBehaviour:
   levelMusicManager: {fileID: 2036225176}
   gridPreview: {fileID: 1151913562}
   gridPreviewCam: {fileID: 2140336580}
+  transitionColor: {fileID: 11400000, guid: 9acf29f4c05954f42b2e5f5c66295da8, type: 2}
+  UITransitionMat: {fileID: 2100000, guid: 206e341f0f80d4ecab9a76d73ca68ea4, type: 2}
   previewToLeaderboard: {fileID: 697478578}
 --- !u!114 &2036225180
 MonoBehaviour:

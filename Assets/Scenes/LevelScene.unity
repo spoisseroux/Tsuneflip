@@ -7823,6 +7823,12 @@ PrefabInstance:
       propertyPath: transition2
       value: 
       objectReference: {fileID: 2121900248}
+    - target: {fileID: 623710000752019166, guid: 378f1104bf20c41209ec10a5733e6e80,
+        type: 3}
+      propertyPath: transitionColor
+      value: 
+      objectReference: {fileID: 11400000, guid: 9acf29f4c05954f42b2e5f5c66295da8,
+        type: 2}
     - target: {fileID: 6149823407997493197, guid: 378f1104bf20c41209ec10a5733e6e80,
         type: 3}
       propertyPath: m_Name
