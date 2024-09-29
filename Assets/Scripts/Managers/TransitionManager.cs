@@ -7,7 +7,7 @@ public class TransitionManager : MonoBehaviour
     public GameObject transition1;
     public GameObject transition2;
     public Material transitionSphere;
-
+    public TransitionColorScriptableObject transitionColor;
     private RawImage transition1Image;
     private RawImage transition2Image;
 
@@ -45,6 +45,7 @@ public class TransitionManager : MonoBehaviour
 
     public Coroutine EnterTransition()
     {
+        transitionSphere.SetColor("StartColor", transitionColor.GetColor()); //???
         return StartCoroutine(EnterTransitionCoroutine());
     }
 

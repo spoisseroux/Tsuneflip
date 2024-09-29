@@ -16,6 +16,8 @@ public class LevelMenuManager : MonoBehaviour
     public LevelMusicManager levelMusicManager;
     public GoalPreviewInstancer gridPreview;
     public GoalPreviewCamera gridPreviewCam;
+    public TransitionColorScriptableObject transitionColor;
+    public Material UITransitionMat;
     private Transform worldOrganizer, levelOrganizer;
     private Button worldUpButton, worldDownButton, levelUpButton, levelDownButton, activeWorldButton;
     private string levelAssetsRootPath = "LevelAssets";
@@ -265,6 +267,7 @@ public class LevelMenuManager : MonoBehaviour
             if (levelDataHolder != null)
             {
                 ShowLevelPreview(levelDataHolder.levelData);
+            
                 //get leaderboard for level
                 previewToLeaderboard.currentLevel = levelDataHolder.levelData;
                 //if on leaderboard screen update
@@ -310,6 +313,7 @@ public class LevelMenuManager : MonoBehaviour
         onComplete?.Invoke();
         isAnimating = false;
     }
+
     void UpdateWorldButtonPositions()
     {
         float baseOpacity = 0.05f; // Minimum opacity for buttons farthest from the center
@@ -378,6 +382,10 @@ public class LevelMenuManager : MonoBehaviour
         gridPreview.InitializeGridPreview(level);
         
         previewToLeaderboard.currentLevel = level;
+
+        //Set transition color
+        transitionColor.SetColor(level.tileColorTop);
+        UITransitionMat.SetColor("_startColor", transitionColor.GetColor());  
 
         // Set the static variable for persistence when selecting
         loaded = level;
