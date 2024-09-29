@@ -9,13 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1b72d0a0fb6048efa6a89fedf54ac77, type: 3}
-  m_Name: PlayerConstants
+  m_Script: {fileID: 11500000, guid: 51b6a6b6ddfde4be6ad638a4d4bf858f, type: 3}
+  m_Name: TransitionColor
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  ascentGravity: -45
-  descentGravity: -30
-  groundedGravity: -0.5
-  turnSpeed: 20
-  turnSmoothTime: 0.0002
-  jumpSpeed: 10
+  color: {r: 0, g: 0, b: 0, a: 0}

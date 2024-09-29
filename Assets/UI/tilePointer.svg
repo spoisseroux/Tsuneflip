@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 574.95 1065.7">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #58595b;
+      }
+
+      .cls-2 {
+        opacity: .75;
+      }
+    </style>
+  </defs>
+  <g id="pointer" class="cls-2">
+    <polygon class="cls-1" points="397.49 927.25 475.48 875.35 475.48 979.14 397.49 927.25"/>
+  </g>
+</svg>

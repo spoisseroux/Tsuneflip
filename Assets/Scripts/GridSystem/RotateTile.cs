@@ -40,7 +40,7 @@ public class RotateTile : MonoBehaviour
         tileMeshTransform.rotation = snappedQuaternion;
 
         isRotating = false;
-        Debug.Log("Rotation complete. Snapped Rotation: " + snappedRotation);
+        //Debug.Log("Rotation complete. Snapped Rotation: " + snappedRotation);
     }
 
     // Public property to expose isRotating

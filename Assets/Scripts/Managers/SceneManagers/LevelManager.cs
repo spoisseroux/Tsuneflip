@@ -52,6 +52,7 @@ public class LevelManager : MonoBehaviour
     private bool isNewRecord = false;
     public Material resultsCubemapMat;
     public Material defaultSkybox;
+    public Material resultsUnlitMat;
 
     public GameObject gridPreviewImage;
     private Color resultsTextColor;
@@ -73,7 +74,10 @@ public class LevelManager : MonoBehaviour
     public LeaderboardManager leaderboard;
     public TMP_InputField leaderboardUsername;
     public TextMeshProUGUI leaderboardInputTime;
-
+    public ReadSettingsFromCameraSO readCameraSettings;
+    public GameObject katamariCamImage;
+    public GameObject tileCounter;
+    public GameObject tileCounterPointer;
 
     private void Awake()
     {
@@ -153,6 +157,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("we r pausing !");
         // toggle back and forth
         pauseMenuUI.SetActive(!pauseMenuUI.activeSelf);
+        readCameraSettings.UpdateCamSettings();
         if (!pause)
         {
             //TURN ON OUTLINE
@@ -249,6 +254,7 @@ public class LevelManager : MonoBehaviour
         levelMusicManager.StopEvent();
         playerMovement.ToggleMovementInput(true);
         gameTimer.StopTimer();
+        resultsUnlitMat.color = level.cubemapColor * 2f;
         yield return StartCoroutine(countdownText.FinishCoroutine());
         yield return transitioner.ExitTransition();
         PauseCamera();
@@ -266,6 +272,9 @@ public class LevelManager : MonoBehaviour
         CursorManager.UnlockCursor();
         timerText.enabled = false;
         gridPreviewImage.SetActive(false);
+        katamariCamImage.SetActive(false);
+        tileCounter.SetActive(false);
+        tileCounterPointer.SetActive(false);
         resultsCamera.enabled = true;
         uiCanvas.worldCamera = resultsCamera;
 

@@ -16,6 +16,8 @@ public class LevelMenuManager : MonoBehaviour
     public LevelMusicManager levelMusicManager;
     public GoalPreviewInstancer gridPreview;
     public GoalPreviewCamera gridPreviewCam;
+    public TransitionColorScriptableObject transitionColor;
+    public Material UITransitionMat;
     private Transform worldOrganizer, levelOrganizer;
     private Button worldUpButton, worldDownButton, levelUpButton, levelDownButton, activeWorldButton;
     private string levelAssetsRootPath = "LevelAssets";
@@ -39,14 +41,15 @@ public class LevelMenuManager : MonoBehaviour
 
     void SetupButtons()
     {
-        worldOrganizer = GameObject.Find("Canvas/LevelSelectHolder/WorldOrganizer").transform;
-        levelOrganizer = GameObject.Find("Canvas/LevelSelectHolder/LevelOrganizer").transform;
-        worldUpButton = GameObject.Find("Canvas/LevelSelectHolder/WorldUpButton").GetComponent<Button>();
-        worldDownButton = GameObject.Find("Canvas/LevelSelectHolder/WorldDownButton").GetComponent<Button>();
-        levelUpButton = GameObject.Find("Canvas/LevelSelectHolder/LevelUpButton").GetComponent<Button>();
-        levelDownButton = GameObject.Find("Canvas/LevelSelectHolder/LevelDownButton").GetComponent<Button>();
-        levelNameText = GameObject.Find("Canvas/LevelPreview/LevelNameAndSwapButton/LevelNameText").GetComponent<TMP_Text>();
-        levelBestTimeText = GameObject.Find("Canvas/LevelPreview/LevelBestTime").GetComponent<TMP_Text>();
+        //TODO: FIx these:///
+        worldOrganizer = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/WorldOrganizer").transform;
+        levelOrganizer = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/LevelOrganizer").transform;
+        worldUpButton = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/WorldUpButton").GetComponent<Button>();
+        worldDownButton = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/WorldDownButton").GetComponent<Button>();
+        levelUpButton = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/LevelUpButton").GetComponent<Button>();
+        levelDownButton = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelSelectHolder/LevelDownButton").GetComponent<Button>();
+        levelNameText = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelPreview/LevelNameAndSwapButton/LevelNameText").GetComponent<TMP_Text>();
+        levelBestTimeText = GameObject.Find("Canvas/ScreensHolder/MainScreen/LevelPreview/LevelBestTime").GetComponent<TMP_Text>();
 
         worldUpButton.onClick.AddListener(() => ScrollWorlds(-1));
         worldDownButton.onClick.AddListener(() => ScrollWorlds(1));
@@ -264,6 +267,7 @@ public class LevelMenuManager : MonoBehaviour
             if (levelDataHolder != null)
             {
                 ShowLevelPreview(levelDataHolder.levelData);
+            
                 //get leaderboard for level
                 previewToLeaderboard.currentLevel = levelDataHolder.levelData;
                 //if on leaderboard screen update
@@ -309,6 +313,7 @@ public class LevelMenuManager : MonoBehaviour
         onComplete?.Invoke();
         isAnimating = false;
     }
+
     void UpdateWorldButtonPositions()
     {
         float baseOpacity = 0.05f; // Minimum opacity for buttons farthest from the center
@@ -377,6 +382,10 @@ public class LevelMenuManager : MonoBehaviour
         gridPreview.InitializeGridPreview(level);
         
         previewToLeaderboard.currentLevel = level;
+
+        //Set transition color
+        transitionColor.SetColor(level.tileColorTop);
+        UITransitionMat.SetColor("_startColor", transitionColor.GetColor());  
 
         // Set the static variable for persistence when selecting
         loaded = level;

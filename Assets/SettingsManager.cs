@@ -4,7 +4,7 @@ using FMODUnity;
 using System.Collections.Generic;
 using TMPro;
 
-public class VolumeSlider : MonoBehaviour
+public class SettingsManager : MonoBehaviour
 {
     private string masterBusString = "bus:/";
     private string musicBusString = "bus:/MusicBus";
@@ -40,59 +40,73 @@ public class VolumeSlider : MonoBehaviour
 
     void Start()
     {
+        LoadSettings();
+
         if (displayModeDropdown != null)
         {
-            // Clear existing options and populate dropdown with display modes
             displayModeDropdown.ClearOptions();
             displayModeDropdown.AddOptions(new List<string> { "Fullscreen", "Borderless", "Windowed" });
 
-            // Set the current display mode as the selected option in the dropdown
             displayModeDropdown.value = GetCurrentDisplayModeIndex();
             displayModeDropdown.RefreshShownValue();
 
-            // Add listener to handle changes in the dropdown's value
             displayModeDropdown.onValueChanged.AddListener(ChangeDisplayMode);
         }
 
         if (resolutionDropdown != null)
         {
-            // Clear existing options
             resolutionDropdown.ClearOptions();
-
-            // Populate dropdown with available resolutions
             resolutionDropdown.AddOptions(GetResolutionOptions());
 
-            // Set the current resolution as the selected option in the dropdown
-            int currentResolutionIndex = GetCurrentResolutionIndex();
-            resolutionDropdown.value = currentResolutionIndex;
+            resolutionDropdown.value = GetCurrentResolutionIndex();
             resolutionDropdown.RefreshShownValue();
 
-            // Add listener to handle changes in the dropdown's value
             resolutionDropdown.onValueChanged.AddListener(ChangeResolution);
         }
 
         masterBus = FMODUnity.RuntimeManager.GetBus(masterBusString);
         masterBusSlider.onValueChanged.AddListener(MasterSetVolume);
-        masterBusSlider.value = 1f; // Start with the slider at full volume
+        masterBusSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
 
         musicBus = FMODUnity.RuntimeManager.GetBus(musicBusString);
         musicBusSlider.onValueChanged.AddListener(MusicSetVolume);
-        musicBusSlider.value = 1f; 
+        musicBusSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
 
         sfxBus = FMODUnity.RuntimeManager.GetBus(sfxBusString);
         sfxBusSlider.onValueChanged.AddListener(SFXSetVolume);
-        sfxBusSlider.value = 1f; // Start with the slider at full volume
+        sfxBusSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
         cameraSensSlider.onValueChanged.AddListener(UpdateCameraSensitivity);
-        cameraSensSlider.value = levelCameraSettings.cameraSensitivity;
+        cameraSensSlider.value = PlayerPrefs.GetFloat("CameraSensitivity", levelCameraSettings.cameraSensitivity);
 
-        cameraInvToggle.isOn = levelCameraSettings.cameraIsInverted;
+        cameraInvToggle.isOn = PlayerPrefs.GetInt("CameraInverted", levelCameraSettings.cameraIsInverted ? 1 : 0) == 1;
         cameraInvToggle.onValueChanged.AddListener(ToggleCamInv);
 
-        vsyncToggle.isOn = QualitySettings.vSyncCount > 0;
+        vsyncToggle.isOn = PlayerPrefs.GetInt("VSync", QualitySettings.vSyncCount > 0 ? 1 : 0) == 1;
         vsyncToggle.onValueChanged.AddListener(ToggleVSync);
-        
+    }
 
+    void OnApplicationQuit()
+    {
+        SaveSettings();
+    }
+
+    private void SaveSettings()
+    {
+        PlayerPrefs.SetFloat("MasterVolume", masterBusSlider.value);
+        PlayerPrefs.SetFloat("MusicVolume", musicBusSlider.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxBusSlider.value);
+        PlayerPrefs.SetFloat("CameraSensitivity", cameraSensSlider.value);
+        PlayerPrefs.SetInt("CameraInverted", cameraInvToggle.isOn ? 1 : 0);
+        PlayerPrefs.SetInt("VSync", vsyncToggle.isOn ? 1 : 0);
+        PlayerPrefs.SetInt("ResolutionIndex", resolutionDropdown.value);
+        PlayerPrefs.SetInt("DisplayMode", displayModeDropdown.value);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadSettings()
+    {
+        // Load any previously saved settings (already used in Start method)
     }
 
     private int GetCurrentDisplayModeIndex()
@@ -128,6 +142,9 @@ public class VolumeSlider : MonoBehaviour
                 break;
         }
 
+        PlayerPrefs.SetInt("DisplayMode", modeIndex);
+        PlayerPrefs.Save();
+
         Debug.Log("Display mode changed to: " + selectedMode.ToString());
     }
 
@@ -154,29 +171,24 @@ public class VolumeSlider : MonoBehaviour
             }
         }
 
-        // If the current resolution is not in the list, return the default option (0)
-        return 0;
+        return PlayerPrefs.GetInt("ResolutionIndex", 0);
     }
 
     private void ChangeResolution(int resolutionIndex)
     {
         Resolution selectedResolution = availableResolutions[resolutionIndex];
         Screen.SetResolution(selectedResolution.width, selectedResolution.height, Screen.fullScreen);
+        PlayerPrefs.SetInt("ResolutionIndex", resolutionIndex);
+        PlayerPrefs.Save();
+
         Debug.Log("Resolution changed to: " + selectedResolution.width + " x " + selectedResolution.height);
     }
 
     private void ToggleVSync(bool isVSyncOn)
     {
-        if (isVSyncOn)
-        {
-            // Enable VSync
-            QualitySettings.vSyncCount = 1;
-        }
-        else
-        {
-            // Disable VSync
-            QualitySettings.vSyncCount = 0;
-        }
+        QualitySettings.vSyncCount = isVSyncOn ? 1 : 0;
+        PlayerPrefs.SetInt("VSync", isVSyncOn ? 1 : 0);
+        PlayerPrefs.Save();
 
         Debug.Log("VSync is " + (isVSyncOn ? "enabled" : "disabled"));
     }
@@ -184,61 +196,42 @@ public class VolumeSlider : MonoBehaviour
     private void ToggleCamInv(bool newValue)
     {
         levelCameraSettings.cameraIsInverted = newValue;
-        Debug.Log("Camera inv toggled: " + levelCameraSettings.cameraIsInverted);
+        PlayerPrefs.SetInt("CameraInverted", newValue ? 1 : 0);
+        PlayerPrefs.Save();
+
+        Debug.Log("Camera inversion toggled: " + levelCameraSettings.cameraIsInverted);
     }
 
     private void UpdateCameraSensitivity(float newValue)
     {
-            levelCameraSettings.cameraSensitivity = newValue;
-            Debug.Log("Updated Cam Sensitivity value: " + levelCameraSettings.cameraSensitivity);
-        
+        levelCameraSettings.cameraSensitivity = newValue;
+        PlayerPrefs.SetFloat("CameraSensitivity", newValue);
+        PlayerPrefs.Save();
+
+        Debug.Log("Updated Camera Sensitivity value: " + levelCameraSettings.cameraSensitivity);
     }
+
     public void MasterSetVolume(float sliderValue)
     {
-        float volumeInDb;
-
-        // Convert slider value to dB, avoiding log(0) error by setting a minimum value
-        if (sliderValue <= 0.0001f)
-        {
-            volumeInDb = -80f; // Silence the bus (or set to your minimum dB level)
-        }
-        else
-        {
-            volumeInDb = Mathf.Log10(sliderValue) * 20f;
-        }
-
-        masterBus.setVolume(sliderValue); // Alternatively, you can use `bus.setFaderLevel(volumeInDb);` depending on how you want to control the volume.
+        float volumeInDb = sliderValue <= 0.0001f ? -80f : Mathf.Log10(sliderValue) * 20f;
+        masterBus.setVolume(sliderValue);
+        PlayerPrefs.SetFloat("MasterVolume", sliderValue);
+        PlayerPrefs.Save();
     }
+
     public void MusicSetVolume(float sliderValue)
     {
-        float volumeInDb;
-
-        // Convert slider value to dB, avoiding log(0) error by setting a minimum value
-        if (sliderValue <= 0.0001f)
-        {
-            volumeInDb = -80f; // Silence the bus (or set to your minimum dB level)
-        }
-        else
-        {
-            volumeInDb = Mathf.Log10(sliderValue) * 20f;
-        }
-
-        musicBus.setVolume(sliderValue); // Alternatively, you can use `bus.setFaderLevel(volumeInDb);` depending on how you want to control the volume.
+        float volumeInDb = sliderValue <= 0.0001f ? -80f : Mathf.Log10(sliderValue) * 20f;
+        musicBus.setVolume(sliderValue);
+        PlayerPrefs.SetFloat("MusicVolume", sliderValue);
+        PlayerPrefs.Save();
     }
+
     public void SFXSetVolume(float sliderValue)
     {
-        float volumeInDb;
-
-        // Convert slider value to dB, avoiding log(0) error by setting a minimum value
-        if (sliderValue <= 0.0001f)
-        {
-            volumeInDb = -80f; // Silence the bus (or set to your minimum dB level)
-        }
-        else
-        {
-            volumeInDb = Mathf.Log10(sliderValue) * 20f;
-        }
-
-        sfxBus.setVolume(sliderValue); // Alternatively, you can use `bus.setFaderLevel(volumeInDb);` depending on how you want to control the volume.
+        float volumeInDb = sliderValue <= 0.0001f ? -80f : Mathf.Log10(sliderValue) * 20f;
+        sfxBus.setVolume(sliderValue);
+        PlayerPrefs.SetFloat("SFXVolume", sliderValue);
+        PlayerPrefs.Save();
     }
 }
