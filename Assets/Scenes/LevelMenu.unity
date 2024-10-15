@@ -2610,6 +2610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelMusicManager: {fileID: 2036225176}
   transitioner: {fileID: 2036225175}
+  levelMenuManager: {fileID: 2036225179}
 --- !u!4 &2036225178
 Transform:
   m_ObjectHideFlags: 0
@@ -2647,6 +2648,8 @@ MonoBehaviour:
   gridPreviewCam: {fileID: 2140336580}
   transitionColor: {fileID: 11400000, guid: 9acf29f4c05954f42b2e5f5c66295da8, type: 2}
   UITransitionMat: {fileID: 2100000, guid: 206e341f0f80d4ecab9a76d73ca68ea4, type: 2}
+  currentWorldIndex: 0
+  currentLevelIndex: 0
   previewToLeaderboard: {fileID: 697478578}
 --- !u!114 &2036225180
 MonoBehaviour:
