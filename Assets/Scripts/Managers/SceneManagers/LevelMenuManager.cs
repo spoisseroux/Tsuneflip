@@ -23,8 +23,8 @@ public class LevelMenuManager : MonoBehaviour
     private string levelAssetsRootPath = "LevelAssets";
     private TMP_Text levelNameText, levelBestTimeText;
     //public Button startButton;
-    private int currentWorldIndex = 0;
-    private int currentLevelIndex = 0;
+    [HideInInspector] public int currentWorldIndex;
+    [HideInInspector] public int currentLevelIndex;
     private bool isAnimating = false;
     private List<WorldData> worlds;
     // static LevelData to indicate which level we are loading, persists into Gameplay Scene!!!
@@ -37,6 +37,43 @@ public class LevelMenuManager : MonoBehaviour
         levelMusicManager.PlayEvent("event:/PlayLevelMenuMusic");
         SetupButtons();
         LoadWorlds();
+
+        //load saved world/level index if its in playerprefs
+        currentWorldIndex = PlayerPrefs.GetInt("LastWorldIndex", 0); // Default to 0 if no data is found
+        Debug.Log("CurrentWorldIndex: " + currentWorldIndex);
+        currentLevelIndex = PlayerPrefs.GetInt("LastLevelIndex", 0);
+        Debug.Log("CurrentLevelIndex: " + currentLevelIndex);
+
+        // Scroll directly to the saved indexes
+        ScrollWorldsToSavedIndex(currentWorldIndex);
+        ScrollLevelsToSavedIndex(currentLevelIndex);
+    }
+
+    void ScrollWorldsToSavedIndex(int targetWorldIndex)
+    {
+        if (targetWorldIndex < worldOrganizer.childCount && targetWorldIndex >= 0)
+        {
+            currentWorldIndex = targetWorldIndex;
+            UpdateWorldButtonPositions(); // Update UI to show the correct world
+            LoadLevels(worlds[currentWorldIndex], worldOrganizer.GetChild(currentWorldIndex).GetComponent<Button>()); // Load levels for the selected world
+        }
+    }
+
+    void ScrollLevelsToSavedIndex(int targetLevelIndex)
+    {
+        if (targetLevelIndex < levelOrganizer.childCount && targetLevelIndex >= 0)
+        {
+            currentLevelIndex = targetLevelIndex;
+            UpdateLevelButtonPositions(); // Update UI to show the correct level
+            if (levelOrganizer.childCount > 0)
+            {
+                LevelDataHolder levelDataHolder = levelOrganizer.GetChild(currentLevelIndex).GetComponent<LevelDataHolder>();
+                if (levelDataHolder != null)
+                {
+                    ShowLevelPreview(levelDataHolder.levelData); // Show the preview for the selected level
+                }
+            }
+        }
     }
 
     void SetupButtons()
@@ -284,13 +321,23 @@ public class LevelMenuManager : MonoBehaviour
         isAnimating = true;
 
         int itemCount = container.childCount;
+        if (itemCount == 0) 
+        {
+            isAnimating = false;
+            onComplete?.Invoke();
+            yield break; // Terminate the coroutine
+        }
+
         Vector3[] startPositions = new Vector3[itemCount];
         Vector3[] endPositions = new Vector3[itemCount];
 
         for (int i = 0; i < itemCount; i++)
         {
-            startPositions[i] = container.GetChild(i).localPosition;
-            endPositions[i] = GetCarouselPosition(i - targetIndex, itemCount, 40f);
+            if (i < container.childCount) // Check if the child exists
+            {
+                startPositions[i] = container.GetChild(i).localPosition;
+                endPositions[i] = GetCarouselPosition(i - targetIndex, itemCount, 40f);
+            }
         }
 
         float animationDuration = 0.3f;
@@ -303,11 +350,14 @@ public class LevelMenuManager : MonoBehaviour
 
             for (int i = 0; i < itemCount; i++)
             {
-                container.GetChild(i).localPosition = Vector3.Lerp(startPositions[i], endPositions[i], t);
+                if (i < container.childCount) // Check if the child exists before accessing
+                {
+                    container.GetChild(i).localPosition = Vector3.Lerp(startPositions[i], endPositions[i], t);
+                }
             }
 
             elapsedTime += Time.deltaTime;
-            yield return null;
+            yield return null; // Correctly yielding execution
         }
 
         onComplete?.Invoke();
