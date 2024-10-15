@@ -17,6 +17,9 @@ public class PlayerInputHandler : EntityInputHandler
     public delegate void HandlePause(bool pauseValue);
     public event HandlePause OnPauseInput;
 
+    public delegate void HandleMinimapRequest();
+    public event HandleMinimapRequest OnMinimapInput;
+
     public override void OnMoveInput(InputAction.CallbackContext context)
     {
         if (paused || noMove)
@@ -47,5 +50,13 @@ public class PlayerInputHandler : EntityInputHandler
     public void ToggleMovementInput(bool value)
     {
         noMove = value;
+    }
+
+    public void OnToggleMinimapSizeInput(InputAction.CallbackContext context)
+    {
+        if (context.performed == true) {
+            Debug.Log("invoking minimap event");
+            OnMinimapInput?.Invoke();
+        }
     }
 }
