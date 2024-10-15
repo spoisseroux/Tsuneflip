@@ -33,11 +33,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubemapCurr:
-        m_Texture: {fileID: 8900000, guid: 466a9a0b54dfc490cb781c529ece2939, type: 2}
+        m_Texture: {fileID: 8900000, guid: 0bc36878a4a8442f3a0aaf2e222894c1, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubemapNext:
-        m_Texture: {fileID: 8900000, guid: 466a9a0b54dfc490cb781c529ece2939, type: 2}
+        m_Texture: {fileID: 8900000, guid: 0bc36878a4a8442f3a0aaf2e222894c1, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -125,8 +125,8 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorCurr: {r: 0.58018863, g: 1, b: 0.8980392, a: 0}
-    - _ColorNext: {r: 0.5801887, g: 1, b: 0.8980392, a: 0}
+    - _ColorCurr: {r: 0.5568628, g: 0.57647055, b: 0.9921568, a: 0}
+    - _ColorNext: {r: 0.5568628, g: 0.5764706, b: 0.99215686, a: 0}
     - _Emission: {r: 0.22641504, g: 0.22641504, b: 0.22641504, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
