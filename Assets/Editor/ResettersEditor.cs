@@ -1,22 +1,37 @@
 using UnityEditor;
 using UnityEngine;
 
-public class LevelDataResetterEditor : EditorWindow
+public class ResettersEditor : EditorWindow
 {
-    [MenuItem("Tools/Reset All LevelData Best Times")]
+    [MenuItem("Tools/Resetters")]
     public static void ShowWindow()
     {
-        GetWindow<LevelDataResetterEditor>("Reset LevelData Best Times");
+        // Opens the window and makes it dockable
+        ResettersEditor window = GetWindow<ResettersEditor>("Resetters");
+        window.minSize = new Vector2(300, 200); // Set a minimum size for better docking experience
     }
 
     private void OnGUI()
     {
-        GUILayout.Label("Reset Best Times for All LevelData", EditorStyles.boldLabel);
+        GUILayout.Label("Reset Options", EditorStyles.boldLabel);
+
+        if (GUILayout.Button("Reset All PlayerPrefs"))
+        {
+            ResetPlayerPrefs();
+        }
 
         if (GUILayout.Button("Reset All Best Times"))
         {
             ResetAllLevelDataBestTimes();
         }
+    }
+
+    private void ResetPlayerPrefs()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save(); // Save changes
+        Debug.Log("All PlayerPrefs have been reset.");
+        EditorUtility.DisplayDialog("Reset PlayerPrefs", "All PlayerPrefs have been reset.", "OK");
     }
 
     private void ResetAllLevelDataBestTimes()
@@ -40,5 +55,6 @@ public class LevelDataResetterEditor : EditorWindow
 
         AssetDatabase.SaveAssets(); // Save all the changes
         Debug.Log($"Reset best time for {count} LevelData objects.");
+        EditorUtility.DisplayDialog("Reset Best Times", "Reset best times for LevelData objects.", "OK");
     }
 }
