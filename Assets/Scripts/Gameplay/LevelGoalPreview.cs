@@ -30,8 +30,8 @@ public class LevelGoalPreview : MonoBehaviour
 
         // Calculate grid midpoint at the correct Y level (100)
         Vector3 gridMidpoint = new Vector3(
-        ((goal.rows - 1) * goal.tileSize / 2f) + (goal.tileSize / 2f), 
-        3000, 
+        ((goal.rows - 1) * goal.tileSize / 2f) + (goal.tileSize / 2f),
+        3000,
         ((goal.columns - 1) * goal.tileSize / 2f) + (goal.tileSize / 2f)
         );
 
@@ -51,6 +51,7 @@ public class LevelGoalPreview : MonoBehaviour
                 // Set Tile data
                 FlipCode state = goalBoard.GetValue(row, col);
                 Transform tileMesh = tile.transform.Find("TileCollider/TileMesh");
+                tileMesh.gameObject.layer = 8;
 
                 if (state == FlipCode.Empty)
                 {
