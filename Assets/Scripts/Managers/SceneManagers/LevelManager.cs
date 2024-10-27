@@ -30,6 +30,7 @@ public class LevelManager : MonoBehaviour
 
     // Grid objects
     [SerializeField] GridManager grid;
+    [SerializeField] bool testing = false;
     [SerializeField] public LevelData level;
     [SerializeField] Vector3 respawnPosition;
     [SerializeField] Vector3 respawnRotation; // quaternion? :/
@@ -98,8 +99,13 @@ public class LevelManager : MonoBehaviour
          * Need to make a refactor when it's clear how many of these can be Serialized 
          * and how many need to be instantiated/built at runtime, then found
          */
+
         CursorManager.LockCursor();
-        level = LevelMenuManager.loaded; // STATIC VARIABLE, READ FOR PERSISTENT MEMORY ACROSS SCENES
+
+        if (testing == false)
+        {
+            level = LevelMenuManager.loaded; // STATIC VARIABLE, READ FOR PERSISTENT MEMORY ACROSS SCENES
+        }
 
         // find Player, get components
         player = GameObject.Find("Player");
@@ -137,7 +143,8 @@ public class LevelManager : MonoBehaviour
         StartLevel();
     }
 
-    void FModStarter() {
+    void FModStarter()
+    {
         playDeath = FMODUnity.RuntimeManager.CreateInstance("event:/PlayDeath");
         playDeath.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
 
@@ -309,18 +316,20 @@ public class LevelManager : MonoBehaviour
         resultsBestTimeText.color = resultsTextColor;
 
         //BEST TIME/NEW RECORD HANDLER
-        if (gameTimer.UpdateBestTime() == true) {
+        if (gameTimer.UpdateBestTime() == true)
+        {
             isNewRecord = true;
         }
         yield return StartCoroutine(gameTimer.AnimateTimeResult(gameTimer.GetBestTime(), resultsBestTimeText));
-        if (isNewRecord == true) { //New record
+        if (isNewRecord == true)
+        { //New record
             resultsBestTimeRainbowEffect.enabled = true;
             playNewRecord.start();
             playNewRecord.release();
         }
 
         yield return new WaitForSeconds(0.3f);
-        
+
         playRank.start();
         playRank.release();
         resultsRankText.color = resultsTextColor;
@@ -330,7 +339,7 @@ public class LevelManager : MonoBehaviour
         RankCalculator.ResetMinFlips();
 
         //TODO: handle leaderboard
-        
+
         //show rank
         //show buttons
     }
@@ -361,7 +370,8 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void openLeaderboard() {
+    public void openLeaderboard()
+    {
         //add time to leaderboard input box
         StartCoroutine(leaderboard.GetLeaderboard(level.levelId));
         leaderboardInputTime.text = gameTimer.GetTimeResult();
