@@ -1,4 +1,4 @@
-Shader "Custom/EarthboundBackgroundDualPass"
+Shader "Custom/EarthboundBackground"
 {
     Properties
     {
@@ -20,7 +20,7 @@ Shader "Custom/EarthboundBackgroundDualPass"
     SubShader
     {
         Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
-
+        
         // First Pass: Background Effect
         Pass
         {
@@ -105,7 +105,7 @@ Shader "Custom/EarthboundBackgroundDualPass"
         Pass
         {
             Name "MainTexturePass"
-            ZWrite On
+            ZWrite Off
             Blend SrcAlpha OneMinusSrcAlpha
 
             CGPROGRAM

@@ -29,7 +29,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2999
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -61,7 +61,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 1b5d8823fa5cc954aa1fa2f8477faa38, type: 3}
+        m_Texture: {fileID: 2800000, guid: 18152efa6231d774eb918a1c020b436f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -101,7 +101,7 @@ Material:
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Amplitude: 0.075
-    - _AmplitudeVertical: 0
+    - _AmplitudeVertical: 2.92
     - _Blend: 0
     - _BlendDst: 1
     - _BlendModePreserveSpecular: 1
@@ -117,14 +117,14 @@ Material:
     - _DstBlendAlpha: 0
     - _EnablePaletteCycling: 60.67
     - _EnvironmentReflections: 1
-    - _Frequency: 10
+    - _Frequency: 6.5
     - _FrequencyVertical: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _Opacity: 0.13
+    - _Opacity: 0.18
     - _PaletteSpeed: 0.2
     - _Parallax: 0.005
     - _QueueOffset: 0
@@ -134,7 +134,7 @@ Material:
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: 2
+    - _Speed: 0.94
     - _SpeedVertical: 0
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
