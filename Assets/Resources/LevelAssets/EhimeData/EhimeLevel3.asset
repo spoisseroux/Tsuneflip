@@ -24,7 +24,7 @@ MonoBehaviour:
   associatedWorldData: {fileID: 11400000, guid: b4b41b60010dd4798aa8c4444144a11f,
     type: 2}
   optimalTimeS: 10
-  bestTime: 8.699753
+  bestTime: 7.2033405
   cubemap: {fileID: 8900000, guid: 466a9a0b54dfc490cb781c529ece2939, type: 2}
   cubemapColor: {r: 0.5801887, g: 1, b: 0.8980392, a: 0}
   tileColorTop: {r: 0.38580918, g: 0.8962264, b: 0.33397114, a: 0}
