@@ -411,8 +411,10 @@ MonoBehaviour:
   goal: {fileID: 11400000, guid: 013b77faafdcc4f18896042c9786aa8a, type: 2}
   tilePrefab: {fileID: 2993567531171733788, guid: edf31d6d781df43dfb766938d6ffe1ca,
     type: 3}
-  player: {fileID: 659074404}
+  player: {fileID: 1427204657}
   npcList: []
+  tilesCorrect: []
+  currCoord: {x: 0, y: 0}
 --- !u!4 &393500094
 Transform:
   m_ObjectHideFlags: 0

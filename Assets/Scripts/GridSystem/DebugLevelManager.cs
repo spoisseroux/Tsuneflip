@@ -14,7 +14,7 @@ public class DebugLevelManager : MonoBehaviour
     [SerializeField] Vector3 respawnRotation;
 
     // NavMesh
-    public NavMeshSurface surface;
+    //public NavMeshSurface surface;
 
     private void Awake()
     {
@@ -27,6 +27,6 @@ public class DebugLevelManager : MonoBehaviour
         grid.InitializeGrid();
 
         // generate navmesh
-        surface.BuildNavMesh();
+        //surface.BuildNavMesh();
     }
 }
