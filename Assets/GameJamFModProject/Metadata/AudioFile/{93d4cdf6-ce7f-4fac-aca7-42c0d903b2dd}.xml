@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.02.02.00">
+<objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{93d4cdf6-ce7f-4fac-aca7-42c0d903b2dd}">
 		<property name="assetPath">
 			<value>levelselect.wav</value>

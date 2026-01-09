@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.02.02.00">
+<objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{d114424a-5759-44e0-af66-af5786e5f4d8}">
 		<property name="assetPath">
 			<value>Tile_FlipConfirm2.wav</value>

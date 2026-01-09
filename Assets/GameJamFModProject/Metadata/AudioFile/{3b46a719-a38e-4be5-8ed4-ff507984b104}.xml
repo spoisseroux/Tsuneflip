@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.02.02.00">
+<objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{3b46a719-a38e-4be5-8ed4-ff507984b104}">
 		<property name="assetPath">
 			<value>SubmitConfirm.wav</value>

@@ -2,11 +2,23 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using System.Collections;
+using FMODUnity;  // ← ADD THIS LINE
+using FMOD.Studio;  // ← AND THIS LINE
 
 public class LevelMusicManager : MonoBehaviour
 {
     private EventInstance eventInstance;
     //public float fadeOutDuration = 0.9f; // Duration of the fade-out in seconds
+
+
+    void Start()
+    {
+
+        if (!RuntimeManager.HasBankLoaded("Master"))
+        {
+            RuntimeManager.LoadBank("Master", true);
+        }
+    }
 
     // Start the sound event
     public void PlayEvent(string eventPath)

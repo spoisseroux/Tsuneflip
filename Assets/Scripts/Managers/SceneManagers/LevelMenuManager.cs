@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using FMODUnity;  // ← ADD THIS LINE
+using FMOD.Studio;  // ← AND THIS LINE
 
 
 public class LevelMenuManager : MonoBehaviour
@@ -33,13 +35,80 @@ public class LevelMenuManager : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("=== FMOD DEBUG START ===");
+
+        // Check if FMOD is initialized
+        Debug.Log("FMOD Initialized: " + RuntimeManager.IsInitialized);
+
+        // Try to get bank list
+        FMOD.Studio.Bank[] banks;
+        var result = RuntimeManager.StudioSystem.getBankList(out banks);
+        Debug.Log($"getBankList result: {result}");
+        Debug.Log($"Loaded banks count: {banks.Length}");
+
+        foreach (var bank in banks)
+        {
+            bank.getPath(out string path);
+            Debug.Log($"Bank loaded: {path}");
+
+            // Check if this is the strings bank
+            bool valid = bank.isValid();  // ← FIXED: No out parameter
+            Debug.Log($"  Bank is valid: {valid}");
+
+            bank.getLoadingState(out FMOD.Studio.LOADING_STATE loadingState);
+            Debug.Log($"  Loading state: {loadingState}");
+
+            bank.getEventList(out FMOD.Studio.EventDescription[] events);
+            Debug.Log($"  Events in this bank: {events.Length}");
+
+            foreach (var evt in events)
+            {
+                evt.getPath(out string eventPath);
+                Debug.Log($"    Event: {eventPath}");
+            }
+        }
+
+        // Try loading the strings bank explicitly
+        Debug.Log("Attempting to load Master.strings explicitly...");
+        try
+        {
+            RuntimeManager.LoadBank("Master.strings", true);
+            Debug.Log("Master.strings bank load attempted");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to load Master.strings bank: {e.Message}");
+        }
+
+        // Check again after strings load
+        RuntimeManager.StudioSystem.getBankList(out banks);
+        Debug.Log($"After strings load - Banks count: {banks.Length}");
+
+        foreach (var bank in banks)
+        {
+            bank.getPath(out string path);
+            Debug.Log($"Bank after strings load: {path}");
+
+            bank.getEventList(out FMOD.Studio.EventDescription[] events);
+            Debug.Log($"  Events: {events.Length}");
+
+            // Print first 3 events
+            for (int i = 0; i < System.Math.Min(3, events.Length); i++)
+            {
+                events[i].getPath(out string eventPath);
+                Debug.Log($"    Event {i}: {eventPath}");
+            }
+        }
+
+        Debug.Log("=== FMOD DEBUG END ===");
+
         CursorManager.UnlockCursor();
         levelMusicManager.PlayEvent("event:/PlayLevelMenuMusic");
         SetupButtons();
         LoadWorlds();
 
         //load saved world/level index if its in playerprefs
-        currentWorldIndex = PlayerPrefs.GetInt("LastWorldIndex", 0); // Default to 0 if no data is found
+        currentWorldIndex = PlayerPrefs.GetInt("LastWorldIndex", 0);
         Debug.Log("CurrentWorldIndex: " + currentWorldIndex);
         currentLevelIndex = PlayerPrefs.GetInt("LastLevelIndex", 0);
         Debug.Log("CurrentLevelIndex: " + currentLevelIndex);
@@ -131,7 +200,7 @@ public class LevelMenuManager : MonoBehaviour
             LevelDataHolder levelDataHolder = levelOrganizer.GetChild(0).GetComponent<LevelDataHolder>();
             if (levelDataHolder != null)
             {
-                ShowLevelPreview(levelDataHolder.levelData); 
+                ShowLevelPreview(levelDataHolder.levelData);
             }
         }
     }
@@ -300,17 +369,18 @@ public class LevelMenuManager : MonoBehaviour
 
             // Show preview of the current level and update levelBestTimeText
             LevelDataHolder levelDataHolder = levelOrganizer.GetChild(currentLevelIndex).GetComponent<LevelDataHolder>();
-            
+
             if (levelDataHolder != null)
             {
                 ShowLevelPreview(levelDataHolder.levelData);
-            
+
                 //get leaderboard for level
                 previewToLeaderboard.currentLevel = levelDataHolder.levelData;
                 //if on leaderboard screen update
-                if (previewToLeaderboard.onLeaderboard == true) {
+                if (previewToLeaderboard.onLeaderboard == true)
+                {
                     previewToLeaderboard.RefreshLeaderboard();
-                } 
+                }
             }
         }));
     }
@@ -321,7 +391,7 @@ public class LevelMenuManager : MonoBehaviour
         isAnimating = true;
 
         int itemCount = container.childCount;
-        if (itemCount == 0) 
+        if (itemCount == 0)
         {
             isAnimating = false;
             onComplete?.Invoke();
@@ -430,12 +500,12 @@ public class LevelMenuManager : MonoBehaviour
 
         // Initialize the grid preview
         gridPreview.InitializeGridPreview(level);
-        
+
         previewToLeaderboard.currentLevel = level;
 
         //Set transition color
         transitionColor.SetColor(level.tileColorTop);
-        UITransitionMat.SetColor("_startColor", transitionColor.GetColor());  
+        UITransitionMat.SetColor("_startColor", transitionColor.GetColor());
 
         // Set the static variable for persistence when selecting
         loaded = level;

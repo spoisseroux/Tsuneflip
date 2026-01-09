@@ -315,10 +315,10 @@ MonoBehaviour:
   m_Name: FMODStudioSettings
   m_EditorClassIdentifier: 
   switchSettingsMigration: 1
-  HasSourceProject: 1
-  HasPlatforms: 1
+  HasSourceProject: 0
+  HasPlatforms: 0
   sourceProjectPath: Assets/GameJamFModProject/Aug24GameJamFmod.fspro
-  sourceBankPath: Assets/GameJamFModProject/Build
+  sourceBankPath: Assets/StreamingAssets
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
@@ -326,10 +326,11 @@ MonoBehaviour:
   BankLoadType: 0
   AutomaticSampleLoading: 0
   EncryptionKey: 
-  ImportType: 0
-  TargetAssetPath: FMODBanks
+  ImportType: 1
+  TargetAssetPath: Desktop
   TargetBankFolder: 
   EventLinkage: 0
+  SerializeGUIDsOnly: 0
   LoggingLevel: 2
   SpeakerModeSettings: []
   SampleRateSettings: []
@@ -340,7 +341,7 @@ MonoBehaviour:
   RealChannelSettings: []
   Plugins: []
   MasterBanks:
-  - Master
+  - Desktop/Master
   Banks: []
   BanksToLoad: []
   LiveUpdatePort: 9264
@@ -353,8 +354,8 @@ MonoBehaviour:
   EnableErrorCallback: 0
   SharedLibraryUpdateStage: 0
   SharedLibraryTimeSinceStart: 0
-  CurrentVersion: 131619
-  HideSetupWizard: 1
+  CurrentVersion: 131857
+  HideSetupWizard: 0
   LastEventReferenceScanVersion: 131619
   Platforms:
   - {fileID: -5521062622773216881}
